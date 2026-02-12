@@ -64,7 +64,7 @@ const Navbar = props => {
       position="fixed"
       as="nav"
       w="100%"
-      //bg={useColorModeValue('#ffffff40', '#20202380')}
+      bg={useColorModeValue('#fb00ffc7', '#ad2bca80')}
       css={{
         backdropFilter: 'blur(10px)',
         transition: 'backdrop-filter 0.3s ease-out'
@@ -242,7 +242,7 @@ const Navbar = props => {
                 _hover={{ bg: menuHover }}
                 onClick={() => router.push('/posts')}
               >
-                Privacy, Boundaries & Safety
+                Questions we don't want to answer
               </MenuItem>
             </MenuList>
           </Menu>
