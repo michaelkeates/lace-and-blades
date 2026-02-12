@@ -548,6 +548,9 @@ const Home = () => {
               </Box>
             </Box>
             <Divider marginTop={3} marginBottom={1} />
+            <Box marginTop={3}>
+
+          </Box>
         </SimpleGrid>
           <Divider />
       </Container>
