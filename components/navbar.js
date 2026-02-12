@@ -50,8 +50,14 @@ const LinkItem = ({ href, path, target, children, ...props }) => {
 const Navbar = props => {
   const { path } = props
   const router = useRouter()
-  const menuBg = useColorModeValue('rgba(81, 43, 113, 0.8)', 'rgba(141, 84, 180, 0.8)') // dark/light
-  const menuHover = useColorModeValue('rgba(141, 84, 180, 0.9)', 'rgba(81, 43, 113, 0.9)')
+  const menuBg = useColorModeValue(
+    'rgba(81, 43, 113, 0.8)',
+    'rgba(141, 84, 180, 0.8)'
+  ) // dark/light
+  const menuHover = useColorModeValue(
+    'rgba(141, 84, 180, 0.9)',
+    'rgba(81, 43, 113, 0.9)'
+  )
 
   return (
     <Box
@@ -112,11 +118,12 @@ const Navbar = props => {
               borderRadius="md"
               boxShadow="lg"
               portalProps={{ appendToParentPortal: true }}
-              s        style={{
-          backgroundColor: menuBg,
-          backdropFilter: 'blur(10px)',       // <-- frosted glass
-          WebkitBackdropFilter: 'blur(10px)'
-        }}
+              s
+              style={{
+                backgroundColor: menuBg,
+                backdropFilter: 'blur(10px)', // <-- frosted glass
+                WebkitBackdropFilter: 'blur(10px)'
+              }}
             >
               <MenuItem
                 icon={<LuMenu size={18} />}

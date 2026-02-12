@@ -12,7 +12,6 @@ import Bubble from '../components/bubbleheader'
 import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/linkedin-button'
 import LinktrButton from '../components/buttons/linktr-button'
-import WordpressButton from '../components/buttons/wordpress-button'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
