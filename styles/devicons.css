@@ -1,0 +1,13 @@
+.devicon-devicon-plain {
+    max-width: 512px;
+  }
+
+  .devicon-javascript-plain {
+    max-width: 512px;
+  }
+  
+  /* if you want to change the original color */
+  .devicon-devicon-plain path {
+    fill: #4691f6;
+  }
+  

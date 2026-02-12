@@ -1,0 +1,37 @@
+{
+  "name": "laceandblades",
+  "version": "1.0.0",
+  "description": "Michael Keates",
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "postbuild": "node -e \"if (process.env.NODE_ENV !== 'production') import('./scripts/generate-cv-pdf.mjs')\"",
+    "start": "next start",
+    "prettier": "prettier --write .",
+    "lint": "next lint"
+  },
+  "keywords": [],
+  "author": "Michael Keates",
+  "license": "MIT",
+  "dependencies": {
+    "@apollo/client": "^3.7.1",
+    "@chakra-ui/icons": "^2.0.15",
+    "@chakra-ui/react": "^2.4.6",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "framer-motion": "^10.12.18",
+    "graphql": "^16.6.0",
+    "next": "^14.2.5",
+    "node-fetch": "^3.3.2",
+    "react": "^18.2.0",
+    "react-devicons": "^2.14.0",
+    "react-dom": "^18.2.0",
+    "react-icons": "^4.6.0"
+  },
+  "devDependencies": {
+    "cross-env": "^10.0.0",
+    "eslint": "^8.44.0",
+    "eslint-config-next": "^13.4.7",
+    "prettier": "^2.8.0"
+  }
+}
