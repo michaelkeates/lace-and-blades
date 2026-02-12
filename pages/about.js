@@ -549,7 +549,25 @@ const Home = () => {
             </Box>
             <Divider marginTop={3} marginBottom={1} />
             <Box marginTop={3}>
-
+              <Box textAlign="left" fontSize={12} padding={2}>
+                <ul style={{ listStyleType: 'disc', paddingLeft: '20px' }}>
+                  <li>
+                    Designed and developed a Full Stack solution using Next.JS &
+                    Typescript, delivering an educational web service and
+                    seamless access to an operating system via web browsers,
+                    with a specialized emphasis on mobile and tablet
+                    compatibility.
+                  </li>
+                  <li>
+                    Proficient in interpreting and analysing complex data to
+                    create informative and visually appearing maps using GIS
+                    Technologies including cleaning and preparation of a
+                    'Airports of the World' dataset linked using Wikipedia API
+                    to show picture and details of the airport.
+                  </li>
+                </ul>
+              </Box>
+            </Box>
           </Box>
         </SimpleGrid>
           <Divider />
