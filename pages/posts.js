@@ -8,10 +8,7 @@ import NextLink from 'next/link'
 import { GET_ALL_POSTS } from '../lib/queries'
 import Bubble from '../components/bubbleheader2'
 
-import {
-  Button,
-  useColorModeValue
-} from '@chakra-ui/react'
+import { Button, useColorModeValue } from '@chakra-ui/react'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import { getApolloClient } from '../lib/wordpress'
 import { useQuery } from '@apollo/client'
@@ -96,7 +93,10 @@ export default function Home({ posts }) {
                   padding="1px"
                 >
                   <GridItem
-                    thumbnail={post.featuredImage.node.sourceUrl}
+                    thumbnail={
+                      post?.featuredImage?.node?.sourceUrl ??
+                      '/images/Lace-Blades-small.jpeg'
+                    }
                     title={post.title}
                   >
                     <div
@@ -118,27 +118,32 @@ export default function Home({ posts }) {
                       marginBottom="10px"
                       display="flex"
                       flexWrap="wrap"
-                      justifyContent="center"  // Center the tags horizontally
-                      alignItems="center"  // Center the tags vertically
+                      justifyContent="center" // Center the tags horizontally
+                      alignItems="center" // Center the tags vertically
                     >
-                      {post.tags && post.tags.nodes && post.tags.nodes.length > 0 ? (
-                        post.tags.nodes.map(tag => (
-                          <Box
-                            key={tag.name}
-                            boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
-                            fontSize="12px"  // Make the text smaller
-                            marginRight="5px"
-                            marginBottom="5px"
-                            borderRadius="10px"
-                            padding="3px 6px"  // Adjust padding to match smaller text
-                            bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-                            cursor="pointer"
-                            onClick={() => window.location.href = tag.link}
-                          >
-                            {tag.name}
-                          </Box>
-                        ))
-                      ) : null}
+                      {post.tags &&
+                      post.tags.nodes &&
+                      post.tags.nodes.length > 0
+                        ? post.tags.nodes.map(tag => (
+                            <Box
+                              key={tag.name}
+                              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+                              fontSize="12px" // Make the text smaller
+                              marginRight="5px"
+                              marginBottom="5px"
+                              borderRadius="10px"
+                              padding="3px 6px" // Adjust padding to match smaller text
+                              bg={useColorModeValue(
+                                'whiteAlpha.500',
+                                'whiteAlpha.200'
+                              )}
+                              cursor="pointer"
+                              onClick={() => (window.location.href = tag.link)}
+                            >
+                              {tag.name}
+                            </Box>
+                          ))
+                        : null}
                     </Box>
                   </GridItem>
                   <NextLink href={post.path} passHref scroll={false}>
