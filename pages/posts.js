@@ -1,6 +1,6 @@
 //import Head from 'next/head'
 import { useState } from 'react'
-import { SimpleGrid, Box, Badge, Container } from '@chakra-ui/react'
+import { SimpleGrid, Box, Badge, Container, Divider } from '@chakra-ui/react'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import { GridItem } from '../components/grid-item'
@@ -73,6 +73,20 @@ export default function Home({ posts }) {
 
   const isBeginning = currentPage === 1
   const isEnd = currentPage === totalPages
+  const truncate = (text, length = 120) => {
+    if (!text) return ''
+
+    // Remove HTML tags like <p>
+    const cleaned = text.replace(/<\/?[^>]+(>|$)/g, '')
+
+    // Remove trailing comma
+    const noTrailingComma = cleaned.replace(/,\s*$/, '')
+
+    if (noTrailingComma.length <= length) return noTrailingComma
+
+    return noTrailingComma.slice(0, length).replace(/\s+\S*$/, '') + '...'
+  }
+
   return (
     <Layout title="Portfolio">
       <Container>
@@ -90,7 +104,7 @@ export default function Home({ posts }) {
                   css={{ backdropFilter: 'blur(10px)' }}
                   boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
                   borderRadius="10px"
-                  padding="1px"
+                  padding="4px"
                 >
                   <GridItem
                     thumbnail={
@@ -99,11 +113,11 @@ export default function Home({ posts }) {
                     }
                     title={post.title}
                   >
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: post.excerpt
-                      }}
-                    />
+                    <Divider paddingTop="5px" />
+                    <div style={{ fontSize: '12px', paddingTop: '5px' }}>
+                      {truncate(post.excerpt, 100)}
+                    </div>
+
                     <Box
                       borderRadius="4px"
                       marginTop="12px"
@@ -128,7 +142,7 @@ export default function Home({ posts }) {
                             <Box
                               key={tag.name}
                               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
-                              fontSize="12px" // Make the text smaller
+                              fontSize="10px" // Make the text smaller
                               marginRight="5px"
                               marginBottom="5px"
                               borderRadius="10px"

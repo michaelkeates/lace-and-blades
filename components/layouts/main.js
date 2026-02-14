@@ -11,7 +11,7 @@ const Main = ({ children, router }) => {
   minH="100vh"
   display="flex"
   flexDirection="column"
-  bgImage="url('/images/background.svg')"
+  bgImage="url('/images/background2.svg')"
   bgRepeat="repeat-y"        // repeat vertically
   bgPosition="top center"    // start at the top
   bgSize="1000px"           // or "auto", adjust as needed

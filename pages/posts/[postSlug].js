@@ -289,8 +289,8 @@ export default function Post({ post }) {
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
             >
               <Blog>
-                <div>
-                  {post.title}{' '}
+                <div style={{ fontSize: '12px', fontWeight: 'normal' }}>
+                  {post.title}
                   <Badge
                     bg={useColorModeValue('whiteAlpha.100', 'whiteAlpha.000')}
                     color=""

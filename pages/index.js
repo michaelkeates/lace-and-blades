@@ -4,7 +4,8 @@ import {
   Box,
   useColorModeValue,
   chakra,
-  Divider
+  Divider,
+  Button
 } from '@chakra-ui/react'
 import Layout from '../components/layouts/article'
 import Image from 'next/image'
@@ -66,6 +67,21 @@ const Home = () => (
         <TikTokButton />
         <LinkedinButton />
         <LinktrButton />
+      </Box>
+      <Divider paddingTop={4} />
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={4}
+        mt={4}
+      >
+        <Bubble text="If you feel unsafe. Please click below." />
+      </Box>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Button bg={useColorModeValue('yellow.900', 'yellow.400')}>
+          Click Here
+        </Button>
       </Box>
     </Container>
   </Layout>

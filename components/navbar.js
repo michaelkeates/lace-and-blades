@@ -212,7 +212,7 @@ const Navbar = props => {
                 _hover={{ bg: menuHover }}
                 onClick={() => router.push('/posts')}
               >
-                For Professionals & Organisations
+                Professionals & Organisations
               </MenuItem>
 
               <MenuItem

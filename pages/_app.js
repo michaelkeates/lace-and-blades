@@ -4,7 +4,6 @@ import { AnimatePresence } from 'framer-motion'
 import Chakra from '../components/chakra'
 import { ApolloProvider } from '@apollo/client'
 import { getApolloClient } from '../lib/wordpress';
-import '../styles/customstyle.css'
 
 if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual'
