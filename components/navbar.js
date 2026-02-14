@@ -100,14 +100,10 @@ const Navbar = props => {
               as={Button}
               leftIcon={<LuMenu />}
               aria-label="Toggle theme"
-              bg="rgba(255, 255, 255, 0.15)"
-              color="white"
-              css={{
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)'
-              }}
-              p="10px"
+              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              padding="10px"
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
+              color={useColorModeValue('blackAlpha.900', 'whiteAlpha.600')}
               _hover={{ bg: 'rgba(255,255,255,0.25)' }}
               _active={{ bg: 'rgba(255,255,255,0.3)' }}
             >

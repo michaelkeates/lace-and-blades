@@ -69,18 +69,9 @@ const Home = () => (
         <LinktrButton />
       </Box>
       <Divider paddingTop={4} />
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        gap={4}
-        mt={4}
-      >
-        <Bubble text="If you feel unsafe. Please click below." />
-      </Box>
-      <Box display="flex" justifyContent="center" alignItems="center">
+      <Box display="flex" justifyContent="center" alignItems="center" paddingTop={4} paddingBottom={12}>
         <Button bg={useColorModeValue('yellow.900', 'yellow.400')}>
-          Click Here
+          If you feel unsafe. Please click here.
         </Button>
       </Box>
     </Container>
