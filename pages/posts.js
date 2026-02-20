@@ -6,7 +6,7 @@ import Section from '../components/section'
 import { GridItem } from '../components/grid-item'
 import NextLink from 'next/link'
 import { GET_ALL_POSTS } from '../lib/queries'
-import Bubble from '../components/bubbleheader2'
+import Bubble from '../components/emoji/heart'
 
 import { Button, useColorModeValue } from '@chakra-ui/react'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
@@ -90,7 +90,7 @@ export default function Home({ posts }) {
   return (
     <Layout title="Portfolio">
       <Container>
-        <Bubble text="View the latest posts!" emoji="💪" />
+        <Bubble text="View my latest posts!" emoji="❤️" />
         <Section delay={0.2}>
           <SimpleGrid columns={[2, 2, 2]} gap={4}>
             {postsToDisplay.map(post => (

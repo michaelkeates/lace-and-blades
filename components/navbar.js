@@ -51,8 +51,8 @@ const Navbar = props => {
   const { path } = props
   const router = useRouter()
   const menuBg = useColorModeValue(
-    'rgba(81, 43, 113, 0.8)',
-    'rgba(141, 84, 180, 0.8)'
+    'rgba(206, 158, 224, 0.8)',
+    'rgba(36, 31, 39, 0.8)'
   ) // dark/light
   const menuHover = useColorModeValue(
     'rgba(141, 84, 180, 0.9)',
@@ -64,7 +64,7 @@ const Navbar = props => {
       position="fixed"
       as="nav"
       w="100%"
-      bg={useColorModeValue('#fb00ffc7', '#ad2bca80')}
+      bg={useColorModeValue('#e988ec40', '#26192980')}
       css={{
         backdropFilter: 'blur(10px)',
         transition: 'backdrop-filter 0.3s ease-out'
@@ -121,6 +121,16 @@ const Navbar = props => {
                 WebkitBackdropFilter: 'blur(10px)'
               }}
             >
+<NextLink href="/georgias-law" passHref>
+  <MenuItem
+    icon={<LuMenu size={18} />}
+    bg={menuBg}
+    color="white"
+    _hover={{ bg: menuHover }}
+  >
+    Georgia's Law
+  </MenuItem>
+</NextLink>
               <MenuItem
                 icon={<LuMenu size={18} />}
                 bg={menuBg}
@@ -146,9 +156,9 @@ const Navbar = props => {
                 bg={menuBg}
                 color="white"
                 _hover={{ bg: menuHover }}
-                onClick={() => router.push('/support')}
+                onClick={() => router.push('/resources')}
               >
-                Resources (Downloads)
+                Support Agencies Information
               </MenuItem>
 
               <MenuItem
@@ -199,16 +209,6 @@ const Navbar = props => {
                 onClick={() => router.push('/posts')}
               >
                 Shop - Buy the Book
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/posts')}
-              >
-                Professionals & Organisations
               </MenuItem>
 
               <MenuItem

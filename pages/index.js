@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react'
 import Layout from '../components/layouts/article'
 import Image from 'next/image'
-import Bubble from '../components/bubbleheader'
+import Bubble from '../components/emoji/default'
 import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/linkedin-button'
 import LinktrButton from '../components/buttons/linktr-button'
@@ -23,14 +23,6 @@ const Home = () => (
     <Container>
       <Box display="flex" justifyContent="center" mt={10} mb={4}>
         <Box
-          borderColor={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-          borderWidth={2}
-          borderStyle="solid"
-          boxShadow="0px 0px 12px 3px rgba(0,0,0,0.05)"
-          w="120px"
-          h="120px"
-          borderRadius="full"
-          overflow="hidden"
         >
           <ProfileImage
             src="/images/Lace-Blades-small.jpeg"
@@ -43,13 +35,13 @@ const Home = () => (
       </Box>
 
       <Heading
-        as="h2"
+        as="h1"
         textAlign="center"
         variant="page-title"
-        fontFamily="Roboto"
-        mb={4}
+        mb={8}
+        fontSize={58}
       >
-        Lace and Blades
+        Lace & Blades
       </Heading>
 
       <Box>
@@ -70,7 +62,11 @@ const Home = () => (
       </Box>
       <Divider paddingTop={4} />
       <Box display="flex" justifyContent="center" alignItems="center" paddingTop={4} paddingBottom={12}>
-        <Button bg={useColorModeValue('yellow.900', 'yellow.400')}>
+  <Button
+    bg={useColorModeValue('yellow.300', 'yellow.300')}
+    color="black"           // Text color
+    opacity={0.7}           // Semi-transparent button
+  >
           If you feel unsafe. Please click here.
         </Button>
       </Box>

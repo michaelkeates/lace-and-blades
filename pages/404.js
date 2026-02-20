@@ -8,7 +8,7 @@ import {
   useColorModeValue,
   Button
 } from '@chakra-ui/react'
-import Bubble from '../components/bubbleheader'
+import Bubble from '../components/emoji/default'
 
 const NotFound = () => {
   return (

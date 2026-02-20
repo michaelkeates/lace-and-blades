@@ -1,6 +1,6 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
 import { motion } from 'framer-motion'
-import styles from '../styles/emoji.module.css'
+import styles from '../../styles/emoji.module.css'
 
 const CustomBox = ({ text, emoji }) => {
   return (
@@ -19,20 +19,21 @@ const CustomBox = ({ text, emoji }) => {
     >
       <a className={styles.emailTitleLink}>
         {text}
-        <motion.span
-          className={styles.emojiTitle}
-          style={{ marginLeft: '8px' }}
-          animate={{
-            rotate: [0, 14, -8, 14, -4, 10, 0, 0], // Rotate animation values
-            transition: {
-              duration: 1.5, // Duration of animation loop
-              repeat: Infinity, // Repeat the animation indefinitely
-              ease: 'easeInOut', // Easing function
-            },
-          }}
-        >
-          {emoji}
-        </motion.span>
+<motion.span
+  className={styles.emojiTitle}
+  style={{ marginLeft: '8px', display: 'inline-block' }}
+  animate={{
+    scale: [1, 1.25, 1, 1.15, 1],
+  }}
+  transition={{
+    duration: 1.3,
+    repeat: Infinity,
+    ease: "easeInOut",
+    times: [0, 0.2, 0.4, 0.6, 1] // Controls beat timing
+  }}
+>
+  {emoji}
+</motion.span>
       </a>
     </Box>
   );

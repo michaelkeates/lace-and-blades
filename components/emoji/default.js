@@ -1,6 +1,5 @@
 import { Box, useColorModeValue } from '@chakra-ui/react'
-import { motion } from 'framer-motion'
-import styles from '../styles/emoji.module.css'
+import styles from '../../styles/emoji.module.css'
 
 const CustomBox = ({ text, emoji }) => {
   return (

@@ -11,10 +11,13 @@ const Main = ({ children, router }) => {
   minH="100vh"
   display="flex"
   flexDirection="column"
-  bgImage="url('/images/background2.svg')"
-  bgRepeat="repeat-y"        // repeat vertically
-  bgPosition="top center"    // start at the top
-  bgSize="1000px"           // or "auto", adjust as needed
+  //bgImage="url('/images/pink-leopard-animal-print-flat-by-Vexels.png')"
+  bgRepeat="repeat-y"
+  bgPosition="top center"
+  bgSize="1000px"
+  //bgBlendMode="overlay"
+  //bg="rgba(255, 255, 255, 0.8)"
+  bgOpacity={0.8}
 >
   <Head>{/* meta stuff */}</Head>
 

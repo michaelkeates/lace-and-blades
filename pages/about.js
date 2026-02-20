@@ -13,7 +13,7 @@ import Paragraph from '../components/paragraph'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import Image from 'next/image'
-import Bubble from '../components/bubbleheader2'
+import Bubble from '../components/emoji/waving'
 import NextLink from 'next/link'
 
 const ProfileImage = chakra(Image, {
@@ -25,17 +25,14 @@ const Home = () => {
   return (
     <Layout>
       <Container>
-        <Bubble text="Hi there!" emoji="👋" />
         <Box display={{ md: 'flex' }} paddingTop="25px">
           <Box flexGrow={1}>
             <Heading
               as="h2"
-              variant="page-title"
-              fontFamily="Roboto"
-              fontWeight=""
             >
               Lace & Blades
             </Heading>
+                    <Bubble text="Hi there!" emoji="👋" />
           </Box>
           <Box
             flexShrink={0}
