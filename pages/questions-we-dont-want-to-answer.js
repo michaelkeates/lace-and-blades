@@ -3,9 +3,9 @@ import { getApolloClient } from '../lib/wordpress'
 import { Container } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
-import { GET_GEORGIAS_LAW } from '../lib/queries'
+import { GET_QUESTIONS_WE_DONT_WANT_TO_ANSWER } from '../lib/queries'
 
-export default function GeorgiasLaw({ page }) {
+export default function QuestionsWeDontWantToAnswer({ page }) {
   if (!page) return <p>Page not found</p>
 
   return (
@@ -30,7 +30,7 @@ export default function GeorgiasLaw({ page }) {
 export async function getServerSideProps() {
   const apolloClient = getApolloClient()
   const { data } = await apolloClient.query({
-    query: GET_GEORGIAS_LAW,
+    query: GET_QUESTIONS_WE_DONT_WANT_TO_ANSWER,
     fetchPolicy: 'network-only'
   })
 

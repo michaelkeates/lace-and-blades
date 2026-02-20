@@ -46,29 +46,8 @@ const Home = () => {
               fontSize={20}
               mb={2}
             >
-              Background
+              Resources
             </Heading>
-            <Box
-              borderRadius="lg"
-              mb={6}
-              p={3}
-              textAlign="center"
-              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-              css={{ backdropFilter: 'blur(10px)' }}
-              padding={4}
-              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
-              paddingTop="1rem"
-            >
-              <Paragraph>
-                Lace & Blades didn't begin as a book. It was the first words and
-                were never meant to be read. Fragments written in fear just to
-                keep reality. I didn't know it was abuse. I thought I was
-                failing at a relationship. The darkness arrived quietly -
-                through affection and control disguised as care. As control and
-                trauma bonding tightened, writing became my lifeline, real-time
-                truth with no polish or hindsight.
-              </Paragraph>
-            </Box>
           </Section>
 
           <Divider />

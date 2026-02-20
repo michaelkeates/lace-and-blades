@@ -1,4 +1,5 @@
-import Logo from './logo'
+'use client'
+
 import NextLink from 'next/link'
 import {
   Container,
@@ -13,51 +14,45 @@ import {
   MenuButton,
   IconButton,
   useColorModeValue,
-  Button
+  Button,
+  useDisclosure
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
+import { LuMenu, LuClipboard, LuBook, LuCastle, LuPhone, LuShoppingBag } from 'react-icons/lu'
+
+import Logo from './logo'
 import ThemeToggleButton from './buttons/theme-toggle-button'
 import TikTokButton from './buttons/tiktok-button'
 import LinkedinButton from './buttons/linkedin-button'
 import LinktrButton from './buttons/linktr-button'
 import WordpressButton from './buttons/wordpress-button'
 
-import { useRouter } from 'next/router'
+// Horizontal menu icons (clickable)
+const horizontalMenuItems = [
+  { label: "Georgia's Law", value: "georgias-law", icon: <LuCastle size={18} />, path: "/georgias-law" },
+  { label: "Support & Helplines", icon: <LuPhone size={18} />, path: "/support" },
+  { label: "Blog", icon: <LuBook size={18} />, path: "/posts" },
+  { label: "Contact", icon: <LuBook size={18} />, path: "/contact" },
+  { label: "Get Information", icon: <LuClipboard size={18} />, path: "/get-information-agencies" },
+  { label: "Shop - Buy the Book", icon: <LuShoppingBag size={18} />, path: "/get-information-agencies" },
+  { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: "/questions-we-dont-want-to-answer" },
+  { label: 'Media & Press', icon: <LuBook size={18} />, path: '/posts' },
+]
 
-import { LuHome, LuMenu } from 'react-icons/lu'
+// Standard menu links
+const menuItems = [
+  { label: 'The Book - How Lace & Blades Became a Book', path: '/about' },
+  { label: 'Support Agencies Information', path: '/resources' },
+  { label: 'Giving Back - Donations & Fundraisers', path: '/support' },
+  { label: 'Law, Justice & Advocacy', path: '/support' },
+  { label: 'Speaking & Testimony', path: '/support' },
+  { label: 'Media & Press', path: '/posts' },
+]
 
-const LinkItem = ({ href, path, target, children, ...props }) => {
-  const active = path === href
-  const inactiveColor = useColorModeValue('gray200', 'whiteAlpha.900')
-  return (
-    <NextLink href={href} passHref scroll={false}>
-      <Link
-        p={2}
-        //bg={active ? 'grassTeal' : undefined}
-        //bg={active ? useColorModeValue('whiteAlpha.400', 'whiteAlpha.200') : undefined}
-        color={active ? '#a6bbce' : active}
-        target={target}
-        //borderRadius="full"
-        fontSize="12"
-        {...props}
-      >
-        {children}
-      </Link>
-    </NextLink>
-  )
-}
-
-const Navbar = props => {
-  const { path } = props
-  const router = useRouter()
-  const menuBg = useColorModeValue(
-    'rgba(206, 158, 224, 0.8)',
-    'rgba(36, 31, 39, 0.8)'
-  ) // dark/light
-  const menuHover = useColorModeValue(
-    'rgba(141, 84, 180, 0.9)',
-    'rgba(81, 43, 113, 0.9)'
-  )
+const Navbar = () => {
+  const { isOpen, onOpen, onClose } = useDisclosure() // ✅ inside component
+  const menuBg = useColorModeValue('rgba(206,158,224,0.95)', 'rgba(36,31,39,0.95)')
+  const menuHover = useColorModeValue('rgba(141,84,180,0.9)', 'rgba(81,43,113,0.9)')
 
   return (
     <Box
@@ -65,207 +60,75 @@ const Navbar = props => {
       as="nav"
       w="100%"
       bg={useColorModeValue('#e988ec40', '#26192980')}
-      css={{
-        backdropFilter: 'blur(10px)',
-        transition: 'backdrop-filter 0.3s ease-out'
-      }}
-      zIndex={999}
-      {...props}
+      style={{ backdropFilter: 'blur(10px)' }}
+      zIndex="999"
     >
       <Container
         display="flex"
         p={2}
         maxW="container.md"
-        wrap="wrap"
         align="center"
         justify="space-between"
       >
-        <Flex align="center" mr={5}>
-          <Heading as="h1" size="lg" letterSpacing={'tighter'}>
+        {/* Logo */}
+        <Flex align="center">
+          <Heading as="h1" size="lg">
             <Logo />
           </Heading>
         </Flex>
-        <Stack
-          direction={{ base: 'column', md: 'row' }}
-          display={{ base: 'none', md: 'flex' }}
-          width={{ base: 'full', md: 'auto' }}
-          alignItems="center"
-          flexGrow={1}
-          mt={{ base: 4, md: 0 }}
-          p={2}
-        >
-          {/* Chakra Menu */}
-          <Menu>
-            <MenuButton
-              as={Button}
-              leftIcon={<LuMenu />}
-              aria-label="Toggle theme"
-              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-              padding="10px"
-              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
-              color={useColorModeValue('blackAlpha.900', 'whiteAlpha.600')}
-              _hover={{ bg: 'rgba(255,255,255,0.25)' }}
-              _active={{ bg: 'rgba(255,255,255,0.3)' }}
-            >
+
+        {/* Desktop Menu */}
+        <Stack direction="row" display={{ base: 'none', md: 'flex' }} align="center">
+          <Menu isOpen={isOpen} onClose={onClose}>
+            <MenuButton as={Button} onClick={onOpen} leftIcon={<LuMenu />} bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}>
               Menu
             </MenuButton>
+<MenuList bg={menuBg} style={{ backdropFilter: 'blur(10px)' }}>
+  {/* Horizontal clickable icons */}
+  <Flex mb={2} px={2} flexWrap="wrap" justify="space-around">
+    {horizontalMenuItems.map((item, index) => (
+      <NextLink key={item.value} href={item.path ?? '#'} passHref legacyBehavior>
+        <Flex
+          as={Link}
+          direction="column"
+          align="center"
+          cursor="pointer"
+          _hover={{ bg: 'whiteAlpha.200' }}
+          p={2}
+          borderRadius="md"
+          onClick={onClose}
+          flex="1 0 25%" // Each item takes 25% of row → 4 per row
+        >
+          {item.icon}
+          <Box fontSize="xs" mt={1}>{item.label}</Box>
+        </Flex>
+      </NextLink>
+    ))}
+  </Flex>
 
-            <MenuList
-              borderRadius="md"
-              boxShadow="lg"
-              portalProps={{ appendToParentPortal: true }}
-              s
-              style={{
-                backgroundColor: menuBg,
-                backdropFilter: 'blur(10px)', // <-- frosted glass
-                WebkitBackdropFilter: 'blur(10px)'
-              }}
-            >
-<NextLink href="/georgias-law" passHref>
-  <MenuItem
-    icon={<LuMenu size={18} />}
-    bg={menuBg}
-    color="white"
-    _hover={{ bg: menuHover }}
-  >
-    Georgia's Law
-  </MenuItem>
-</NextLink>
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/about')}
-              >
-                The Book - How Lace & Blades Became a Book
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/support')}
-              >
-                Support & Helplines
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/resources')}
-              >
-                Support Agencies Information
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/support')}
-              >
-                Giving Back - Donations & Fundraisers
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/support')}
-              >
-                Law, Justice & Advocacy
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/support')}
-              >
-                Speaking & Testimony
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/posts')}
-              >
-                Blog
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/posts')}
-              >
-                Shop - Buy the Book
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/posts')}
-              >
-                Media & Press
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/posts')}
-              >
-                Contact
-              </MenuItem>
-
-              <MenuItem
-                icon={<LuMenu size={18} />}
-                bg={menuBg}
-                color="white"
-                _hover={{ bg: menuHover }}
-                onClick={() => router.push('/posts')}
-              >
-                Questions we don't want to answer
-              </MenuItem>
-            </MenuList>
+  {/* Standard menu links */}
+  {menuItems.map(item => (
+    <NextLink key={item.label} href={item.path} passHref legacyBehavior>
+      <MenuItem as={Link} _hover={{ bg: menuHover }} onClick={onClose}>
+        {item.label}
+      </MenuItem>
+    </NextLink>
+  ))}
+</MenuList>
           </Menu>
         </Stack>
+
+        {/* Right side social & theme buttons */}
         <Flex flex={1} ml={1} justify="flex-end" align="center">
-          <Box ml={2}>
-            <TikTokButton />
-          </Box>
+          <Box ml={2}><TikTokButton /></Box>
+          <Box ml={2}><LinkedinButton /></Box>
+          <Box ml={2}><LinktrButton /></Box>
+          <Box ml={2}><WordpressButton /></Box>
+          <Box ml={2}><ThemeToggleButton /></Box>
 
-          <Box ml={2}>
-            <LinkedinButton />
-          </Box>
-
-          <Box ml={2}>
-            <LinktrButton />
-          </Box>
-
-          <Box ml={2}>
-            <WordpressButton />
-          </Box>
-
-          <Box ml={2}>
-            <ThemeToggleButton />
-          </Box>
-
+          {/* Mobile Menu */}
           <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
-            <Menu isLazy id="navbar-menu">
+            <Menu isLazy>
               <MenuButton
                 as={IconButton}
                 icon={<HamburgerIcon />}
@@ -274,57 +137,16 @@ const Navbar = props => {
                 _focus={{ boxShadow: 'none' }}
               />
               <MenuList
-                bg="{useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}"
+                bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
                 css={{ backdropFilter: 'blur(10px)' }}
               >
-                <NextLink href="/about" passHref>
-                  <MenuItem
-                    bg="{useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}"
-                    px={4}
-                    py={2}
-                    transition="all 0.2s"
-                    _hover={{
-                      bg: useColorModeValue('whiteAlpha.600', 'whiteAlpha.300')
-                    }}
-                    _expanded={{ bg: 'blue.400' }}
-                    _focus={{ boxShadow: 'none' }}
-                    as={Link}
-                  >
-                    About
-                  </MenuItem>
-                </NextLink>
-                <NextLink href="/repositories" passHref>
-                  <MenuItem
-                    bg="{useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}"
-                    px={4}
-                    py={2}
-                    transition="all 0.2s"
-                    _hover={{
-                      bg: useColorModeValue('whiteAlpha.600', 'whiteAlpha.300')
-                    }}
-                    _expanded={{ bg: 'blue.400' }}
-                    _focus={{ boxShadow: 'none' }}
-                    as={Link}
-                  >
-                    Portfolio
-                  </MenuItem>
-                </NextLink>
-                <NextLink href="/posts" passHref>
-                  <MenuItem
-                    bg="{useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}"
-                    px={4}
-                    py={2}
-                    transition="all 0.2s"
-                    _hover={{
-                      bg: useColorModeValue('whiteAlpha.600', 'whiteAlpha.300')
-                    }}
-                    _expanded={{ bg: 'blue.400' }}
-                    _focus={{ boxShadow: 'none' }}
-                    as={Link}
-                  >
-                    Blog
-                  </MenuItem>
-                </NextLink>
+                {menuItems.map(item => (
+                  <NextLink key={item.label} href={item.path} passHref legacyBehavior>
+                    <MenuItem as={Link} _hover={{ bg: menuHover }}>
+                      {item.label}
+                    </MenuItem>
+                  </NextLink>
+                ))}
               </MenuList>
             </Menu>
           </Box>

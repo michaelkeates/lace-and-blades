@@ -14,6 +14,7 @@ const LogoBox = styled.span`
 
   img {
     transition: 200ms ease;
+    border-radius: 4px;
   }
 
   &:hover img {

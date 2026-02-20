@@ -37,17 +37,12 @@ const Home = () => {
             Support Agencies Information
           </Heading>
         </Box>
-        <SimpleGrid colums={[1, 1, 2]} gap={2}>
-          <Section delay={0.1}>
-            <Heading
-              as="h3"
-              fontFamily="Roboto"
-              fontWeight="500"
-              fontSize={20}
-              mb={2}
-            >
-              Background
-            </Heading>
+        <Section delay={0.2}>
+          <Heading as="h3" fontSize={20} mb={4} mt="1rem">
+            Resources
+          </Heading>
+
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
             <Box
               borderRadius="lg"
               mb={6}
@@ -58,102 +53,140 @@ const Home = () => {
               padding={4}
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
               paddingTop="1rem"
+              flexDirection="column"
+              alignItems="center"
             >
-              <Paragraph>
-                Lace & Blades didn't begin as a book. It was the first words and
-                were never meant to be read. Fragments written in fear just to
-                keep reality. I didn't know it was abuse. I thought I was
-                failing at a relationship. The darkness arrived quietly -
-                through affection and control disguised as care. As control and
-                trauma bonding tightened, writing became my lifeline, real-time
-                truth with no polish or hindsight.
-              </Paragraph>
-            </Box>
-          </Section>
-
-          <Divider />
-          <Section delay={0.2}>
-            <Heading as="h3" fontSize={20} mb={4} marginTop="1rem">
-              Experience
-            </Heading>
-            <SimpleGrid columns={[1, 1, 1]} gap={2} justifyContent="center">
-              <Box
-                borderRadius="lg"
-                mb={6}
-                p={3}
-                textAlign="center"
-                bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-                css={{ backdropFilter: 'blur(10px)' }}
-                padding={4}
-                boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
-                paddingTop="1rem"
-                flexDirection="column"
-                alignItems="center"
-              >
-                <Box display="flex" alignItems="center">
-                  <Box marginRight={4} marginTop="-2px" align="center">
-                    <Image
-                      src="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/Anyone-can-be-a-victim-of-rape-pdf.jpg"
-                      width={100}
-                      height={100}
-                      alt="Thumbnail"
-                    />
-                  </Box>
-                  <Box marginRight={4}>
-                    <Heading
-                      as="h2"
-                      fontWeight="600"
-                      fontSize={23}
-                      textAlign="left"
-                      marginBottom="2px"
-                    >
-                      Anyone can be a victim of rape
-                    </Heading>
-                    <Heading
-                      as="h2"
-                      fontWeight="400"
-                      fontSize={21}
-                      textAlign="left"
-                    >
-                      Guide for practioners
-                    </Heading>
-                  </Box>
+              <Box display="flex" alignItems="center">
+                <Box marginRight={4} marginTop="-2px" align="center">
+                  <Image
+                    src="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/Anyone-can-be-a-victim-of-rape-pdf.jpg"
+                    width={100}
+                    height={100}
+                    alt="Thumbnail"
+                  />
                 </Box>
-                <Divider marginTop={3} marginBottom={1} />
-                <Box marginTop={3}>
-                  <Paragraph>
-                    Sexual violence is any type of sexual behaviour that the
-                    victim does not consent to. 1 in 5 women and approximately 1
-                    in 20 men experience at least one form of sexual violence
-                    during their lifetime. Rape and sexual assault can happen to
-                    anyone at any age, from the very young to the very the very
-                    old.
-                  </Paragraph>
-                  <Box marginTop={4} textAlign="center">
-                    <Link
-                      href="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/Anyone-can-be-a-victim-of-rape.pdf"
-                      isExternal // Automatically adds target="_blank" and rel="noopener noreferrer"
-                    >
-                      <Button
-                        boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
-                        fontSize="14px"
-                        marginTop="10px"
-                        marginBottom="10px"
-                        bg={useColorModeValue(
-                          'whiteAlpha.500',
-                          'whiteAlpha.200'
-                        )}
-                      >
-                        Read PDF
-                      </Button>
-                    </Link>
-                  </Box>
+                <Box marginRight={4}>
+                  <Heading
+                    as="h2"
+                    fontWeight="600"
+                    fontSize={15}
+                    textAlign="left"
+                    marginBottom="2px"
+                  >
+                    Anyone can be a victim of rape
+                  </Heading>
+                  <Heading
+                    as="h2"
+                    fontWeight="400"
+                    fontSize={11}
+                    textAlign="left"
+                  >
+                    Guide for practioners
+                  </Heading>
                 </Box>
               </Box>
-            </SimpleGrid>
-          </Section>
-          <Divider />
-        </SimpleGrid>
+              <Divider marginTop={3} marginBottom={1} />
+              <Box marginTop={3}>
+                <Paragraph>
+                  Sexual violence is any type of sexual behaviour that the
+                  victim does not consent to. 1 in 5 women and approximately 1
+                  in 20 men experience at least one form of sexual violence
+                  during their lifetime. Rape and sexual assault can happen to
+                  anyone at any age, from the very young to the very the very
+                  old.
+                </Paragraph>
+                <Box marginTop={4} textAlign="center">
+                  <Link
+                    href="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/Anyone-can-be-a-victim-of-rape.pdf"
+                    isExternal // Automatically adds target="_blank" and rel="noopener noreferrer"
+                  >
+                    <Button
+                      boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+                      fontSize="14px"
+                      marginTop="10px"
+                      marginBottom="10px"
+                      bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    >
+                      Read PDF
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            </Box>
+
+            <Box
+              borderRadius="lg"
+              mb={6}
+              p={3}
+              textAlign="center"
+              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              css={{ backdropFilter: 'blur(10px)' }}
+              padding={4}
+              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
+              paddingTop="1rem"
+              flexDirection="column"
+              alignItems="center"
+            >
+              <Box display="flex" alignItems="center">
+                <Box marginRight={4} marginTop="-2px" align="center">
+                  <Image
+                    src="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/Anyone-can-be-a-victim-of-rape-pdf.jpg"
+                    width={100}
+                    height={100}
+                    alt="Thumbnail"
+                  />
+                </Box>
+                <Box marginRight={4}>
+                  <Heading
+                    as="h2"
+                    fontWeight="600"
+                    fontSize={15}
+                    textAlign="left"
+                    marginBottom="2px"
+                  >
+                    Anyone can be a victim of rape
+                  </Heading>
+                  <Heading
+                    as="h2"
+                    fontWeight="400"
+                    fontSize={9}
+                    textAlign="left"
+                  >
+                    Guide for practioners
+                  </Heading>
+                </Box>
+              </Box>
+              <Divider marginTop={3} marginBottom={1} />
+              <Box marginTop={3}>
+                <Paragraph>
+                  Sexual violence is any type of sexual behaviour that the
+                  victim does not consent to. 1 in 5 women and approximately 1
+                  in 20 men experience at least one form of sexual violence
+                  during their lifetime. Rape and sexual assault can happen to
+                  anyone at any age, from the very young to the very the very
+                  old.
+                </Paragraph>
+                <Box marginTop={4} textAlign="center">
+                  <Link
+                    href="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/Anyone-can-be-a-victim-of-rape.pdf"
+                    isExternal // Automatically adds target="_blank" and rel="noopener noreferrer"
+                  >
+                    <Button
+                      boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+                      fontSize="14px"
+                      marginTop="10px"
+                      marginBottom="10px"
+                      bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    >
+                      Read PDF
+                    </Button>
+                  </Link>
+                </Box>
+              </Box>
+            </Box>
+          </SimpleGrid>
+        </Section>
+        <Divider />
         <Divider />
       </Container>
     </Layout>
