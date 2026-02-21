@@ -29,9 +29,30 @@ const NotFound = () => {
             </Button>
           </NextLink>
         </Box>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        paddingTop={4}
+        paddingBottom={12}
+      >
+        <NextLink href="/support-helplines" passHref>
+          <Button
+            as="a"
+            bg={useColorModeValue('yellow.300', 'yellow.300')}
+            color="black"
+            opacity={0.7}
+          >
+            If you feel unsafe. Please click here.
+          </Button>
+        </NextLink>
+      </Box>
       </Section>
     </Container>
   )
 }
 
 export default NotFound
+
+
+

@@ -13,6 +13,7 @@ import Bubble from '../components/emoji/default'
 import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/linkedin-button'
 import LinktrButton from '../components/buttons/linktr-button'
+import NextLink from 'next/link'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -22,8 +23,7 @@ const Home = () => (
   <Layout>
     <Container>
       <Box display="flex" justifyContent="center" mt={10} mb={4}>
-        <Box
-        >
+        <Box>
           <ProfileImage
             src="/images/Lace-Blades-small.jpeg"
             alt="Profile image"
@@ -61,14 +61,23 @@ const Home = () => (
         <LinktrButton />
       </Box>
       <Divider paddingTop={4} />
-      <Box display="flex" justifyContent="center" alignItems="center" paddingTop={4} paddingBottom={12}>
-  <Button
-    bg={useColorModeValue('yellow.300', 'yellow.300')}
-    color="black"           // Text color
-    opacity={0.7}           // Semi-transparent button
-  >
-          If you feel unsafe. Please click here.
-        </Button>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        paddingTop={4}
+        paddingBottom={12}
+      >
+        <NextLink href="/support-helplines" passHref>
+          <Button
+            as="a"
+            bg={useColorModeValue('yellow.300', 'yellow.300')}
+            color="black"
+            opacity={0.7}
+          >
+            If you feel unsafe. Please click here.
+          </Button>
+        </NextLink>
       </Box>
     </Container>
   </Layout>
