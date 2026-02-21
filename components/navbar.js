@@ -24,7 +24,8 @@ import {
   LuBook,
   LuCastle,
   LuPhone,
-  LuShoppingBag
+  LuShoppingBag,
+  LuFileHeart
 } from 'react-icons/lu'
 
 import Logo from './logo'
@@ -41,7 +42,7 @@ const allMenuItems = [
   { label: 'Blog', icon: <LuBook size={18} />, path: '/posts', type: 'icon' },
   { label: 'Contact', icon: <LuBook size={18} />, path: '/contact', type: 'icon' },
   { label: 'Support Agencies Information', path: '/resources', type: 'text' },
-  { label: 'Giving Back - Donations & Fundraisers', path: '/support', type: 'text' },
+  { label: 'Giving Back - Donations & Fundraisers', icon: <LuFileHeart size={18} />, path: '/support', type: 'icon' },
   { label: 'Law, Justice & Advocacy', path: '/support', type: 'text' },
   { label: 'Speaking & Testimony', path: '/support', type: 'text' },
   { label: 'Get Information', icon: <LuClipboard size={18} />, path: '/get-information-agencies', type: 'icon' },
