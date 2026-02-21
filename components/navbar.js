@@ -241,34 +241,51 @@ const Navbar = () => {
           <Box ml={2}>
             <ThemeToggleButton />
           </Box>
-
-          {/* Mobile Menu */}
-          <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
-            <Menu isLazy>
-              <MenuButton
-                as={IconButton}
-                icon={<HamburgerIcon />}
-                variant="outline"
-                aria-label="Options"
-                _focus={{ boxShadow: 'none' }}
-              />
-              <MenuList bg={menuBg} css={{ backdropFilter: 'blur(10px)' }}>
-                {allMenuItems.map(item => (
-                  <NextLink
-                    key={item.label}
-                    href={item.path}
-                    passHref
-                    legacyBehavior
-                  >
-                    <MenuItem as={Link} _hover={{ bg: menuHover }}>
-                      {item.icon && <Box mr={2}>{item.icon}</Box>}
-                      {item.label}
-                    </MenuItem>
-                  </NextLink>
-                ))}
-              </MenuList>
-            </Menu>
-          </Box>
+{/* Mobile Menu */}
+<Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
+  <Menu isLazy>
+    <MenuButton
+      as={IconButton}
+      icon={<HamburgerIcon />}
+      variant="outline"
+      aria-label="Options"
+      _focus={{ boxShadow: 'none' }}
+    />
+    <MenuList
+      bg={menuBg}
+      css={{ backdropFilter: 'blur(10px)' }}
+      maxW="400px"
+      w="fit-content"
+    >
+      <Box
+        display="grid"
+        gridTemplateColumns="repeat(2, 1fr)" // 2 per row on mobile
+        gap={2}
+        p={2}
+        justifyItems="center"
+      >
+        {allMenuItems.map(item => (
+          <NextLink key={item.label} href={item.path} passHref legacyBehavior>
+            <Flex
+              as={Link}
+              direction="column"
+              align="center"
+              cursor="pointer"
+              _hover={{ bg: 'whiteAlpha.200' }}
+              p={2}
+              borderRadius="md"
+            >
+              {item.icon && <Box mb={1}>{item.icon}</Box>}
+              <Box fontSize="xs" textAlign="center">
+                {item.label}
+              </Box>
+            </Flex>
+          </NextLink>
+        ))}
+      </Box>
+    </MenuList>
+  </Menu>
+</Box>
         </Flex>
       </Container>
     </Box>
