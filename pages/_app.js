@@ -4,7 +4,7 @@ import Chakra from '../components/chakra'
 import Layout from '../components/layouts/main'
 import { ApolloProvider } from '@apollo/client'
 import { getApolloClient } from '../lib/wordpress'
-import { cinzel, roboto } from '../lib/fonts'
+import { spectral, roboto } from '../lib/fonts'
 import '../styles/globals.css'
 
 if (typeof window !== 'undefined') {
@@ -18,7 +18,7 @@ function Website({ Component, pageProps, router }) {
     <Chakra cookies={pageProps.cookies}>
       <ApolloProvider client={client}>
         {/* wrapper div is optional now, for global CSS */}
-        <div className={`${cinzel.variable} ${roboto.variable}`}>
+        <div className={`${spectral.variable} ${roboto.variable}`}>
           <Layout router={router}>
             <AnimatePresence
               mode="wait"
