@@ -1,36 +1,36 @@
-import Layout from '../components/layouts/main'
-import Fonts from '../components/fonts'
+// pages/_app.js
 import { AnimatePresence } from 'framer-motion'
 import Chakra from '../components/chakra'
+import Layout from '../components/layouts/main'
 import { ApolloProvider } from '@apollo/client'
-import { getApolloClient } from '../lib/wordpress';
+import { getApolloClient } from '../lib/wordpress'
+import { cinzel, roboto } from '../lib/fonts'
+import '../styles/globals.css'
 
 if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual'
 }
 
 function Website({ Component, pageProps, router }) {
-  const client = getApolloClient();
+  const client = getApolloClient()
 
   return (
     <Chakra cookies={pageProps.cookies}>
       <ApolloProvider client={client}>
-        {' '}
-        {/* Wrap with ApolloProvider and pass client */}
-        <Fonts />
-        <Layout router={router}>
-          <AnimatePresence
-            mode="wait"
-            initial={true}
-            onExitComplete={() => {
-              if (typeof window !== 'undefined') {
-                window.scrollTo({ top: 0 })
-              }
-            }}
-          >
-            <Component {...pageProps} key={router.route} />
-          </AnimatePresence>
-        </Layout>
+        {/* wrapper div is optional now, for global CSS */}
+        <div className={`${cinzel.variable} ${roboto.variable}`}>
+          <Layout router={router}>
+            <AnimatePresence
+              mode="wait"
+              initial={true}
+              onExitComplete={() => {
+                if (typeof window !== 'undefined') window.scrollTo({ top: 0 })
+              }}
+            >
+              <Component {...pageProps} key={router.route} />
+            </AnimatePresence>
+          </Layout>
+        </div>
       </ApolloProvider>
     </Chakra>
   )
