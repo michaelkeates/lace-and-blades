@@ -60,7 +60,7 @@ const allMenuItems = [
   {
     label: 'Support Agencies Information',
     icon: <LuBook size={18} />,
-    path: '/contact',
+    path: '/get-information-agencies',
     type: 'icon'
   },
   {
@@ -73,12 +73,6 @@ const allMenuItems = [
     label: 'Speaking & Testimony',
     icon: <LuPersonStanding size={18} />,
     path: '/support',
-    type: 'icon'
-  },
-  {
-    label: 'Get Information',
-    icon: <LuClipboard size={18} />,
-    path: '/get-information-agencies',
     type: 'icon'
   },
   {
@@ -242,55 +236,55 @@ const Navbar = () => {
             <ThemeToggleButton />
           </Box>
           {/* Mobile Menu */}
-<Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
-  <Menu isLazy>
-    <MenuButton
-      as={IconButton}
-      icon={<HamburgerIcon />}
-      variant="outline"
-      aria-label="Options"
-      _focus={{ boxShadow: 'none' }}
-    />
-<MenuList
-  bg={menuBg}
-  css={{ backdropFilter: 'blur(10px)' }}
-  maxW="400px"
-  w="fit-content"
->
-  <Box
-    display="grid"
-    gridTemplateColumns="repeat(2, 1fr)"
-    gap={2}
-    p={2}
-    justifyItems="center"
-  >
-    {allMenuItems.map(item => (
-      <MenuItem
-        key={item.label}
-        as={NextLink}
-        href={item.path}
-        onClick={onClose}
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        justifyContent="center"
-        p={2}
-        borderRadius="md"
-        bg="transparent"
-        _hover={{ bg: 'whiteAlpha.200' }}
-        _focus={{ bg: 'whiteAlpha.200' }} 
-        _active={{ bg: 'whiteAlpha.200' }}
-      >
-        {item.icon && <Box mb={1}>{item.icon}</Box>}
-        <Box fontSize="xs" textAlign="center">
-          {item.label}
-        </Box>
-      </MenuItem>
-    ))}
-  </Box>
-</MenuList>
-  </Menu>
-</Box>
+          <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
+            <Menu isLazy>
+              <MenuButton
+                as={IconButton}
+                icon={<HamburgerIcon />}
+                variant="outline"
+                aria-label="Options"
+                _focus={{ boxShadow: 'none' }}
+              />
+              <MenuList
+                bg={menuBg}
+                css={{ backdropFilter: 'blur(10px)' }}
+                maxW="400px"
+                w="fit-content"
+              >
+                <Box
+                  display="grid"
+                  gridTemplateColumns="repeat(2, 1fr)"
+                  gap={2}
+                  p={2}
+                  justifyItems="center"
+                >
+                  {allMenuItems.map(item => (
+                    <MenuItem
+                      key={item.label}
+                      as={NextLink}
+                      href={item.path}
+                      onClick={onClose}
+                      display="flex"
+                      flexDirection="column"
+                      alignItems="center"
+                      justifyContent="center"
+                      p={2}
+                      borderRadius="md"
+                      bg="transparent"
+                      _hover={{ bg: 'whiteAlpha.200' }}
+                      _focus={{ bg: 'whiteAlpha.200' }}
+                      _active={{ bg: 'whiteAlpha.200' }}
+                    >
+                      {item.icon && <Box mb={1}>{item.icon}</Box>}
+                      <Box fontSize="xs" textAlign="center">
+                        {item.label}
+                      </Box>
+                    </MenuItem>
+                  ))}
+                </Box>
+              </MenuList>
+            </Menu>
+          </Box>
         </Flex>
       </Container>
     </Box>
