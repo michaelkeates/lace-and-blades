@@ -34,51 +34,25 @@ import LinkedinButton from './buttons/linkedin-button'
 import LinktrButton from './buttons/linktr-button'
 import WordpressButton from './buttons/wordpress-button'
 
-// Horizontal menu icons (clickable)
-const horizontalMenuItems = [
-  {
-    label: "Georgia's Law",
-    value: 'georgias-law',
-    icon: <LuCastle size={18} />,
-    path: '/georgias-law'
-  },
-  {
-    label: 'Support & Helplines',
-    icon: <LuPhone size={18} />,
-    path: '/support-helplines'
-  },
-  { label: 'Blog', icon: <LuBook size={18} />, path: '/posts' },
-  { label: 'Contact', icon: <LuBook size={18} />, path: '/contact' },
-  {
-    label: 'Get Information',
-    icon: <LuClipboard size={18} />,
-    path: '/get-information-agencies'
-  },
-  {
-    label: 'Shop - Buy the Book',
-    icon: <LuShoppingBag size={18} />,
-    path: '/get-information-agencies'
-  },
-  {
-    label: "Questions we don't want to answer",
-    icon: <LuBook size={18} />,
-    path: '/questions-we-dont-want-to-answer'
-  },
-  { label: 'Media & Press', icon: <LuBook size={18} />, path: '/posts' }
-]
-
-// Standard menu links
-const menuItems = [
-  { label: 'The Book - How Lace & Blades Became a Book', path: '/about' },
-  { label: 'Support Agencies Information', path: '/resources' },
-  { label: 'Giving Back - Donations & Fundraisers', path: '/support' },
-  { label: 'Law, Justice & Advocacy', path: '/support' },
-  { label: 'Speaking & Testimony', path: '/support' },
-  { label: 'Media & Press', path: '/posts' }
+// Single source of truth for all menu items
+const allMenuItems = [
+  { label: "Georgia's Law", icon: <LuCastle size={18} />, path: '/georgias-law', type: 'icon' },
+  { label: 'Support & Helplines', icon: <LuPhone size={18} />, path: '/support-helplines', type: 'icon' },
+  { label: 'Blog', icon: <LuBook size={18} />, path: '/posts', type: 'icon' },
+  { label: 'Contact', icon: <LuBook size={18} />, path: '/contact', type: 'icon' },
+  { label: 'Support Agencies Information', path: '/resources', type: 'text' },
+  { label: 'Giving Back - Donations & Fundraisers', path: '/support', type: 'text' },
+  { label: 'Law, Justice & Advocacy', path: '/support', type: 'text' },
+  { label: 'Speaking & Testimony', path: '/support', type: 'text' },
+  { label: 'Get Information', icon: <LuClipboard size={18} />, path: '/get-information-agencies', type: 'icon' },
+  { label: 'Shop - Buy the Book', icon: <LuShoppingBag size={18} />, path: '/get-information-agencies', type: 'icon' },
+  { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer', type: 'icon' },
+  { label: 'Media & Press', icon: <LuBook size={18} />, path: '/posts', type: 'icon' },
+  { label: 'The Book - How Lace & Blades Became a Book', icon: <LuBook size={18} />, path: '/posts', type: 'icon' }
 ]
 
 const Navbar = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure() // ✅ inside component
+  const { isOpen, onOpen, onClose } = useDisclosure()
   const menuBg = useColorModeValue(
     'rgba(206,158,224,0.95)',
     'rgba(36,31,39,0.95)'
@@ -112,11 +86,7 @@ const Navbar = () => {
         </Flex>
 
         {/* Desktop Menu */}
-        <Stack
-          direction="row"
-          display={{ base: 'none', md: 'flex' }}
-          align="center"
-        >
+        <Stack direction="row" display={{ base: 'none', md: 'flex' }} align="center">
           <Menu isOpen={isOpen} onClose={onClose}>
             <MenuButton
               as={Button}
@@ -127,73 +97,51 @@ const Navbar = () => {
               Menu
             </MenuButton>
             <MenuList bg={menuBg} style={{ backdropFilter: 'blur(10px)' }}>
-              {/* Horizontal clickable icons */}
+              {/* Icon Grid */}
               <Flex mb={2} px={2} flexWrap="wrap" justify="space-around">
-                {horizontalMenuItems.map((item, index) => (
-                  <NextLink
-                    key={item.value}
-                    href={item.path ?? '#'}
-                    passHref
-                    legacyBehavior
-                  >
-                    <Flex
-                      as={Link}
-                      direction="column"
-                      align="center"
-                      cursor="pointer"
-                      _hover={{ bg: 'whiteAlpha.200' }}
-                      p={2}
-                      borderRadius="md"
-                      onClick={onClose}
-                      flex="1 0 25%" // Each item takes 25% of row → 4 per row
-                    >
-                      {item.icon}
-                      <Box fontSize="xs" mt={1}>
-                        {item.label}
-                      </Box>
-                    </Flex>
-                  </NextLink>
-                ))}
+                {allMenuItems
+                  .filter(item => item.type === 'icon')
+                  .map(item => (
+                    <NextLink key={item.label} href={item.path} passHref legacyBehavior>
+                      <Flex
+                        as={Link}
+                        direction="column"
+                        align="center"
+                        cursor="pointer"
+                        _hover={{ bg: 'whiteAlpha.200' }}
+                        p={2}
+                        borderRadius="md"
+                        onClick={onClose}
+                        flex="1 0 25%"
+                      >
+                        {item.icon}
+                        <Box fontSize="xs" mt={1}>{item.label}</Box>
+                      </Flex>
+                    </NextLink>
+                  ))}
               </Flex>
 
-              {/* Standard menu links */}
-              {menuItems.map(item => (
-                <NextLink
-                  key={item.label}
-                  href={item.path}
-                  passHref
-                  legacyBehavior
-                >
-                  <MenuItem
-                    as={Link}
-                    _hover={{ bg: menuHover }}
-                    onClick={onClose}
-                  >
-                    {item.label}
-                  </MenuItem>
-                </NextLink>
-              ))}
+              {/* Text Links */}
+              {allMenuItems
+                .filter(item => item.type === 'text')
+                .map(item => (
+                  <NextLink key={item.label} href={item.path} passHref legacyBehavior>
+                    <MenuItem as={Link} _hover={{ bg: menuHover }} onClick={onClose}>
+                      {item.label}
+                    </MenuItem>
+                  </NextLink>
+                ))}
             </MenuList>
           </Menu>
         </Stack>
 
         {/* Right side social & theme buttons */}
         <Flex flex={1} ml={1} justify="flex-end" align="center">
-          <Box ml={2}>
-            <TikTokButton />
-          </Box>
-          <Box ml={2}>
-            <LinkedinButton />
-          </Box>
-          <Box ml={2}>
-            <LinktrButton />
-          </Box>
-          <Box ml={2}>
-            <WordpressButton />
-          </Box>
-          <Box ml={2}>
-            <ThemeToggleButton />
-          </Box>
+          <Box ml={2}><TikTokButton /></Box>
+          <Box ml={2}><LinkedinButton /></Box>
+          <Box ml={2}><LinktrButton /></Box>
+          <Box ml={2}><WordpressButton /></Box>
+          <Box ml={2}><ThemeToggleButton /></Box>
 
           {/* Mobile Menu */}
           <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
@@ -206,17 +154,13 @@ const Navbar = () => {
                 _focus={{ boxShadow: 'none' }}
               />
               <MenuList
-                bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                bg={menuBg}
                 css={{ backdropFilter: 'blur(10px)' }}
               >
-                {menuItems.map(item => (
-                  <NextLink
-                    key={item.label}
-                    href={item.path}
-                    passHref
-                    legacyBehavior
-                  >
+                {allMenuItems.map(item => (
+                  <NextLink key={item.label} href={item.path} passHref legacyBehavior>
                     <MenuItem as={Link} _hover={{ bg: menuHover }}>
+                      {item.icon && <Box mr={2}>{item.icon}</Box>}
                       {item.label}
                     </MenuItem>
                   </NextLink>
