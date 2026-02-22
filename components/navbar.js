@@ -66,19 +66,19 @@ const allMenuItems = [
   {
     label: 'Giving Back - Donations & Fundraisers',
     icon: <LuFileHeart size={18} />,
-    path: '/support',
+    path: '/giving-back-donations-fundraisers',
     type: 'icon'
   },
   {
     label: 'Speaking & Testimony',
     icon: <LuPersonStanding size={18} />,
-    path: '/support',
+    path: '/speaking-testimony',
     type: 'icon'
   },
   {
     label: 'Shop - Buy the Book',
     icon: <LuShoppingBag size={18} />,
-    path: '/get-information-agencies',
+    path: '/shop',
     type: 'icon'
   },
   {
@@ -90,13 +90,13 @@ const allMenuItems = [
   {
     label: 'Media & Press',
     icon: <LuBook size={18} />,
-    path: '/posts',
+    path: '/media-press',
     type: 'icon'
   },
   {
     label: 'The Book - How Lace & Blades Became a Book',
     icon: <LuBook size={18} />,
-    path: '/posts',
+    path: '/how-lace-and-blades-became-a-book',
     type: 'icon'
   }
 ]
