@@ -69,7 +69,7 @@ const Home = () => (
         paddingBottom={12}
       >
         <Image
-          src="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/IMG-20260222-WA0005.jpg"
+          src="/images/IMG-20260222-WA0005.jpg"
           alt="Lace and Blades book cover"
           width={300}
           height={450}
