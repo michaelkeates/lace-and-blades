@@ -68,17 +68,16 @@ const Home = () => (
         paddingTop={4}
         paddingBottom={12}
       >
-        <NextLink href="/support-helplines" passHref>
-          <Button
-            as="a"
-            bg={useColorModeValue('yellow.300', 'yellow.300')}
-            color="black"
-            opacity={0.7}
-          >
-            If you feel unsafe. Please click here.
-          </Button>
-        </NextLink>
+        <Image
+          src="https://laceandblades.michaelkeates.co.uk/wp-content/uploads/2026/02/IMG-20260222-WA0005.jpg"
+          alt="Lace and Blades book cover"
+          width={300}
+          height={450}
+          objectFit="cover"
+          borderRadius="md"
+        /> 
       </Box>
+      <Divider />
     </Container>
   </Layout>
 )
