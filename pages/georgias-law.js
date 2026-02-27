@@ -27,7 +27,7 @@ export default function GeorgiasLaw({ page }) {
   const renderedPDFs = new Set()
   const isMobile = useBreakpointValue({ base: true, md: false })
 
-  // Map PDF URLs to WordPress-generated thumbnails
+  // Map PDF URLs to WordPress-generated thumbnails (if available)
   const pdfThumbnails = {}
   page.mediaItems?.nodes.forEach(item => {
     if (item.mediaItemUrl) {
@@ -69,6 +69,7 @@ export default function GeorgiasLaw({ page }) {
               />
             )}
 
+            {/* Mobile: show WordPress thumbnail if available, fallback to PDF icon */}
             {isMobile && (
               <img
                 src={
@@ -101,12 +102,11 @@ export default function GeorgiasLaw({ page }) {
           {page.title}
         </Heading>
 
-        {/* Show featured image on mobile if available */}
-        {isMobile && page.featuredImage && (
+        {page.featuredImage && (
           <img
             src={page.featuredImage.node.sourceUrl}
             alt={page.title}
-            style={{ width: '100%', borderRadius: '8px', marginBottom: '1rem' }}
+            style={{ width: '100%', marginBottom: '1rem' }}
           />
         )}
 
