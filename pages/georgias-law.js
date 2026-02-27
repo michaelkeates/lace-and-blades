@@ -6,12 +6,9 @@ import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
 import parse from 'html-react-parser'
 
-// ---------------------------
 // Wrap images in anchors
-// ---------------------------
 export function parseHtml(html) {
   if (typeof window === 'undefined') return html
-
   const doc = new DOMParser().parseFromString(html, 'text/html')
   doc.querySelectorAll('img').forEach(img => {
     const src = img.src
@@ -21,29 +18,37 @@ export function parseHtml(html) {
     img.parentNode.replaceChild(wrapper, img)
     wrapper.appendChild(img)
   })
-
   return doc.body.innerHTML
 }
 
-// ---------------------------
-// Main Page Component
-// ---------------------------
 export default function GeorgiasLaw({ page }) {
   if (!page) return <p>Page not found</p>
 
   const renderedPDFs = new Set()
-
-  // Detect if on mobile (Chakra hook)
   const isMobile = useBreakpointValue({ base: true, md: false })
 
-  // Parse page content and embed PDFs
+  // Map PDF URLs to WordPress-generated thumbnails
+  const pdfThumbnails = {}
+  page.mediaItems?.nodes.forEach(item => {
+    if (item.mediaItemUrl) {
+      const thumb = item.mediaDetails?.sizes?.find(
+        s => s.name === 'thumbnail'
+      )?.sourceUrl
+      if (thumb) pdfThumbnails[item.mediaItemUrl] = thumb
+    }
+  })
+
   const contentWithEmbeddedPDFs = parse(parseHtml(page.content), {
     replace: node => {
-      if (node.name === 'a' && node.attribs?.href?.toLowerCase().endsWith('.pdf')) {
+      if (
+        node.name === 'a' &&
+        node.attribs?.href?.toLowerCase().endsWith('.pdf')
+      ) {
         const href = node.attribs.href
         if (renderedPDFs.has(href)) return <></>
         renderedPDFs.add(href)
         const title = node.children?.[0]?.data || 'PDF Document'
+        const thumbnail = pdfThumbnails[href]
 
         return (
           <Box
@@ -53,7 +58,7 @@ export default function GeorgiasLaw({ page }) {
             overflow="hidden"
             borderRadius="md"
           >
-            {/* Desktop: use embed for thumbnail preview */}
+            {/* Desktop: embed PDF */}
             {!isMobile && (
               <embed
                 src={href}
@@ -64,10 +69,13 @@ export default function GeorgiasLaw({ page }) {
               />
             )}
 
-            {/* Mobile: fallback to thumbnail image */}
             {isMobile && (
               <img
-                src={page.featuredImage?.node?.sourceUrl || '/pdf-placeholder.png'}
+                src={
+                  thumbnail ??
+                  page.featuredImage?.node?.sourceUrl ??
+                  '/pdf-placeholder.png'
+                }
                 alt={title}
                 style={{ width: '100%', borderRadius: '8px' }}
               />
@@ -83,7 +91,7 @@ export default function GeorgiasLaw({ page }) {
         )
       }
       return undefined
-    },
+    }
   })
 
   return (
@@ -93,11 +101,12 @@ export default function GeorgiasLaw({ page }) {
           {page.title}
         </Heading>
 
-        {page.featuredImage && (
+        {/* Show featured image on mobile if available */}
+        {isMobile && page.featuredImage && (
           <img
             src={page.featuredImage.node.sourceUrl}
             alt={page.title}
-            style={{ width: '100%', marginBottom: '1rem' }}
+            style={{ width: '100%', borderRadius: '8px', marginBottom: '1rem' }}
           />
         )}
 
@@ -107,19 +116,17 @@ export default function GeorgiasLaw({ page }) {
   )
 }
 
-// ---------------------------
-// Server-side Fetch
-// ---------------------------
+// Server-side fetch
 export async function getServerSideProps() {
   const apolloClient = getApolloClient()
   const { data } = await apolloClient.query({
     query: GET_GEORGIAS_LAW,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'network-only'
   })
 
   return {
     props: {
-      page: data?.pageBy ?? null,
-    },
+      page: data?.pageBy ?? null
+    }
   }
 }
