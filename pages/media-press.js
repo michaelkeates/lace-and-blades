@@ -10,45 +10,61 @@ import parse from 'html-react-parser'
 export default function MediaPress({ page }) {
   if (!page) return <p>Page not found</p>
 
-    const renderedPDFs = new Set()
-  
-    const contentWithEmbeddedPDFs = parse(page.content, {
-      replace: node => {
-        // Only process <a> tags with PDF links
-        if (
-          node.name === 'a' &&
-          node.attribs?.href &&
-          node.attribs.href.toLowerCase().endsWith('.pdf')
-        ) {
-          const href = node.attribs.href
-  
-          // Deduplicate: skip if already rendered
-          if (renderedPDFs.has(href)) return <></>
-          renderedPDFs.add(href)
-  
-          const title = node.children?.[0]?.data || 'PDF Document'
-  
-          return (
-            <Box marginY={4} key={href}>
-              <embed
+  const renderedPDFs = new Set()
+
+  const contentWithEmbeddedPDFs = parse(page.content, {
+    replace: node => {
+      // Only process <a> tags with PDF links
+      if (
+        node.name === 'a' &&
+        node.attribs?.href &&
+        node.attribs.href.toLowerCase().endsWith('.pdf')
+      ) {
+        const href = node.attribs.href
+
+        // Deduplicate: skip if already rendered
+        if (renderedPDFs.has(href)) return <></>
+        renderedPDFs.add(href)
+
+        const title = node.children?.[0]?.data || 'PDF Document'
+
+        return (
+          <Box
+            marginY={4}
+            key={href}
+            overflowX="auto" // allow horizontal scroll if needed
+          >
+            <Box
+              position="relative"
+              paddingTop="56.25%" // 16:9 aspect ratio
+              width="100%"
+            >
+              <iframe
                 src={href}
-                type="application/pdf"
-                width="100%"
-                height="600px"
+                style={{
+                  position: 'absolute',
+                  top: 0,
+                  left: 0,
+                  width: '100%',
+                  height: '100%',
+                  border: 'none'
+                }}
+                title={title}
               />
-              <Box marginTop={2}>
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  Read More
-                </a>
-              </Box>
             </Box>
-          )
-        }
-  
-        // Explicitly remove original <a> node content
-        return undefined
-      },
-    })
+            <Box marginTop={2}>
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                {title}
+              </a>
+            </Box>
+          </Box>
+        )
+      }
+
+      // Explicitly remove original <a> node content
+      return undefined
+    }
+  })
 
   return (
     <layout>
