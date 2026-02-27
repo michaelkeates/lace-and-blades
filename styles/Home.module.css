@@ -100,11 +100,11 @@
 
 
 .main h2 {
-  font-size: 32px;
-  padding-top: 2rem;
-  border-bottom: 1px solid rgba(184, 184, 184, 0.16);
-  padding-bottom: 1px;
-  margin-bottom: 15px;
+  font-size: 28px;
+  /* padding-top: 2rem; */
+  /* border-bottom: 1px solid rgba(184, 184, 184, 0.16); */
+  /* padding-bottom: 1px; */
+  /* margin-bottom: 15px; */
 }
 
 .main h3,
