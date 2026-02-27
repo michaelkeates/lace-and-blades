@@ -25,7 +25,7 @@ const Home = () => (
       <Box display="flex" justifyContent="center" mt={10} mb={4}>
         <Box>
           <ProfileImage
-            src="/images/Lace-Blades-small.jpeg"
+            src="/images/IMG-20260220-WA0017_2.jpg"
             alt="Profile image"
             width="120"
             height="120"

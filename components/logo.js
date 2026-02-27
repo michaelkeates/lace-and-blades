@@ -24,7 +24,7 @@ const LogoBox = styled.span`
 
 
 const Logo = () => {
-  const logo = `/images/Lace-Blades-small.jpeg`
+  const logo = `/images/IMG-20260220-WA0017_2.jpg`
 
   return (
     <Link href="/" scroll={false}>
