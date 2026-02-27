@@ -273,7 +273,6 @@ export default function Post({ post }) {
 
   return (
     <Layout>
-      <Container>
         <Section delay={0.1}>
           <main className={styles.main}>
             <Box
@@ -424,7 +423,6 @@ export default function Post({ post }) {
             </Button>
           </NextLink>
         </Section>
-      </Container>
     </Layout>
   )
 }
