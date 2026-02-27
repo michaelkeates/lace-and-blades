@@ -52,7 +52,7 @@ const allMenuItems = [
   },
   { label: 'Blog', icon: <LuBook size={18} />, path: '/posts', type: 'icon' },
   {
-    label: 'Contact',
+    label: 'Contact & Fight for Change',
     icon: <LuBook size={18} />,
     path: '/contact',
     type: 'icon'
