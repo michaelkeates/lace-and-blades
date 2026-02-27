@@ -88,7 +88,7 @@ const allMenuItems = [
     type: 'icon'
   },
   {
-    label: 'Media & Press',
+    label: 'Campaign News & Action',
     icon: <LuBook size={18} />,
     path: '/media-press',
     type: 'icon'

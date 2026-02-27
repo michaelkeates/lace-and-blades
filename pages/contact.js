@@ -10,7 +10,7 @@ export default function Contact({ page }) {
 
   return (
     <layout>
-      <Container>
+      <Container mt="-100px">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>

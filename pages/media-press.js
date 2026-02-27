@@ -1,12 +1,54 @@
 // pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
-import { Container } from '@chakra-ui/react'
+import { Container, Box } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import { GET_MEDIA_PRESS_BOOK } from '../lib/queries'
 
+import parse from 'html-react-parser'
+
 export default function MediaPress({ page }) {
   if (!page) return <p>Page not found</p>
+
+    const renderedPDFs = new Set()
+  
+    const contentWithEmbeddedPDFs = parse(page.content, {
+      replace: node => {
+        // Only process <a> tags with PDF links
+        if (
+          node.name === 'a' &&
+          node.attribs?.href &&
+          node.attribs.href.toLowerCase().endsWith('.pdf')
+        ) {
+          const href = node.attribs.href
+  
+          // Deduplicate: skip if already rendered
+          if (renderedPDFs.has(href)) return <></>
+          renderedPDFs.add(href)
+  
+          const title = node.children?.[0]?.data || 'PDF Document'
+  
+          return (
+            <Box marginY={4} key={href}>
+              <embed
+                src={href}
+                type="application/pdf"
+                width="100%"
+                height="600px"
+              />
+              <Box marginTop={2}>
+                <a href={href} target="_blank" rel="noopener noreferrer">
+                  Read More
+                </a>
+              </Box>
+            </Box>
+          )
+        }
+  
+        // Explicitly remove original <a> node content
+        return undefined
+      },
+    })
 
   return (
     <layout>
@@ -18,7 +60,7 @@ export default function MediaPress({ page }) {
               {page.featuredImage && (
                 <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
               )}
-              <div dangerouslySetInnerHTML={{ __html: page.content }} />
+              <div>{contentWithEmbeddedPDFs}</div>
             </div>
           </main>
         </Section>
