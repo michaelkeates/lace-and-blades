@@ -1,6 +1,6 @@
 // pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
-import { Container, Box, Heading } from '@chakra-ui/react'
+import { Container, Box, Heading, useBreakpointValue } from '@chakra-ui/react'
 import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
@@ -33,7 +33,10 @@ export default function GeorgiasLaw({ page }) {
 
   const renderedPDFs = new Set()
 
-  // Parse page content and embed PDFs with thumbnails
+  // Detect if on mobile (Chakra hook)
+  const isMobile = useBreakpointValue({ base: true, md: false })
+
+  // Parse page content and embed PDFs
   const contentWithEmbeddedPDFs = parse(parseHtml(page.content), {
     replace: node => {
       if (node.name === 'a' && node.attribs?.href?.toLowerCase().endsWith('.pdf')) {
@@ -42,7 +45,6 @@ export default function GeorgiasLaw({ page }) {
         renderedPDFs.add(href)
         const title = node.children?.[0]?.data || 'PDF Document'
 
-        // ✅ Return JSX properly inside replace
         return (
           <Box
             key={href}
@@ -51,13 +53,27 @@ export default function GeorgiasLaw({ page }) {
             overflow="hidden"
             borderRadius="md"
           >
-            <embed
-              src={href}
-              type="application/pdf"
-              width="100%"
-              height="500px"
-              style={{ maxWidth: '100%' }}
-            />
+            {/* Desktop: use embed for thumbnail preview */}
+            {!isMobile && (
+              <embed
+                src={href}
+                type="application/pdf"
+                width="100%"
+                height="500px"
+                style={{ maxWidth: '100%' }}
+              />
+            )}
+
+            {/* Mobile: fallback to thumbnail image */}
+            {isMobile && (
+              <img
+                src={page.featuredImage?.node?.sourceUrl || '/pdf-placeholder.png'}
+                alt={title}
+                style={{ width: '100%', borderRadius: '8px' }}
+              />
+            )}
+
+            {/* PDF link */}
             <Box mt={2}>
               <a href={href} target="_blank" rel="noopener noreferrer">
                 {title}
@@ -66,7 +82,6 @@ export default function GeorgiasLaw({ page }) {
           </Box>
         )
       }
-
       return undefined
     },
   })
