@@ -29,29 +29,13 @@ export default function GeorgiasLaw({ page }) {
         const title = node.children?.[0]?.data || 'PDF Document'
 
         return (
-          <Box
-            marginY={4}
-            key={href}
-            overflowX="auto" // allow horizontal scroll if needed
-          >
-            <Box
-              position="relative"
-              paddingTop="56.25%" // 16:9 aspect ratio
+          <Box marginY={4} key={href}>
+            <embed
+              src={href}
+              type="application/pdf"
               width="100%"
-            >
-              <iframe
-                src={href}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: '100%',
-                  height: '100%',
-                  border: 'none'
-                }}
-                title={title}
-              />
-            </Box>
+              height="600px"
+            />
             <Box marginTop={2}>
               <a href={href} target="_blank" rel="noopener noreferrer">
                 {title}
@@ -63,7 +47,7 @@ export default function GeorgiasLaw({ page }) {
 
       // Explicitly remove original <a> node content
       return undefined
-    }
+    },
   })
 
   return (
@@ -89,12 +73,12 @@ export async function getServerSideProps() {
   const apolloClient = getApolloClient()
   const { data } = await apolloClient.query({
     query: GET_SUPPORT_AGENCIES_INFORMATION,
-    fetchPolicy: 'network-only'
+    fetchPolicy: 'network-only',
   })
 
   return {
     props: {
-      page: data?.pageBy ?? null
-    }
+      page: data?.pageBy ?? null,
+    },
   }
 }
