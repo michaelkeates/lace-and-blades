@@ -1,14 +1,10 @@
 /* donations.css */
 /* Target this specific paragraph class */
-p.wp-elements-af985eb4ad17a2a339b70ba8a7ce5c23 {
-  color: #000;
-  line-height: 1.6;
-  padding: 10px;
-  border-radius: 8px;
-
-  /* margin override */
-  margin-top: 10px !important;
-  margin-bottom: 20px !important;
+.wp-elements-0e8d4100491a07d1d83c22690276d4da {
+  color: #000;                /* black text */
+  border-radius: 12px;        /* curved corners */
+  padding: 12px 16px;         /* optional: add some spacing inside */
+  line-height: 1.6;           /* optional: improve readability */
 }
 
 .givewp-campaign-donations-block__donations {
