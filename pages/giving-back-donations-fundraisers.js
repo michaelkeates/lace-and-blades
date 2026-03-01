@@ -10,19 +10,18 @@ export default function GivingBackDonationsFundraisers({ page }) {
 
   return (
     <layout>
-      <Container mt="-100px">
         <Section delay={0.1}>
           <main className={styles.main}>
+            <h1>{page.title}</h1>
+
+            {page.featuredImage && (
+              <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
+            )}
             <div>
-              <h1>{page.title}</h1>
-              {page.featuredImage && (
-                <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
-              )}
               <div dangerouslySetInnerHTML={{ __html: page.content }} />
             </div>
           </main>
         </Section>
-      </Container>
     </layout>
   )
 }

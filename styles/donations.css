@@ -1,0 +1,102 @@
+/* donations.css */
+/* Target this specific paragraph class */
+p.wp-elements-af985eb4ad17a2a339b70ba8a7ce5c23 {
+  color: #000;
+  line-height: 1.6;
+  padding: 10px;
+  border-radius: 8px;
+
+  /* margin override */
+  margin-top: 10px !important;
+  margin-bottom: 20px !important;
+}
+
+.givewp-campaign-donations-block__donations {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+  margin-bottom: 20px;
+}
+
+.givewp-campaign-donations-block__donation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  border-radius: 8px;
+
+  /* Chakra-style translucent background */
+  background-color: rgba(255, 255, 255, 0.1); /* light mode fallback */
+  border-radius: 12px;
+  padding: 20px;
+
+  /* Frosted glass effect */
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+}
+
+.givewp-campaign-donations-block__donation-icon img {
+  border-radius: 50%;
+  width: 60px;
+  height: 80px; /* match width */
+  object-fit: cover; /* ensures the image fills the circle without distortion */
+}
+
+.givewp-campaign-donations-block__donation-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.givewp-campaign-donations-block__donation-info strong {
+  font-weight: bold;
+}
+
+.givewp-campaign-donations-block__donation-date {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+/* Columns container stays flex row and aligns content */
+.wp-container-core-columns-is-layout-28f84493.wp-block-columns.is-layout-flex {
+  display: flex !important;
+  flex-direction: row !important;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: flex-start; /* top-align (default) */
+}
+
+/* Optional: if you want images to align along their bottom edges instead */
+.wp-container-core-columns-is-layout-28f84493.wp-block-columns.is-layout-flex.align-bottom {
+  align-items: flex-end;
+}
+
+/* Keep each column sizing as before */
+.wp-block-column.is-layout-flow {
+  flex: 1 1 48%; /* roughly half width each */
+  box-sizing: border-box;
+  min-width: 300px; /* wrap on very small screens */
+}
+
+/* Center the image inside the column */
+.wp-container-core-columns-is-layout-28f84493.wp-block-column img {
+  width: 256px; /* fixed size */
+  height: auto; /* maintain aspect ratio */
+  display: block;
+  border-radius: 12px;
+  margin-left: auto; /* center horizontally */
+  margin-right: auto; /* center horizontally */
+}
+
+/* Keep captions centered */
+.wp-container-core-columns-is-layout-28f84493 .wp-element-caption {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.givewp-campaign-donors-block__donor-ribbon img {
+  filter: invert(82%) sepia(100%) saturate(750%) hue-rotate(1deg)
+    brightness(1.2);
+}
