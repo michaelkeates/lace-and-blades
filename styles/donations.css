@@ -129,7 +129,7 @@
 
 /* Card styling */
 .give-donor.give-card {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.2) !important;   /* force override */
   border-radius: 12px;
   padding: 16px;
   box-shadow: 0px 4px 12px rgba(0,0,0,0.05);
@@ -145,11 +145,20 @@
   height: 75px;
   border-radius: 50%;
   overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 12px;
-  background-color: #f0f0f0; /* fallback bg if no image */
+  display: flex !important;          /* force flex */
+  align-items: center !important;    /* vertical center */
+  justify-content: center !important;/* horizontal center */
+  margin: 0 auto 12px auto;          /* center in card + spacing below */
+  background-color: lightgrey;        /* fallback bg if no image */
+}
+
+/* Avatar image */
+.give-donor-container__image img {
+  display: block;       /* remove inline display issues */
+  max-width: 100%;      /* scale down if too big */
+  max-height: 100%;     /* scale down if too tall */
+  object-fit: cover;    /* fill container nicely */
+  margin: 0 auto;       /* center inside flex container */
 }
 
 /* Avatar image */
