@@ -20,19 +20,6 @@ export default function GivingBackDonationsFundraisers({ page }) {
             <div>
               <div dangerouslySetInnerHTML={{ __html: page.content }} />
             </div>
-            <div style={{ marginTop: '2rem' }}>
-  <iframe
-    title="Giving Back Donations & Fundraisers"
-    src="https://laceandblades.michaelkeates.co.uk/giving-back-donations-fundraisers/"
-    style={{
-      width: '100%',
-      height: '900px', // adjust height for content
-      border: 0,
-      overflow: 'hidden',
-    }}
-    scrolling="no"
-  />
-</div>
           </main>
         </Section>
     </layout>
