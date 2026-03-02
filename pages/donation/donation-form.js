@@ -94,6 +94,7 @@ export default function DonationForm({ page }) {
                   'whiteAlpha.500',
                   'whiteAlpha.200'
                 )}
+                bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
               >
                 <Heading size="md" mb={4}>
                   Select Donation Amount
@@ -130,6 +131,7 @@ export default function DonationForm({ page }) {
                   'whiteAlpha.500',
                   'whiteAlpha.200'
                 )}
+                bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
               >
                 <Heading size="md" mb={4}>
                   Your Details
