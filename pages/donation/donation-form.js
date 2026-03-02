@@ -86,7 +86,15 @@ export default function DonationForm({ page }) {
               </Box>
 
               {/* Donation Amount */}
-              <Box p={6} borderWidth="1px" borderRadius="xl" borderColor={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}>
+              <Box
+                p={6}
+                borderWidth="1px"
+                borderRadius="xl"
+                borderColor={useColorModeValue(
+                  'whiteAlpha.500',
+                  'whiteAlpha.200'
+                )}
+              >
                 <Heading size="md" mb={4}>
                   Select Donation Amount
                 </Heading>
@@ -114,7 +122,15 @@ export default function DonationForm({ page }) {
               </Box>
 
               {/* Personal Details */}
-              <Box p={6} borderWidth="1px" borderRadius="xl" borderColor={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}>
+              <Box
+                p={6}
+                borderWidth="1px"
+                borderRadius="xl"
+                borderColor={useColorModeValue(
+                  'whiteAlpha.500',
+                  'whiteAlpha.200'
+                )}
+              >
                 <Heading size="md" mb={4}>
                   Your Details
                 </Heading>
@@ -126,6 +142,22 @@ export default function DonationForm({ page }) {
                       <Input
                         value={firstName}
                         onChange={e => setFirstName(e.target.value)}
+                        borderColor={useColorModeValue(
+                          'whiteAlpha.500',
+                          'whiteAlpha.200'
+                        )}
+                        _hover={{
+                          borderColor: useColorModeValue(
+                            'whiteAlpha.500',
+                            'whiteAlpha.200'
+                          )
+                        }}
+                        _focus={{
+                          borderColor: useColorModeValue(
+                            'whiteAlpha.500',
+                            'whiteAlpha.200'
+                          )
+                        }}
                       />
                     </FormControl>
 
@@ -134,6 +166,22 @@ export default function DonationForm({ page }) {
                       <Input
                         value={lastName}
                         onChange={e => setLastName(e.target.value)}
+                        borderColor={useColorModeValue(
+                          'whiteAlpha.500',
+                          'whiteAlpha.200'
+                        )}
+                        _hover={{
+                          borderColor: useColorModeValue(
+                            'whiteAlpha.500',
+                            'whiteAlpha.200'
+                          )
+                        }}
+                        _focus={{
+                          borderColor: useColorModeValue(
+                            'whiteAlpha.500',
+                            'whiteAlpha.200'
+                          )
+                        }}
                       />
                     </FormControl>
                   </HStack>
@@ -144,6 +192,22 @@ export default function DonationForm({ page }) {
                       type="email"
                       value={email}
                       onChange={e => setEmail(e.target.value)}
+                      borderColor={useColorModeValue(
+                        'whiteAlpha.500',
+                        'whiteAlpha.200'
+                      )}
+                      _hover={{
+                        borderColor: useColorModeValue(
+                          'whiteAlpha.500',
+                          'whiteAlpha.200'
+                        )
+                      }}
+                      _focus={{
+                        borderColor: useColorModeValue(
+                          'whiteAlpha.500',
+                          'whiteAlpha.200'
+                        )
+                      }}
                     />
                   </FormControl>
 
