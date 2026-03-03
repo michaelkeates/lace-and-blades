@@ -42,55 +42,62 @@ export default function DonationPaymentDetails() {
       .then(paypal => {
         setPaypalLoaded(true)
 
-        paypal.Buttons({
-          createOrder: (data, actions) => {
-            return actions.order.create({
-              purchase_units: [
-                {
-                  amount: { value: donation.amount.toString() }
+        paypal
+          .Buttons({
+            createOrder: (data, actions) => {
+              return actions.order.create({
+                purchase_units: [
+                  {
+                    amount: { value: donation.amount.toString() }
+                  }
+                ],
+                payer: {
+                  email_address: donation.email,
+                  name: donation.anonymous
+                    ? { given_name: 'Anonymous' }
+                    : {
+                        given_name: donation.firstName,
+                        surname: donation.lastName
+                      },
+                  address: {
+                    country_code: 'GB' // Default to UK
+                  }
+                },
+                application_context: {
+                  shipping_preference: 'NO_SHIPPING', // Optional
+                  locale: 'en-GB' // UK locale
                 }
-              ],
-              payer: {
-                email_address: donation.email,
-                name: donation.anonymous
-                  ? { given_name: 'Anonymous' }
-                  : { given_name: donation.firstName, surname: donation.lastName },
-                address: {
-                  country_code: 'GB' // Default to UK
-                }
-              },
-              application_context: {
-                shipping_preference: 'NO_SHIPPING', // Optional
-                locale: 'en-GB' // UK locale
-              }
-            })
-          },
-          onApprove: async (data, actions) => {
-            const details = await actions.order.capture()
-            console.log('Payment Success:', details)
+              })
+            },
+            onApprove: async (data, actions) => {
+              const details = await actions.order.capture()
+              console.log('Payment Success:', details)
 
-            toast({
-              title: 'Payment successful!',
-              description: `Thank you, ${donation.anonymous ? 'Anonymous' : donation.firstName}!`,
-              status: 'success',
-              duration: 5000,
-              isClosable: true
-            })
+              toast({
+                title: 'Payment successful!',
+                description: `Thank you, ${
+                  donation.anonymous ? 'Anonymous' : donation.firstName
+                }!`,
+                status: 'success',
+                duration: 5000,
+                isClosable: true
+              })
 
-            localStorage.removeItem('donationData')
-            router.push('/')
-          },
-          onError: err => {
-            console.error(err)
-            toast({
-              title: 'Payment error',
-              description: 'Something went wrong with PayPal.',
-              status: 'error',
-              duration: 5000,
-              isClosable: true
-            })
-          }
-        }).render(paypalRef.current)
+              localStorage.removeItem('donationData')
+              router.push('/')
+            },
+            onError: err => {
+              console.error(err)
+              toast({
+                title: 'Payment error',
+                description: 'Something went wrong with PayPal.',
+                status: 'error',
+                duration: 5000,
+                isClosable: true
+              })
+            }
+          })
+          .render(paypalRef.current)
 
         // Curve the PayPal iframe corners
         const interval = setInterval(() => {
@@ -127,17 +134,34 @@ export default function DonationPaymentDetails() {
           bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
         >
           <VStack align="start" spacing={3}>
-            <Text><strong>Amount:</strong> £{donation.amount}</Text>
+            <Text>
+              <strong>Amount:</strong> £{donation.amount}
+            </Text>
             <Text>
               <strong>Name:</strong>{' '}
               {donation.anonymous
                 ? 'Anonymous'
                 : `${donation.firstName} ${donation.lastName}`}
             </Text>
-            <Text><strong>Email:</strong> {donation.email}</Text>
+            <Text>
+              <strong>Email:</strong> {donation.email}
+            </Text>
           </VStack>
         </Box>
-
+        <Box
+          p={4}
+          borderRadius="md"
+          bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+          maxH="200px"
+          overflowY="auto"
+        >
+          <Heading size="sm" mb={2}>
+            Terms & Conditions
+          </Heading>
+          <Text fontSize="sm">
+            Help here please hun!
+          </Text>
+        </Box>
         <Checkbox
           isChecked={agreed}
           onChange={e => setAgreed(e.target.checked)}

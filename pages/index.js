@@ -45,7 +45,7 @@ const Home = () => (
       </Heading>
 
       <Box>
-        <Bubble text="I wrote Lace and Blades to give voice to experiences that are often hidden behind closed doors - where love, fear, and control become dangerously intertwined." />
+        <Bubble text="I wrote Lace & Blades to give voice to experiences that are often hidden behind closed doors - where love, fear, and control become dangerously intertwined." />
       </Box>
 
       <Divider />
