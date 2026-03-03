@@ -24,10 +24,11 @@ import styles from '../../styles/Home.module.css'
 import Section from '../../components/section'
 import { GET_DONATION_FORM_PAGE } from '../../lib/queries'
 import NextLink from 'next/link'
+import { useRouter } from 'next/router'
 
 export default function DonationForm({ page }) {
   const toast = useToast()
-
+  const router = useRouter()
   const [amount, setAmount] = useState('10')
   const [customAmount, setCustomAmount] = useState('')
   const [firstName, setFirstName] = useState('')
@@ -39,37 +40,33 @@ export default function DonationForm({ page }) {
 
   const finalAmount = amount === 'custom' ? customAmount : amount
 
-  const handleSubmit = async () => {
-    if (!finalAmount || !email) {
-      toast({
-        title: 'Please complete required fields',
-        status: 'error',
-        duration: 3000,
-        isClosable: true
-      })
-      return
-    }
-
-    console.log({
-      amount: finalAmount,
-      firstName,
-      lastName,
-      email,
-      anonymous
-    })
-
+const handleSubmit = async () => {
+  if (!finalAmount || !email) {
     toast({
-      title: 'Ready for PayPal integration',
-      description: `£${finalAmount} donation prepared`,
-      status: 'success',
+      title: 'Please complete required fields',
+      status: 'error',
       duration: 3000,
       isClosable: true
     })
+    return
   }
+
+  const donationData = {
+    amount: finalAmount,
+    firstName,
+    lastName,
+    email,
+    anonymous
+  }
+
+  localStorage.setItem('donationData', JSON.stringify(donationData))
+
+  router.push('/donation/donation-payment-details')
+}
 
   return (
     <layout>
-      <Container maxW="800px" mt="-100px">
+      <Container>
         <Section delay={0.1}>
           <main className={styles.main}>
             <VStack spacing={8} align="stretch">
@@ -88,12 +85,7 @@ export default function DonationForm({ page }) {
               {/* Donation Amount */}
               <Box
                 p={6}
-                borderWidth="1px"
                 borderRadius="xl"
-                borderColor={useColorModeValue(
-                  'whiteAlpha.500',
-                  'whiteAlpha.200'
-                )}
                 bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
               >
                 <Heading size="md" mb={4}>
@@ -125,12 +117,7 @@ export default function DonationForm({ page }) {
               {/* Personal Details */}
               <Box
                 p={6}
-                borderWidth="1px"
                 borderRadius="xl"
-                borderColor={useColorModeValue(
-                  'whiteAlpha.500',
-                  'whiteAlpha.200'
-                )}
                 bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
               >
                 <Heading size="md" mb={4}>
@@ -216,6 +203,10 @@ export default function DonationForm({ page }) {
                   <Checkbox
                     isChecked={anonymous}
                     onChange={e => setAnonymous(e.target.checked)}
+                    borderColor={useColorModeValue(
+                      'whiteAlpha.500',
+                      'whiteAlpha.200'
+                    )}
                   >
                     I would like my donation to be anonymous
                   </Checkbox>
@@ -223,17 +214,12 @@ export default function DonationForm({ page }) {
               </Box>
 
               {/* Submit */}
-              <Button
-                size="lg"
-                boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
-                fontSize="14px"
-                marginTop="10px"
-                marginBottom="10px"
-                bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-                onClick={handleSubmit}
-              >
-                Donate £{finalAmount || '0'}
-              </Button>
+<Button
+  size="lg"
+  onClick={handleSubmit}
+>
+  Donate £{finalAmount || '0'}
+</Button>
             </VStack>
           </main>
         </Section>

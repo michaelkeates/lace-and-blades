@@ -55,7 +55,7 @@ export default function Home({ posts }) {
   })
 
   const [currentPage, setCurrentPage] = useState(1)
-  const postsPerPage = 6
+  const postsPerPage = 8
 
   const startIndex = (currentPage - 1) * postsPerPage
   const endIndex = startIndex + postsPerPage
@@ -89,10 +89,9 @@ export default function Home({ posts }) {
 
   return (
     <Layout title="Portfolio">
-      <Container>
         <Bubble text="View my latest posts!" emoji="❤️" />
         <Section delay={0.2}>
-          <SimpleGrid columns={[2, 2, 2]} gap={4}>
+          <SimpleGrid columns={[2, 2, 4]} gap={4}>
             {postsToDisplay.map(post => (
               <Section delay={0.1} key={post.slug}>
                 <Box
@@ -202,7 +201,6 @@ export default function Home({ posts }) {
             Next
           </Button>
         </SimpleGrid>
-      </Container>
     </Layout>
   )
 }

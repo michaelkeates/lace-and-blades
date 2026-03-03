@@ -23,7 +23,7 @@ export default function GivingBackDonationsFundraisers({ page }) {
           </div>
         </main>
       </Section>
-      <NextLink href="/donation/donation-form" passHref>
+      <NextLink href="/donation/donation-amount-form" passHref>
         <Button as="a" color="black" opacity={0.7}>
           Temp Donation Page Link
         </Button>
