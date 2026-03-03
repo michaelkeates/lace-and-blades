@@ -12,7 +12,7 @@ import {
   useColorModeValue
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
-import { loadPaypalScript } from '../utils/loadPaypal'
+import { loadPaypalScript } from '../../utils/loadPaypal.js'
 
 export default function DonationPaymentDetails() {
   const [donation, setDonation] = useState(null)
