@@ -1,20 +1,19 @@
 // pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
-import { Container, Box } from '@chakra-ui/react'
+import { Container, Box, SimpleGrid, Link } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import { GET_SUPPORT_AGENCIES_INFORMATION } from '../lib/queries'
-
 import parse from 'html-react-parser'
 
 export default function GeorgiasLaw({ page }) {
   if (!page) return <p>Page not found</p>
 
   const renderedPDFs = new Set()
+  const pdfs = []
 
-  const contentWithEmbeddedPDFs = parse(page.content, {
+  const contentWithoutPDFLinks = parse(page.content, {
     replace: node => {
-      // Only process <a> tags with PDF links
       if (
         node.name === 'a' &&
         node.attribs?.href &&
@@ -22,45 +21,61 @@ export default function GeorgiasLaw({ page }) {
       ) {
         const href = node.attribs.href
 
-        // Deduplicate: skip if already rendered
         if (renderedPDFs.has(href)) return <></>
         renderedPDFs.add(href)
 
         const title = node.children?.[0]?.data || 'PDF Document'
 
-        return (
-          <Box marginY={4} key={href}>
-            <embed
-              src={href}
-              type="application/pdf"
-              width="100%"
-              height="600px"
-            />
-            <Box marginTop={2}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {title}
-              </a>
-            </Box>
-          </Box>
-        )
+        pdfs.push({ href, title })
+
+        return <></> // remove original link
       }
 
-      // Explicitly remove original <a> node content
       return undefined
     },
   })
 
   return (
     <layout>
-      <Container mt="-100px">
+      <Container maxW="6xl">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
               <h1>{page.title}</h1>
+
               {page.featuredImage && (
-                <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
+                <img
+                  src={page.featuredImage.node.sourceUrl}
+                  alt={page.title}
+                />
               )}
-              <div>{contentWithEmbeddedPDFs}</div>
+
+              {/* Render non-PDF content */}
+              <Box mb={10}>{contentWithoutPDFLinks}</Box>
+
+              {/* Render PDFs in 4-column grid */}
+              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
+                {pdfs.map(pdf => (
+                  <Box key={pdf.href}>
+                    <embed
+                      src={pdf.href}
+                      type="application/pdf"
+                      width="100%"
+                      height="400px"
+                    />
+                    <Box mt={2}>
+                      <Link
+                        href={pdf.href}
+                        isExternal
+                        color="teal.500"
+                        fontWeight="medium"
+                      >
+                        {pdf.title}
+                      </Link>
+                    </Box>
+                  </Box>
+                ))}
+              </SimpleGrid>
             </div>
           </main>
         </Section>
