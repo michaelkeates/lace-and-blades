@@ -36,7 +36,6 @@ import LinkedinButton from './buttons/linkedin-button'
 import LinktrButton from './buttons/linktr-button'
 import WordpressButton from './buttons/wordpress-button'
 
-// Single source of truth for all menu items
 const allMenuItems = [
   {
     label: "Georgia's Law",

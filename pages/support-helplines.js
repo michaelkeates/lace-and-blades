@@ -10,7 +10,6 @@ export default function SupportAndHelplines({ page }) {
 
   return (
     <layout>
-      <Container mt="-100px">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
@@ -22,7 +21,6 @@ export default function SupportAndHelplines({ page }) {
             </div>
           </main>
         </Section>
-      </Container>
     </layout>
   )
 }

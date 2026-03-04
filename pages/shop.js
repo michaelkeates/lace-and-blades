@@ -10,7 +10,6 @@ export default function Shop({ page }) {
 
   return (
     <layout>
-      <Container mt="-100px">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
@@ -22,7 +21,6 @@ export default function Shop({ page }) {
             </div>
           </main>
         </Section>
-      </Container>
     </layout>
   )
 }

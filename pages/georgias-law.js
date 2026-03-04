@@ -97,7 +97,6 @@ export default function GeorgiasLaw({ page }) {
 
   return (
     <Section delay={0.1}>
-      <Container maxW="container.md" mt="4rem">
         <Heading as="h1" mb={4}>
           {page.title}
         </Heading>
@@ -111,7 +110,6 @@ export default function GeorgiasLaw({ page }) {
         )}
 
         <Box>{contentWithEmbeddedPDFs}</Box>
-      </Container>
     </Section>
   )
 }

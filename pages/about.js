@@ -24,7 +24,6 @@ const Home = () => {
 
   return (
     <Layout>
-      <Container>
         <Box display={{ md: 'flex' }} paddingTop="25px">
           <Box flexGrow={1}>
             <Heading
@@ -89,7 +88,6 @@ const Home = () => {
           </Section>
         </SimpleGrid>
         <Divider />
-      </Container>
     </Layout>
   )
 }

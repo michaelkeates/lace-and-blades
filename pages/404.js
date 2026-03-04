@@ -12,7 +12,6 @@ import Bubble from '../components/emoji/default'
 
 const NotFound = () => {
   return (
-    <Container>
       <Section delay={0.1}>
         <Bubble
         text="Sorry!"
@@ -48,7 +47,6 @@ const NotFound = () => {
         </NextLink>
       </Box>
       </Section>
-    </Container>
   )
 }
 
