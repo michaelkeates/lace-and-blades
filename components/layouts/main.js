@@ -32,7 +32,7 @@ const Main = ({ children, router }) => {
     justifyContent="center"
     pt="150px"                // pushes content down without moving NavBar
   >
-    <Container maxW="999px">
+    <Container maxW="1200px">
       {children}
       <Footer />
     </Container>

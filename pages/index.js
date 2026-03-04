@@ -21,7 +21,7 @@ const ProfileImage = chakra(Image, {
 
 const Home = () => (
   <Layout>
-
+    <Container maxWidth="2xl">
       <Box display="flex" justifyContent="center" mt={10} mb={4}>
         <Box>
           <ProfileImage
@@ -78,7 +78,7 @@ const Home = () => (
         /> 
       </Box>
       <Divider />
-
+    </Container>
   </Layout>
 )
 
