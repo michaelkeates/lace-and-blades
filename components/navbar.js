@@ -98,6 +98,12 @@ const allMenuItems = [
     icon: <LuBook size={18} />,
     path: '/how-lace-and-blades-became-a-book',
     type: 'icon'
+  },
+  {
+    label: 'Terms, Transparency, Privacy & Affiliations',
+    icon: <LuBook size={18} />,
+    path: '/terms-transparency-privacy-affiliations',
+    type: 'icon'
   }
 ]
 
