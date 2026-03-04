@@ -11,10 +11,11 @@ const Footer = () => {
       paddingBottom="35px"
       fontFamily="footer"
     >
-      &copy; {new Date().getFullYear()} Michael Keates. All Rights Reserved.
+      &copy; {new Date().getFullYear()} Michael Keates.
       <NextLink href="/terms-transparency-privacy-affiliations" passHref>
-        <Link ml={1}>Terms & Conditions</Link>
+        <Link ml={1}>Terms & Conditions.</Link>
       </NextLink>
+      {" "}All Rights Reserved.
     </Box>
   )
 }
