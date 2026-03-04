@@ -1,4 +1,5 @@
-import { Box } from '@chakra-ui/react'
+import NextLink from 'next/link'
+import { Box, Link } from '@chakra-ui/react'
 
 const Footer = () => {
   return (
@@ -11,6 +12,9 @@ const Footer = () => {
       fontFamily="footer"
     >
       &copy; {new Date().getFullYear()} Michael Keates. All Rights Reserved.
+      <NextLink href="/terms-transparency-privacy-affiliations" passHref>
+        <Link ml={1}>Terms & Conditions</Link>
+      </NextLink>
     </Box>
   )
 }

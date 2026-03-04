@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react'
 import { useRouter } from 'next/router'
 import { loadPaypalScript } from '../../utils/loadPaypal.js'
+import NextLink from 'next/link'
 
 export default function DonationPaymentDetails() {
   const [donation, setDonation] = useState(null)
@@ -158,9 +159,17 @@ export default function DonationPaymentDetails() {
           <Heading size="sm" mb={2}>
             Terms & Conditions
           </Heading>
-          <Text fontSize="sm">
-            Help here please hun!
-          </Text>
+          <Button
+            as="a"
+            href="/terms-transparency-privacy-affiliations"
+            target="_blank"
+            rel="noopener noreferrer"
+            bg={useColorModeValue('yellow.300', 'yellow.300')}
+            color="black"
+            opacity={0.7}
+          >
+            Read More
+          </Button>
         </Box>
         <Checkbox
           isChecked={agreed}
