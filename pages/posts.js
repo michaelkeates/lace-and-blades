@@ -89,6 +89,7 @@ export default function Home({ posts }) {
 
   return (
     <Layout title="Portfolio">
+      <Container maxWidth="4xl">
         <Bubble text="View my latest posts!" emoji="❤️" />
         <Section delay={0.2}>
           <SimpleGrid columns={[2, 2, 4]} gap={4}>
@@ -201,6 +202,7 @@ export default function Home({ posts }) {
             Next
           </Button>
         </SimpleGrid>
+      </Container>
     </Layout>
   )
 }

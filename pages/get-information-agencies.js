@@ -37,7 +37,7 @@ export default function GeorgiasLaw({ page }) {
 
   return (
     <layout>
-      <Container maxW="6xl">
+      <Container maxW="4xl">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>

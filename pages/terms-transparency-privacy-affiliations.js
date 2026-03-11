@@ -10,6 +10,7 @@ export default function Terms({ page }) {
 
   return (
     <layout>
+      <Container maxWidth="4xl">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
@@ -21,6 +22,7 @@ export default function Terms({ page }) {
             </div>
           </main>
         </Section>
+      </Container>
     </layout>
   )
 }

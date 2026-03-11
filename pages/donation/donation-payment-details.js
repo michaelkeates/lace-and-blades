@@ -22,10 +22,9 @@ export default function DonationPaymentDetails() {
   const toast = useToast()
   const router = useRouter()
   const paypalRef = useRef()
-
   const PAYPAL_CLIENT_ID = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
 
-  // Load donation data from localStorage
+  // 1️⃣ Load donation data from localStorage
   useEffect(() => {
     const stored = localStorage.getItem('donationData')
     if (!stored) {
@@ -33,96 +32,98 @@ export default function DonationPaymentDetails() {
       return
     }
     setDonation(JSON.parse(stored))
-  }, [])
+  }, [router])
 
-  // Load PayPal script and render buttons
+  // 2️⃣ Load PayPal SDK and render buttons
   useEffect(() => {
-    if (!donation || !agreed) return
+    if (!donation || !agreed || !paypalRef.current) return
+
+    // Clear previous buttons
+    paypalRef.current.innerHTML = ''
 
     loadPaypalScript(PAYPAL_CLIENT_ID)
       .then(paypal => {
         setPaypalLoaded(true)
 
-        paypal
-          .Buttons({
-            createOrder: (data, actions) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    amount: { value: donation.amount.toString() }
-                  }
-                ],
-                payer: {
-                  email_address: donation.email,
-                  name: donation.anonymous
-                    ? { given_name: 'Anonymous' }
-                    : {
-                        given_name: donation.firstName,
-                        surname: donation.lastName
-                      },
-                  address: {
-                    country_code: 'GB' // Default to UK
-                  }
-                },
-                application_context: {
-                  shipping_preference: 'NO_SHIPPING', // Optional
-                  locale: 'en-GB' // UK locale
+        paypal.Buttons({
+          style: { shape: 'rect', color: 'gold', layout: 'vertical', label: 'paypal' },
+          createOrder: (data, actions) => {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: { value: parseFloat(donation.amount).toFixed(2) },
+                  description: `Donation by ${donation.anonymous ? 'Anonymous' : donation.firstName}`
                 }
-              })
-            },
-            onApprove: async (data, actions) => {
+              ],
+              payer: {
+                email_address: donation.email,
+                name: donation.anonymous
+                  ? { given_name: 'Anonymous' }
+                  : { given_name: donation.firstName, surname: donation.lastName }
+              },
+              application_context: {
+                shipping_preference: 'NO_SHIPPING',
+                locale: 'en-GB'
+              }
+            })
+          },
+          onApprove: async (data, actions) => {
+            try {
               const details = await actions.order.capture()
-              console.log('Payment Success:', details)
-
               toast({
                 title: 'Payment successful!',
-                description: `Thank you, ${
-                  donation.anonymous ? 'Anonymous' : donation.firstName
-                }!`,
+                description: `Thank you, ${donation.anonymous ? 'Anonymous' : donation.firstName}!`,
                 status: 'success',
                 duration: 5000,
                 isClosable: true
               })
-
               localStorage.removeItem('donationData')
               router.push('/')
-            },
-            onError: err => {
-              console.error(err)
+            } catch (err) {
+              console.error('Capture error:', err)
               toast({
                 title: 'Payment error',
-                description: 'Something went wrong with PayPal.',
+                description: 'The payment was authorized but not captured. Contact support.',
                 status: 'error',
-                duration: 5000,
-                isClosable: true
+                duration: 5000
               })
             }
-          })
-          .render(paypalRef.current)
-
-        // Curve the PayPal iframe corners
-        const interval = setInterval(() => {
-          const iframe = paypalRef.current.querySelector('iframe')
-          if (iframe) {
-            iframe.style.borderRadius = '16px' // Chakra xl rounding
-            iframe.style.overflow = 'hidden'
-            clearInterval(interval)
+          },
+          onError: err => {
+            console.error('PayPal Buttons error:', err)
+            toast({
+              title: 'PayPal error',
+              description: 'The transaction was declined or an error occurred.',
+              status: 'error',
+              duration: 5000
+            })
           }
-        }, 100)
+        }).render(paypalRef.current)
       })
       .catch(err => {
         console.error('PayPal SDK failed to load', err)
         toast({
-          title: 'PayPal error',
-          description: 'Unable to load PayPal buttons',
-          status: 'error',
-          duration: 5000,
-          isClosable: true
+          title: 'System error',
+          description: 'Unable to load PayPal buttons.',
+          status: 'error'
         })
       })
-  }, [donation, agreed])
+
+    return () => {
+      if (paypalRef.current) paypalRef.current.innerHTML = ''
+    }
+  }, [donation, agreed, PAYPAL_CLIENT_ID, router, toast])
 
   if (!donation) return null
+
+  // Optional manual fallback link for safety
+  const paypalLink = donation
+    ? `https://www.sandbox.paypal.com/donate/?hosted_button_id=LFJU7QWQ57DR8` +
+      `&amount=${encodeURIComponent(donation.amount)}` +
+      `&first_name=${donation.anonymous ? '' : encodeURIComponent(donation.firstName)}` +
+      `&last_name=${donation.anonymous ? '' : encodeURIComponent(donation.lastName)}` +
+      `&email=${encodeURIComponent(donation.email)}`
+    : ''
 
   return (
     <Container maxW="800px" py={12}>
@@ -135,68 +136,38 @@ export default function DonationPaymentDetails() {
           bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
         >
           <VStack align="start" spacing={3}>
-            <Text>
-              <strong>Amount:</strong> £{donation.amount}
-            </Text>
-            <Text>
-              <strong>Name:</strong>{' '}
-              {donation.anonymous
-                ? 'Anonymous'
-                : `${donation.firstName} ${donation.lastName}`}
-            </Text>
-            <Text>
-              <strong>Email:</strong> {donation.email}
-            </Text>
+            <Text><strong>Amount:</strong> £{parseFloat(donation.amount).toFixed(2)}</Text>
+            <Text><strong>Name:</strong> {donation.anonymous ? 'Anonymous' : `${donation.firstName} ${donation.lastName}`}</Text>
+            <Text><strong>Email:</strong> {donation.email}</Text>
           </VStack>
         </Box>
-        <Box
-          p={4}
-          borderRadius="md"
-          bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-          maxH="200px"
-          overflowY="auto"
-        >
-          <Heading size="sm" mb={2}>
-            Terms & Conditions
-          </Heading>
-          <Button
-            as="a"
-            href="/terms-transparency-privacy-affiliations"
-            target="_blank"
-            rel="noopener noreferrer"
-            bg={useColorModeValue('yellow.300', 'yellow.300')}
-            color="black"
-            opacity={0.7}
-          >
-            Read More
-          </Button>
-        </Box>
-        <Checkbox
-          isChecked={agreed}
-          onChange={e => setAgreed(e.target.checked)}
-        >
+
+        <Checkbox isChecked={agreed} onChange={e => setAgreed(e.target.checked)}>
           I agree to the Terms & Conditions and Privacy Policy
         </Checkbox>
 
-        {!paypalLoaded && (
-          <Button
-            size="lg"
-            isDisabled={!agreed}
-            onClick={() => toast({ title: 'Agree to terms first' })}
-            bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-          >
-            Proceed to Payment
-          </Button>
-        )}
-
-        {/* PayPal container */}
+        {/* PayPal SDK buttons */}
         <Box
           ref={paypalRef}
           p={2}
           borderRadius="xl"
           bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-          overflow="hidden"
+          minH={agreed ? '150px' : '0px'}
         />
+
+        {/* Manual fallback button */}
+        {paypalLink && (
+          <NextLink href={paypalLink} passHref>
+            <Button
+              as="a"
+              bg={useColorModeValue('yellow.300', 'yellow.300')}
+              color="black"
+              opacity={0.8}
+            >
+              Donate via PayPal (fallback)
+            </Button>
+          </NextLink>
+        )}
       </VStack>
     </Container>
   )

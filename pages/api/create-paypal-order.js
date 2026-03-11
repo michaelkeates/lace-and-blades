@@ -1,12 +1,18 @@
 export default async function handler(req, res) {
+  // 1. Safety check for request method
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
   const { amount } = req.body
 
+  // 2. Validate amount before calling PayPal
+  if (!amount || isNaN(amount)) {
+    return res.status(400).json({ error: 'Invalid amount provided' })
+  }
+
   try {
-    // 1️⃣ Get Access Token
+    // 3. Get Access Token from PayPal
     const auth = Buffer.from(
       `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_SECRET}`
     ).toString('base64')
@@ -24,9 +30,15 @@ export default async function handler(req, res) {
     )
 
     const tokenData = await tokenRes.json()
+
+    if (!tokenData.access_token) {
+      console.error('Failed to obtain PayPal access token:', tokenData)
+      return res.status(500).json({ error: 'Authentication with PayPal failed' })
+    }
+
     const accessToken = tokenData.access_token
 
-    // 2️⃣ Create Order
+    // 4. Create the Order
     const orderRes = await fetch(
       `${process.env.PAYPAL_BASE_URL}/v2/checkout/orders`,
       {
@@ -41,13 +53,15 @@ export default async function handler(req, res) {
             {
               amount: {
                 currency_code: 'GBP',
-                value: amount
+                value: amount // Should be a string like "10.00"
               }
             }
           ],
           application_context: {
-            return_url: `${req.headers.origin}/donation-success`,
-            cancel_url: `${req.headers.origin}/donation-cancel`
+            // CRITICAL: This bypasses physical shipping regulations for donations
+            shipping_preference: 'NO_SHIPPING', 
+            user_action: 'PAY_NOW',
+            brand_name: 'Lace and Blades'
           }
         })
       }
@@ -55,15 +69,23 @@ export default async function handler(req, res) {
 
     const orderData = await orderRes.json()
 
-    const approvalLink = orderData.links.find(
-      link => link.rel === 'approve'
-    )
+    // 5. Handle PayPal API errors
+    if (!orderRes.ok) {
+      console.error('PayPal Order Creation Error:', orderData)
+      return res.status(orderRes.status).json({
+        error: 'PayPal refused to create the order',
+        details: orderData
+      })
+    }
 
+    // 6. Return only the ID to the frontend
+    // The Frontend SDK expects just this ID to initiate the popup
     return res.status(200).json({
-      approvalUrl: approvalLink.href
+      id: orderData.id
     })
+
   } catch (error) {
-    console.error(error)
-    return res.status(500).json({ error: 'Something went wrong' })
+    console.error('Internal Server Error in PayPal API:', error)
+    return res.status(500).json({ error: 'Something went wrong on the server' })
   }
 }

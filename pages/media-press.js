@@ -52,17 +52,23 @@ export default function MediaPress({ page }) {
 
   return (
     <layout>
+      <Container maxWidth="4xl">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
               <h1>{page.title}</h1>
-              {page.featuredImage && (
-                <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
-              )}
+{page.featuredImage && (
+  <img
+    src={page.featuredImage.node.sourceUrl}
+    alt={page.title}
+    style={{ width: '100%', marginBottom: '1rem' }}
+  />
+)}
               <div>{contentWithEmbeddedPDFs}</div>
             </div>
           </main>
         </Section>
+        </Container>
     </layout>
   )
 }

@@ -51,6 +51,7 @@ export default function GeorgiasLaw({ page }) {
         const thumbnail = pdfThumbnails[href]
 
         return (
+          <Container maxWidth="2xl">
           <Box
             key={href}
             my={4}
@@ -78,7 +79,7 @@ export default function GeorgiasLaw({ page }) {
                   '/pdf-placeholder.png'
                 }
                 alt={title}
-                style={{ width: '100%', borderRadius: '8px' }}
+                style={{ width: '25%', borderRadius: '8px' }}
               />
             )}
 
@@ -89,6 +90,7 @@ export default function GeorgiasLaw({ page }) {
               </a>
             </Box>
           </Box>
+          </Container>
         )
       }
       return undefined
@@ -96,21 +98,23 @@ export default function GeorgiasLaw({ page }) {
   })
 
   return (
+    <Container maxWidth="4xl">
     <Section delay={0.1}>
-        <Heading as="h1" mb={4}>
-          {page.title}
-        </Heading>
+      <Heading as="h1" mb={4}>
+        {page.title}
+      </Heading>
 
-        {page.featuredImage && (
-          <img
-            src={page.featuredImage.node.sourceUrl}
-            alt={page.title}
-            style={{ width: '100%', marginBottom: '1rem' }}
-          />
-        )}
+      {page.featuredImage && (
+        <img
+          className={styles.featuredImage}
+          src={page.featuredImage.node.sourceUrl}
+          alt={page.title}
+        />
+      )}
 
-        <Box>{contentWithEmbeddedPDFs}</Box>
+      <Box>{contentWithEmbeddedPDFs}</Box>
     </Section>
+    </Container>
   )
 }
 

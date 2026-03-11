@@ -194,6 +194,7 @@ export default function Post({ post }) {
 
   return (
     <Layout>
+      <Container maxWidth="4xl">
       <Section delay={0.1}>
         <main className={styles.main}>
           <Box
@@ -270,6 +271,7 @@ export default function Post({ post }) {
           </NextLink>
         </main>
       </Section>
+      </Container>
     </Layout>
   )
 }

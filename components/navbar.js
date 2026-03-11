@@ -51,12 +51,6 @@ const allMenuItems = [
   },
   { label: 'Blog', icon: <LuBook size={18} />, path: '/posts', type: 'icon' },
   {
-    label: 'Contact & Fight for Change',
-    icon: <LuBook size={18} />,
-    path: '/contact',
-    type: 'icon'
-  },
-  {
     label: 'Support Agencies Information',
     icon: <LuBook size={18} />,
     path: '/get-information-agencies',
@@ -90,12 +84,6 @@ const allMenuItems = [
     label: 'Campaign News & Action',
     icon: <LuBook size={18} />,
     path: '/media-press',
-    type: 'icon'
-  },
-  {
-    label: 'The Book - How Lace & Blades Became a Book',
-    icon: <LuBook size={18} />,
-    path: '/how-lace-and-blades-became-a-book',
     type: 'icon'
   },
   {

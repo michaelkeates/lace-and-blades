@@ -11,6 +11,7 @@ export default function GivingBackDonationsFundraisers({ page }) {
 
   return (
     <layout>
+      <Container maxWidth="4xl">
       <Section delay={0.1}>
         <main className={styles.main}>
           <h1>{page.title}</h1>
@@ -23,11 +24,7 @@ export default function GivingBackDonationsFundraisers({ page }) {
           </div>
         </main>
       </Section>
-      <NextLink href="/donation/donation-amount-form" passHref>
-        <Button as="a" color="black" opacity={0.7}>
-          Temp Donation Page Link
-        </Button>
-      </NextLink>
+      </Container>
     </layout>
   )
 }
