@@ -25,7 +25,7 @@ const ProfileImage = chakra(Image, {
 const Home = () => {
   return (
     <Layout>
-      <Container maxWidth="2xl">
+      <Container maxW="4xl" mt="-7rem">
         <Box display={{ md: 'flex' }} paddingTop="25px">
           <Heading
             as="h1"

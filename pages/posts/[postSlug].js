@@ -25,6 +25,7 @@ import { getApolloClient } from '../../lib/wordpress'
 import { Title, Portfolio, Blog, WorkImage, Meta } from '../../components/work'
 import styles from '../../styles/Home.module.css'
 import AuthorBio from '../../components/post/author-bio'
+import { useBreakpointValue } from '@chakra-ui/react'
 
 import parse from 'html-react-parser'
 
@@ -104,48 +105,68 @@ export default function Post({ post }) {
   const [email, setEmail] = useState('')
   const [isCommentValid, setIsCommentValid] = useState(true)
 
+  const isMobile = useBreakpointValue({ base: true, md: false })
+
   const [createCommentMutation] = useCreateCommentMutation()
 
   /* ---------------------------
      PDF EMBEDDING LOGIC
   ---------------------------- */
 
-  const renderedPDFs = new Set()
+const renderedPDFs = new Set()
 
-  const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
-    replace: node => {
-      if (
-        node.name === 'a' &&
-        node.attribs?.href &&
-        node.attribs.href.toLowerCase().endsWith('.pdf')
-      ) {
-        const href = node.attribs.href
+const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
+  replace: node => {
+    if (
+      node.name === 'a' &&
+      node.attribs?.href &&
+      node.attribs.href.toLowerCase().endsWith('.pdf')
+    ) {
+      const href = node.attribs.href
 
-        if (renderedPDFs.has(href)) return <></>
-        renderedPDFs.add(href)
+      if (renderedPDFs.has(href)) return <></>
+      renderedPDFs.add(href)
 
-        const title = node.children?.[0]?.data || 'PDF Document'
+      const title = node.children?.[0]?.data || 'PDF Document'
 
-        return (
-          <Box marginY={4} key={href}>
+      return (
+        <Box my={4} width="100%" key={href}>
+          {/* Desktop PDF viewer */}
+          {!isMobile && (
             <iframe
               src={href}
               width="100%"
               height="600px"
               style={{ border: 'none' }}
             />
-            <Box marginTop={2}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {title}
-              </a>
-            </Box>
-          </Box>
-        )
-      }
+          )}
 
-      return undefined
+          {/* Mobile fallback */}
+          {isMobile && (
+            <Button
+              as="a"
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              width="100%"
+              colorScheme="blue"
+            >
+              Open PDF
+            </Button>
+          )}
+
+          <Box mt={2}>
+            <a href={href} target="_blank" rel="noopener noreferrer">
+              {title}
+            </a>
+          </Box>
+        </Box>
+      )
     }
-  })
+
+    return undefined
+  }
+})
 
   /* ---------------------------
      COMMENT SUBMIT

@@ -55,9 +55,13 @@ export default function Contact({ page }) {
           <main className={styles.main}>
             <div>
               <h1>{page.title}</h1>
-              {page.featuredImage && (
-                <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
-              )}
+            {page.featuredImage && (
+              <img
+                className={styles.featuredImage}
+                src={page.featuredImage.node.sourceUrl}
+                alt={page.title}
+              />
+            )}
               <div>{contentWithEmbeddedPDFs}</div>
             </div>
           </main>

@@ -52,44 +52,44 @@ export default function GeorgiasLaw({ page }) {
 
         return (
           <Container maxWidth="2xl">
-          <Box
-            key={href}
-            my={4}
-            width="100%"
-            overflow="hidden"
-            borderRadius="md"
-          >
-            {/* Desktop: embed PDF */}
-            {!isMobile && (
-              <embed
-                src={href}
-                type="application/pdf"
-                width="100%"
-                height="500px"
-                style={{ maxWidth: '100%' }}
-              />
-            )}
+            <Box
+              key={href}
+              my={4}
+              width="100%"
+              overflow="hidden"
+              borderRadius="md"
+            >
+              {/* Desktop: embed PDF */}
+              {!isMobile && (
+                <embed
+                  src={href}
+                  type="application/pdf"
+                  width="100%"
+                  height="500px"
+                  style={{ maxWidth: '100%' }}
+                />
+              )}
 
-            {/* Mobile: show WordPress thumbnail if available, fallback to PDF icon */}
-            {isMobile && (
-              <img
-                src={
-                  thumbnail ??
-                  page.featuredImage?.node?.sourceUrl ??
-                  '/pdf-placeholder.png'
-                }
-                alt={title}
-                style={{ width: '25%', borderRadius: '8px' }}
-              />
-            )}
+              {/* Mobile: show WordPress thumbnail if available, fallback to PDF icon */}
+              {isMobile && (
+                <img
+                  src={
+                    thumbnail ??
+                    page.featuredImage?.node?.sourceUrl ??
+                    '/pdf-placeholder.png'
+                  }
+                  alt={title}
+                  style={{ width: '25%', borderRadius: '8px' }}
+                />
+              )}
 
-            {/* PDF link */}
-            <Box mt={2}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {title}
-              </a>
+              {/* PDF link */}
+              <Box mt={2}>
+                <a href={href} target="_blank" rel="noopener noreferrer">
+                  {title}
+                </a>
+              </Box>
             </Box>
-          </Box>
           </Container>
         )
       }
@@ -98,22 +98,22 @@ export default function GeorgiasLaw({ page }) {
   })
 
   return (
-    <Container maxWidth="4xl">
-    <Section delay={0.1}>
-      <Heading as="h1" mb={4}>
-        {page.title}
-      </Heading>
+    <Container maxW="4xl" mt="-2rem">
+      <Section delay={0.1}>
+        <Heading as="h1" mb={4}>
+          {page.title}
+        </Heading>
 
-      {page.featuredImage && (
-        <img
-          className={styles.featuredImage}
-          src={page.featuredImage.node.sourceUrl}
-          alt={page.title}
-        />
-      )}
+        {page.featuredImage && (
+          <img
+            className={styles.featuredImage}
+            src={page.featuredImage.node.sourceUrl}
+            alt={page.title}
+          />
+        )}
 
-      <Box>{contentWithEmbeddedPDFs}</Box>
-    </Section>
+        <Box>{contentWithEmbeddedPDFs}</Box>
+      </Section>
     </Container>
   )
 }

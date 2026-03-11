@@ -10,65 +10,65 @@ import parse from 'html-react-parser'
 export default function MediaPress({ page }) {
   if (!page) return <p>Page not found</p>
 
-    const renderedPDFs = new Set()
-  
-    const contentWithEmbeddedPDFs = parse(page.content, {
-      replace: node => {
-        // Only process <a> tags with PDF links
-        if (
-          node.name === 'a' &&
-          node.attribs?.href &&
-          node.attribs.href.toLowerCase().endsWith('.pdf')
-        ) {
-          const href = node.attribs.href
-  
-          // Deduplicate: skip if already rendered
-          if (renderedPDFs.has(href)) return <></>
-          renderedPDFs.add(href)
-  
-          const title = node.children?.[0]?.data || 'PDF Document'
-  
-          return (
-            <Box marginY={4} key={href}>
-              <embed
-                src={href}
-                type="application/pdf"
-                width="100%"
-                height="600px"
-              />
-              <Box marginTop={2}>
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  Read More
-                </a>
-              </Box>
+  const renderedPDFs = new Set()
+
+  const contentWithEmbeddedPDFs = parse(page.content, {
+    replace: node => {
+      // Only process <a> tags with PDF links
+      if (
+        node.name === 'a' &&
+        node.attribs?.href &&
+        node.attribs.href.toLowerCase().endsWith('.pdf')
+      ) {
+        const href = node.attribs.href
+
+        // Deduplicate: skip if already rendered
+        if (renderedPDFs.has(href)) return <></>
+        renderedPDFs.add(href)
+
+        const title = node.children?.[0]?.data || 'PDF Document'
+
+        return (
+          <Box marginY={4} key={href}>
+            <embed
+              src={href}
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            />
+            <Box marginTop={2}>
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                Read More
+              </a>
             </Box>
-          )
-        }
-  
-        // Explicitly remove original <a> node content
-        return undefined
-      },
-    })
+          </Box>
+        )
+      }
+
+      // Explicitly remove original <a> node content
+      return undefined
+    }
+  })
 
   return (
     <layout>
-      <Container maxWidth="4xl">
+      <Container maxW="4xl" mt="-7rem">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
               <h1>{page.title}</h1>
-{page.featuredImage && (
-  <img
-    src={page.featuredImage.node.sourceUrl}
-    alt={page.title}
-    style={{ width: '100%', marginBottom: '1rem' }}
-  />
-)}
+            {page.featuredImage && (
+              <img
+                className={styles.featuredImage}
+                src={page.featuredImage.node.sourceUrl}
+                alt={page.title}
+              />
+            )}
               <div>{contentWithEmbeddedPDFs}</div>
             </div>
           </main>
         </Section>
-        </Container>
+      </Container>
     </layout>
   )
 }

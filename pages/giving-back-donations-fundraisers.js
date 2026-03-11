@@ -11,19 +11,23 @@ export default function GivingBackDonationsFundraisers({ page }) {
 
   return (
     <layout>
-      <Container maxWidth="4xl">
-      <Section delay={0.1}>
-        <main className={styles.main}>
-          <h1>{page.title}</h1>
+      <Container maxW="4xl" mt="-7rem">
+        <Section delay={0.1}>
+          <main className={styles.main}>
+            <h1>{page.title}</h1>
 
-          {page.featuredImage && (
-            <img src={page.featuredImage.node.sourceUrl} alt={page.title} />
-          )}
-          <div>
-            <div dangerouslySetInnerHTML={{ __html: page.content }} />
-          </div>
-        </main>
-      </Section>
+            {page.featuredImage && (
+              <img
+                className={styles.featuredImage}
+                src={page.featuredImage.node.sourceUrl}
+                alt={page.title}
+              />
+            )}
+            <div>
+              <div dangerouslySetInnerHTML={{ __html: page.content }} />
+            </div>
+          </main>
+        </Section>
       </Container>
     </layout>
   )
