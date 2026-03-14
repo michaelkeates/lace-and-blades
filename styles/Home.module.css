@@ -291,3 +291,42 @@
   margin: 0 auto 1rem auto;
   display: block;
 }
+
+.wp-content-wrapper .wp-block-columns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.wp-content-wrapper .wp-block-column {
+  flex: 1 1 48%;
+  min-width: 200px;
+  box-sizing: border-box;
+}
+
+.wp-content-wrapper .wp-block-column img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.wp-content-wrapper .wp-block-column figure {
+  margin: 0;
+}
+
+.wp-content-wrapper .wp-block-column figcaption {
+  text-align: center;
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+@media (max-width: 600px) {
+  .wp-content-wrapper .wp-block-columns {
+    flex-direction: column;
+  }
+  .wp-content-wrapper .wp-block-column {
+    min-width: 100%;
+  }
+}
