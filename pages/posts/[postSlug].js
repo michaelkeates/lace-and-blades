@@ -61,10 +61,6 @@ export function parseHtml(html) {
   }
 }
 
-const ProfileImage = chakra(Image, {
-  shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
-})
-
 function dayMonth(data) {
   const monthNames = [
     'null',
@@ -113,60 +109,60 @@ export default function Post({ post }) {
      PDF EMBEDDING LOGIC
   ---------------------------- */
 
-const renderedPDFs = new Set()
+  const renderedPDFs = new Set()
 
-const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
-  replace: node => {
-    if (
-      node.name === 'a' &&
-      node.attribs?.href &&
-      node.attribs.href.toLowerCase().endsWith('.pdf')
-    ) {
-      const href = node.attribs.href
+  const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
+    replace: node => {
+      if (
+        node.name === 'a' &&
+        node.attribs?.href &&
+        node.attribs.href.toLowerCase().endsWith('.pdf')
+      ) {
+        const href = node.attribs.href
 
-      if (renderedPDFs.has(href)) return <></>
-      renderedPDFs.add(href)
+        if (renderedPDFs.has(href)) return <></>
+        renderedPDFs.add(href)
 
-      const title = node.children?.[0]?.data || 'PDF Document'
+        const title = node.children?.[0]?.data || 'PDF Document'
 
-      return (
-        <Box my={4} width="100%" key={href}>
-          {/* Desktop PDF viewer */}
-          {!isMobile && (
-            <iframe
-              src={href}
-              width="100%"
-              height="600px"
-              style={{ border: 'none' }}
-            />
-          )}
+        return (
+          <Box my={4} width="100%" key={href}>
+            {/* Desktop PDF viewer */}
+            {!isMobile && (
+              <iframe
+                src={href}
+                width="100%"
+                height="600px"
+                style={{ border: 'none' }}
+              />
+            )}
 
-          {/* Mobile fallback */}
-          {isMobile && (
-            <Button
-              as="a"
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              width="100%"
-              colorScheme="blue"
-            >
-              Open PDF
-            </Button>
-          )}
+            {/* Mobile fallback */}
+            {isMobile && (
+              <Button
+                as="a"
+                href={href}
+                target="_blank"
+                rel="noopener noreferrer"
+                width="100%"
+                colorScheme="blue"
+              >
+                Open PDF
+              </Button>
+            )}
 
-          <Box mt={2}>
-            <a href={href} target="_blank" rel="noopener noreferrer">
-              {title}
-            </a>
+            <Box mt={2}>
+              <a href={href} target="_blank" rel="noopener noreferrer">
+                {title}
+              </a>
+            </Box>
           </Box>
-        </Box>
-      )
-    }
+        )
+      }
 
-    return undefined
-  }
-})
+      return undefined
+    }
+  })
 
   /* ---------------------------
      COMMENT SUBMIT
@@ -216,82 +212,117 @@ const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
   return (
     <Layout>
       <Container maxWidth="4xl">
-      <Section delay={0.1}>
-        <main className={styles.main}>
-          <Box
-            borderRadius="lg"
-            mb={6}
-            p={5}
-            textAlign="center"
-            bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-            css={{ backdropFilter: 'blur(10px)' }}
-            marginTop="-4rem"
-          >
-            <Blog>
-              <div style={{ fontSize: '12px' }}>
-                {post.title}
-                <Badge ml={2}>{dayMonth(post.date)}</Badge>
-              </div>
-            </Blog>
-          </Box>
-
-          <h1 className={styles.title}>{post.title}</h1>
-
-          <SimpleGrid paddingTop="25px" paddingBottom="25px">
-            <Paragraph>
-              <div
-                className="post-content"
-                ref={el => (blockquoteRefs.current = el)}
-              >
-                {contentWithEmbeddedPDFs}
-              </div>
-            </Paragraph>
-          </SimpleGrid>
-
-          <Divider my={6} />
-          <AuthorBio />
-
-          {/* COMMENTS */}
-          <Divider my={6} />
-
-          {post.comments.nodes.map(comment => (
-            <Box key={comment.id} mb={4} p={3} borderRadius="lg">
-              <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+        <Section delay={0.1}>
+          <main className={styles.main}>
+            <Box
+              borderRadius="lg"
+              mt={6}
+              mb={2}
+              p={2}
+              pt={4}
+              textAlign="center"
+              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              css={{ backdropFilter: 'blur(10px)' }}
+            >
+              <Blog>
+                <div style={{ fontSize: '12px' }}>
+                  {post.title}
+                  <Badge
+  ml={2}
+  bg="transparent"
+  p={0}
+  textTransform="none"
+>
+  {dayMonth(post.date)}
+</Badge>
+                </div>
+              </Blog>
             </Box>
-          ))}
 
-          {/* COMMENT FORM */}
-          <Box p={3} borderRadius="lg">
-            <Input
-              placeholder="Enter your name"
-              value={authorName}
-              onChange={e => setAuthorName(e.target.value)}
-              mb={2}
-            />
-            <Input
-              placeholder="Enter your email"
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-              mb={2}
-            />
-            <Textarea
-              placeholder="Enter your comment"
-              value={newComment}
-              onChange={e => setNewComment(e.target.value)}
-              mb={2}
-            />
-            <Button colorScheme="green" onClick={handleCommentSubmit}>
-              Comment
-            </Button>
-          </Box>
+            <h1 className={styles.title}>{post.title}</h1>
 
-          <NextLink href="/posts" passHref scroll={false}>
-            <Button rightIcon={<ChevronRightIcon />} mt={4}>
-              Go Back
-            </Button>
-          </NextLink>
-        </main>
-      </Section>
+            {post.tags?.edges?.length > 0 && (
+              <Box
+                marginTop="10px"
+                marginBottom="10px"
+                display="flex"
+                flexWrap="wrap"
+                justifyContent="center"
+                alignItems="center"
+              >
+                {post.tags.edges.map(edge => (
+                  <Box
+                    key={edge.node.name}
+                    boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
+                    fontSize="11px"
+                    marginRight="5px"
+                    marginBottom="5px"
+                    borderRadius="10px"
+                    padding="3px 6px"
+                    bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    cursor="pointer"
+                  >
+                    {edge.node.name}
+                  </Box>
+                ))}
+              </Box>
+            )}
+
+            <SimpleGrid paddingTop="25px" paddingBottom="25px">
+              <Paragraph>
+                <div
+                  className="post-content"
+                  ref={el => (blockquoteRefs.current = el)}
+                >
+                  {contentWithEmbeddedPDFs}
+                </div>
+              </Paragraph>
+            </SimpleGrid>
+
+            <Divider my={6} />
+            <AuthorBio />
+
+            {/* COMMENTS */}
+            <Divider my={6} />
+
+            {post.comments.nodes.map(comment => (
+              <Box key={comment.id} mb={4} p={3} borderRadius="lg">
+                <div dangerouslySetInnerHTML={{ __html: comment.content }} />
+              </Box>
+            ))}
+
+            {/* COMMENT FORM */}
+            <Box p={3} borderRadius="lg">
+              <Input
+                placeholder="Enter your name"
+                value={authorName}
+                onChange={e => setAuthorName(e.target.value)}
+                mb={2}
+              />
+              <Input
+                placeholder="Enter your email"
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+                mb={2}
+              />
+              <Textarea
+                placeholder="Enter your comment"
+                value={newComment}
+                onChange={e => setNewComment(e.target.value)}
+                mb={2}
+              />
+              <Button colorScheme="green" onClick={handleCommentSubmit}>
+                Comment
+              </Button>
+            </Box>
+
+            <NextLink href="/posts" passHref scroll={false}>
+              <Button rightIcon={<ChevronRightIcon />} mt={4}>
+                Go Back
+              </Button>
+            </NextLink>
+          </main>
+        </Section>
       </Container>
     </Layout>
   )

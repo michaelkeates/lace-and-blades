@@ -1,10 +1,18 @@
 // pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
-import { Container, Box, SimpleGrid, Link } from '@chakra-ui/react'
+import {
+  Container,
+  Box,
+  SimpleGrid,
+  Link,
+  Button,
+  useColorModeValue
+} from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import { GET_SUPPORT_AGENCIES_INFORMATION } from '../lib/queries'
 import parse from 'html-react-parser'
+import NextLink from 'next/link'
 
 export default function GeorgiasLaw({ page }) {
   if (!page) return <p>Page not found</p>
@@ -32,7 +40,7 @@ export default function GeorgiasLaw({ page }) {
       }
 
       return undefined
-    },
+    }
   })
 
   return (
@@ -43,13 +51,13 @@ export default function GeorgiasLaw({ page }) {
             <div>
               <h1>{page.title}</h1>
 
-            {page.featuredImage && (
-              <img
-                className={styles.featuredImage}
-                src={page.featuredImage.node.sourceUrl}
-                alt={page.title}
-              />
-            )}
+              {page.featuredImage && (
+                <img
+                  className={styles.featuredImage}
+                  src={page.featuredImage.node.sourceUrl}
+                  alt={page.title}
+                />
+              )}
 
               {/* Render non-PDF content */}
               <Box mb={10}>{contentWithoutPDFLinks}</Box>
@@ -64,15 +72,14 @@ export default function GeorgiasLaw({ page }) {
                       width="100%"
                       height="400px"
                     />
-                    <Box mt={2}>
-                      <Link
-                        href={pdf.href}
-                        isExternal
-                        color="teal.500"
-                        fontWeight="medium"
-                      >
-                        {pdf.title}
-                      </Link>
+                    <Box mt={2} display="flex" justifyContent="center">
+<Link href={pdf.href} isExternal _hover={{ textDecoration: 'none' }}>
+  <Button
+    bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+  >
+    {pdf.title}
+  </Button>
+</Link>
                     </Box>
                   </Box>
                 ))}
@@ -89,12 +96,12 @@ export async function getServerSideProps() {
   const apolloClient = getApolloClient()
   const { data } = await apolloClient.query({
     query: GET_SUPPORT_AGENCIES_INFORMATION,
-    fetchPolicy: 'network-only',
+    fetchPolicy: 'network-only'
   })
 
   return {
     props: {
-      page: data?.pageBy ?? null,
-    },
+      page: data?.pageBy ?? null
+    }
   }
 }

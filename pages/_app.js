@@ -1,12 +1,11 @@
 // pages/_app.js
-import { AnimatePresence } from 'framer-motion'
-import Chakra from '../components/chakra'
-import Layout from '../components/layouts/main'
+import Chakra from '../components/chakra'       // default import
+import Layout from '../components/layouts/main'  // default import
 import { ApolloProvider } from '@apollo/client'
 import { getApolloClient } from '../lib/wordpress'
 import { spectral, roboto } from '../lib/fonts'
 import '../styles/globals.css'
-import '../styles/donations.css'
+import { AnimatePresence } from 'framer-motion'  // correct
 
 if (typeof window !== 'undefined') {
   window.history.scrollRestoration = 'manual'
@@ -18,7 +17,6 @@ function Website({ Component, pageProps, router }) {
   return (
     <Chakra cookies={pageProps.cookies}>
       <ApolloProvider client={client}>
-        {/* wrapper div is optional now, for global CSS */}
         <div className={`${spectral.variable} ${roboto.variable}`}>
           <Layout router={router}>
             <AnimatePresence

@@ -267,11 +267,6 @@
   line-height: 1.2 !important;
 }
 
-.main img {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
 .donationsList {
   display: flex;
   flex-direction: column;

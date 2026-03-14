@@ -30,15 +30,15 @@ const ProfileImage = chakra(Image, {
 
 const AuthorBio = () => (
   <Section>
-    <Box flexShrink={0} align="center">
-      <ProfileImage
-        src="/images/Lace-Blades-small.jpeg"
-        alt="Profile image"
-        borderRadius="full"
-        width="100"
-        height="100"
-      />
-    </Box>
+<Box flexShrink={0} align="center">
+  <ProfileImage
+    src="/images/IMG-20260220-WA0017_2.jpg"
+    alt="Profile image"
+    width={120}
+    height={120}
+    borderRadius="full"
+  />
+</Box>
     <Box display={{ md: 'flex' }}>
       <Box flexGrow={1}>
         <Heading

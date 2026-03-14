@@ -1,126 +1,117 @@
 // pages/georgias-law.js
+
 import { getApolloClient } from '../lib/wordpress'
-import { Container, Box, Heading, useBreakpointValue } from '@chakra-ui/react'
+import {
+  Container,
+  Box,
+  Heading,
+  SimpleGrid,
+  Link,
+  Button,
+  useColorModeValue
+} from '@chakra-ui/react'
 import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
 import parse from 'html-react-parser'
 
-// Wrap images in anchors
-export function parseHtml(html) {
-  if (typeof window === 'undefined') return html
-  const doc = new DOMParser().parseFromString(html, 'text/html')
-  doc.querySelectorAll('img').forEach(img => {
-    const src = img.src
-    const wrapper = document.createElement('a')
-    wrapper.href = src
-    wrapper.target = '_blank'
-    img.parentNode.replaceChild(wrapper, img)
-    wrapper.appendChild(img)
-  })
-  return doc.body.innerHTML
-}
-
 export default function GeorgiasLaw({ page }) {
   if (!page) return <p>Page not found</p>
 
   const renderedPDFs = new Set()
-  const isMobile = useBreakpointValue({ base: true, md: false })
+  const pdfs = []
 
-  // Map PDF URLs to WordPress-generated thumbnails (if available)
-  const pdfThumbnails = {}
-  page.mediaItems?.nodes.forEach(item => {
-    if (item.mediaItemUrl) {
-      const thumb = item.mediaDetails?.sizes?.find(
-        s => s.name === 'thumbnail'
-      )?.sourceUrl
-      if (thumb) pdfThumbnails[item.mediaItemUrl] = thumb
-    }
-  })
+  const imageUrl = page?.featuredImage?.node?.sourceUrl
+  const isSpecificImage = imageUrl?.includes('Lace_Blades_300DPI')
 
-  const contentWithEmbeddedPDFs = parse(parseHtml(page.content), {
+  /**
+   * Remove PDFs from content and collect them
+   */
+  const contentWithoutPDFLinks = parse(page.content, {
     replace: node => {
       if (
         node.name === 'a' &&
         node.attribs?.href?.toLowerCase().endsWith('.pdf')
       ) {
         const href = node.attribs.href
+
         if (renderedPDFs.has(href)) return <></>
         renderedPDFs.add(href)
+
         const title = node.children?.[0]?.data || 'PDF Document'
-        const thumbnail = pdfThumbnails[href]
 
-        return (
-          <Container maxWidth="2xl">
-            <Box
-              key={href}
-              my={4}
-              width="100%"
-              overflow="hidden"
-              borderRadius="md"
-            >
-              {/* Desktop: embed PDF */}
-              {!isMobile && (
-                <embed
-                  src={href}
-                  type="application/pdf"
-                  width="100%"
-                  height="500px"
-                  style={{ maxWidth: '100%' }}
-                />
-              )}
+        pdfs.push({ href, title })
 
-              {/* Mobile: show WordPress thumbnail if available, fallback to PDF icon */}
-              {isMobile && (
-                <img
-                  src={
-                    thumbnail ??
-                    page.featuredImage?.node?.sourceUrl ??
-                    '/pdf-placeholder.png'
-                  }
-                  alt={title}
-                  style={{ width: '25%', borderRadius: '8px' }}
-                />
-              )}
-
-              {/* PDF link */}
-              <Box mt={2}>
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  {title}
-                </a>
-              </Box>
-            </Box>
-          </Container>
-        )
+        return <></>
       }
+
       return undefined
     }
   })
 
   return (
-    <Container maxW="4xl" mt="-2rem">
+    <Container maxW="4xl" mt="4rem">
       <Section delay={0.1}>
+
         <Heading as="h1" mb={4}>
           {page.title}
         </Heading>
 
-        {page.featuredImage && (
+        {imageUrl && (
           <img
             className={styles.featuredImage}
-            src={page.featuredImage.node.sourceUrl}
+            src={imageUrl}
             alt={page.title}
+            style={
+              isSpecificImage
+                ? { maxWidth: '300px', height: 'auto' }
+                : undefined
+            }
           />
         )}
 
-        <Box>{contentWithEmbeddedPDFs}</Box>
+        {/* Render main page content */}
+        <Box mb={10}>{contentWithoutPDFLinks}</Box>
+
+        {/* Render PDFs in 2-column grid */}
+        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+          {pdfs.map(pdf => (
+            <Box key={pdf.href}>
+              <embed
+                src={pdf.href}
+                type="application/pdf"
+                width="100%"
+                height="500px"
+              />
+
+              <Box mt={2} display="flex" justifyContent="center">
+                <Link
+                  href={pdf.href}
+                  isExternal
+                  _hover={{ textDecoration: 'none' }}
+                >
+                  <Button
+                    bg={useColorModeValue(
+                      'whiteAlpha.500',
+                      'whiteAlpha.200'
+                    )}
+                  >
+                    {pdf.title}
+                  </Button>
+                </Link>
+              </Box>
+            </Box>
+          ))}
+        </SimpleGrid>
+
       </Section>
     </Container>
   )
 }
 
-// Server-side fetch
 export async function getServerSideProps() {
   const apolloClient = getApolloClient()
+
   const { data } = await apolloClient.query({
     query: GET_GEORGIAS_LAW,
     fetchPolicy: 'network-only'
