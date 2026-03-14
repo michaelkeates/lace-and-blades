@@ -127,7 +127,7 @@ export default function Home({ posts }) {
                     boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
                     borderRadius="10px"
                     padding="4px"
-                    height="600px" // fixed height for all cards
+                    height="610px" // fixed height for all cards
                   >
                     <Box flex="1" display="flex" flexDirection="column">
                       {/* Image */}
