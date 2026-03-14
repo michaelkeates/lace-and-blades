@@ -10,6 +10,7 @@ import {
   Button,
   useColorModeValue
 } from '@chakra-ui/react'
+import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
@@ -50,62 +51,59 @@ export default function GeorgiasLaw({ page }) {
   })
 
   return (
-    <Container maxW="4xl" mt="4rem">
-      <Section delay={0.1}>
+    <Layout title="Georgias Law">
+      <Container maxW="4xl" mt="4rem">
+        <Section delay={0.1}>
+          <Heading as="h1" mb={4}>
+            {page.title}
+          </Heading>
 
-        <Heading as="h1" mb={4}>
-          {page.title}
-        </Heading>
+          {imageUrl && (
+            <img
+              className={styles.featuredImage}
+              src={imageUrl}
+              alt={page.title}
+              style={
+                isSpecificImage
+                  ? { maxWidth: '300px', height: 'auto' }
+                  : undefined
+              }
+            />
+          )}
 
-        {imageUrl && (
-          <img
-            className={styles.featuredImage}
-            src={imageUrl}
-            alt={page.title}
-            style={
-              isSpecificImage
-                ? { maxWidth: '300px', height: 'auto' }
-                : undefined
-            }
-          />
-        )}
+          {/* Render main page content */}
+          <Box mb={10}>{contentWithoutPDFLinks}</Box>
 
-        {/* Render main page content */}
-        <Box mb={10}>{contentWithoutPDFLinks}</Box>
+          {/* Render PDFs in 2-column grid */}
+          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
+            {pdfs.map(pdf => (
+              <Box key={pdf.href}>
+                <embed
+                  src={pdf.href}
+                  type="application/pdf"
+                  width="100%"
+                  height="500px"
+                />
 
-        {/* Render PDFs in 2-column grid */}
-        <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-          {pdfs.map(pdf => (
-            <Box key={pdf.href}>
-              <embed
-                src={pdf.href}
-                type="application/pdf"
-                width="100%"
-                height="500px"
-              />
-
-              <Box mt={2} display="flex" justifyContent="center">
-                <Link
-                  href={pdf.href}
-                  isExternal
-                  _hover={{ textDecoration: 'none' }}
-                >
-                  <Button
-                    bg={useColorModeValue(
-                      'whiteAlpha.500',
-                      'whiteAlpha.200'
-                    )}
+                <Box mt={2} display="flex" justifyContent="center">
+                  <Link
+                    href={pdf.href}
+                    isExternal
+                    _hover={{ textDecoration: 'none' }}
                   >
-                    {pdf.title}
-                  </Button>
-                </Link>
+                    <Button
+                      bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    >
+                      {pdf.title}
+                    </Button>
+                  </Link>
+                </Box>
               </Box>
-            </Box>
-          ))}
-        </SimpleGrid>
-
-      </Section>
-    </Container>
+            ))}
+          </SimpleGrid>
+        </Section>
+      </Container>
+    </Layout>
   )
 }
 
