@@ -101,11 +101,8 @@ export default function Post({ post }) {
      SCROLL TO TOP AFTER ANIMATION
   ---------------------------- */
   useEffect(() => {
-    const sectionAnimationDelay = 100 // 0.1s delay in ms
-    const timer = setTimeout(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }, sectionAnimationDelay + 50)
-    return () => clearTimeout(timer)
+    // Instantly scroll to top on page load
+    window.scrollTo(0, 0)
   }, [])
 
   /* ---------------------------
