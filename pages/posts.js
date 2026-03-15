@@ -113,7 +113,7 @@ export default function Home({ posts }) {
           </Flex>
 
           {/* Posts Grid */}
-          <SimpleGrid columns={[1, 2, 4]} gap={4}>
+          <SimpleGrid columns={[2, 2, 4]} gap={4}>
             {postsToDisplay.map(post => {
               const imageUrl =
                 post?.featuredImage?.node?.mediaDetails?.sizes?.find(
