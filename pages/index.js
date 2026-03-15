@@ -11,7 +11,7 @@ import Layout from '../components/layouts/article'
 import Image from 'next/image'
 import Bubble from '../components/emoji/default'
 import TikTokButton from '../components/buttons/tiktok-button'
-import LinkedinButton from '../components/buttons/linkedin-button'
+import LinkedinButton from '../components/buttons/instagram-button'
 import LinktrButton from '../components/buttons/linktr-button'
 
 const ProfileImage = chakra(Image, {
