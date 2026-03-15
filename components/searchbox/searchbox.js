@@ -11,7 +11,8 @@ import {
   ListItem,
   Link,
   useColorModeValue,
-  useOutsideClick
+  useOutsideClick,
+  Container
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -86,86 +87,82 @@ const SearchBox = () => {
   const closeSearch = () => setQuery('')
 
   return (
-    // Make this container relative and full width (matches page container)
-    <Box ref={ref} position="relative" w="100%">
-      <Box maxW="container.md" ml="auto" mr="0"> {/* align to right of container */}
-        <InputGroup
+    <Box ref={ref} position="relative" w="110px">
+      <InputGroup
+        h="40px"
+        bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')}
+        css={{ backdropFilter: 'blur(10px)' }}
+        borderRadius="md"
+        boxShadow="0px 0px 12px rgba(0,0,0,0.05)"
+      >
+        <InputLeftElement h="40px" pointerEvents="none">
+          <SearchIcon opacity={0.7} />
+        </InputLeftElement>
+
+        <Input
           h="40px"
-          bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')}
-          css={{ backdropFilter: 'blur(10px)' }}
-          borderRadius="md"
-          boxShadow="0px 0px 12px rgba(0,0,0,0.05)"
-        >
-          <InputLeftElement h="40px" pointerEvents="none">
-            <SearchIcon opacity={0.7} />
-          </InputLeftElement>
+          placeholder="Search..."
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          border="none"
+          _focus={{ boxShadow: 'none' }}
+          color={textColor}
+          caretColor={textColor}
+          fontSize="sm"
+          _placeholder={{ color: placeholderColor }}
+        />
+      </InputGroup>
 
-          <Input
-            h="40px"
-            placeholder="Search..."
-            value={query}
-            onChange={e => setQuery(e.target.value)}
-            border="none"
-            _focus={{ boxShadow: 'none' }}
-            color={textColor}
-            caretColor={textColor}
-            fontSize="sm"
-            _placeholder={{ color: placeholderColor }}
-          />
-        </InputGroup>
+      <AnimatePresence>
+        {query && (
+          <MotionBox
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.15 }}
+            position="absolute"
+            top="120%" // positions it right below the input
+            right={0} // aligns the right edge with the input's right edge
+            w="260px"
+            bg={menuBg}
+            style={{ backdropFilter: 'blur(10px)' }}
+            borderRadius="md"
+            boxShadow="lg"
+            zIndex={2000}
+            p={2}
+          >
+            <List display="grid" gridTemplateColumns="1fr 1fr" gap={1}>
+              {results.length === 0 && (
+                <Box gridColumn="span 2" px={2} py={1} fontSize="xs">
+                  No results
+                </Box>
+              )}
 
-        <AnimatePresence>
-          {query && (
-            <MotionBox
-              initial={{ opacity: 0, y: -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -6 }}
-              transition={{ duration: 0.15 }}
-              position="absolute"
-              top="120%"      // below input
-              right={0}       // align right edge of container
-              w="260px"
-              maxW="100%"
-              bg={menuBg}
-              style={{ backdropFilter: 'blur(10px)' }}
-              borderRadius="md"
-              boxShadow="lg"
-              zIndex={2000}
-              p={2}
-            >
-              <List display="grid" gridTemplateColumns="1fr 1fr" gap={1}>
-                {results.length === 0 && (
-                  <Box gridColumn="span 2" px={2} py={1} fontSize="xs">
-                    No results
-                  </Box>
-                )}
-
-                {results.slice(0, 8).map(page => (
-                  <ListItem key={page.path}>
-                    <NextLink href={page.path} passHref legacyBehavior>
-                      <Link
-                        display="block"
-                        px={2}
-                        py={1}
-                        color={textColor}
-                        borderRadius="md"
-                        fontSize="sm"
-                        _hover={{ bg: menuHover }}
-                        onClick={closeSearch}
-                      >
-                        <Box lineHeight="1.2">{page.title}</Box>
-                        <Box fontSize="xs" opacity={0.6}>
-                          {page.type === 'post' ? 'Post' : 'Page'}
-                        </Box>
-                      </Link>
-                    </NextLink>
-                  </ListItem>
-                ))}
-              </List>
-            </MotionBox>
-          )}
-        </AnimatePresence>
-      </Box>
+              {results.slice(0, 8).map(page => (
+                <ListItem key={page.path}>
+                  <NextLink href={page.path} passHref legacyBehavior>
+                    <Link
+                      display="block"
+                      px={2}
+                      py={1}
+                      color={textColor}
+                      borderRadius="md"
+                      fontSize="sm"
+                      _hover={{ bg: menuHover }}
+                      onClick={closeSearch}
+                    >
+                      <Box lineHeight="1.2">{page.title}</Box>
+                      <Box fontSize="xs" opacity={0.6}>
+                        {page.type === 'post' ? 'Post' : 'Page'}
+                      </Box>
+                    </Link>
+                  </NextLink>
+                </ListItem>
+              ))}
+            </List>
+          </MotionBox>
+        )}
+      </AnimatePresence>
     </Box>
   )
 }
