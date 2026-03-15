@@ -13,7 +13,6 @@ import Bubble from '../components/emoji/default'
 import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/linkedin-button'
 import LinktrButton from '../components/buttons/linktr-button'
-import NextLink from 'next/link'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -36,10 +35,9 @@ const Home = () => (
 
       <Heading
         as="h1"
+        fontSize="7xl"
+        fontFamily="CartaMarina"
         textAlign="center"
-        variant="page-title"
-        mb={8}
-        fontSize={58}
       >
         Lace & Blades
       </Heading>
@@ -75,7 +73,7 @@ const Home = () => (
           height={450}
           objectFit="cover"
           borderRadius="md"
-        /> 
+        />
       </Box>
       <Divider />
     </Container>

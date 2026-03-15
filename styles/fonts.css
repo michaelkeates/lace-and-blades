@@ -1,0 +1,8 @@
+/* styles/fonts.css */
+@font-face {
+  font-family: 'CartaMarina';
+  src: url('/fonts/Carta Marina Bold.otf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}

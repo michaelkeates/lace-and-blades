@@ -4,6 +4,7 @@ import Layout from '../components/layouts/main'  // default import
 import { ApolloProvider } from '@apollo/client'
 import { getApolloClient } from '../lib/wordpress'
 import { spectral, roboto } from '../lib/fonts'
+import '../styles/fonts.css';
 import '../styles/globals.css'
 import { AnimatePresence } from 'framer-motion'  // correct
 
