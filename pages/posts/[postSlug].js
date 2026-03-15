@@ -1,6 +1,5 @@
 import Head from 'next/head'
 import NextLink from 'next/link'
-
 import {
   Textarea,
   Container,
@@ -13,30 +12,25 @@ import {
   useToast,
   useColorModeValue,
   chakra,
-  Badge
+  Badge,
+  useBreakpointValue
 } from '@chakra-ui/react'
-import { ChevronRightIcon, CopyIcon } from '@chakra-ui/icons'
+import { ChevronRightIcon } from '@chakra-ui/icons'
 import Paragraph from '../../components/paragraph'
 import Section from '../../components/section'
 import Image from 'next/image'
 import Layout from '../../components/layouts/article'
 import { getApolloClient } from '../../lib/wordpress'
-
 import { Title, Portfolio, Blog, WorkImage, Meta } from '../../components/work'
 import styles from '../../styles/Home.module.css'
 import AuthorBio from '../../components/post/author-bio'
-import { useBreakpointValue } from '@chakra-ui/react'
-
 import parse from 'html-react-parser'
-
 import {
   GET_POST_BY_SLUG,
   GET_ALL_POSTS,
   useCreateCommentMutation
 } from '../../lib/queries'
-
 import { useEffect, useRef, useState } from 'react'
-import ReactDOM from 'react-dom'
 
 /* ---------------------------
    IMAGE WRAPPING FUNCTION
@@ -90,7 +84,6 @@ function dayMonth(data) {
 /* ===========================
           POST PAGE
 =========================== */
-
 export default function Post({ post }) {
   const toast = useToast()
   const blockquoteRefs = useRef([])
@@ -102,15 +95,23 @@ export default function Post({ post }) {
   const [isCommentValid, setIsCommentValid] = useState(true)
 
   const isMobile = useBreakpointValue({ base: true, md: false })
-
   const [createCommentMutation] = useCreateCommentMutation()
+
+  /* ---------------------------
+     SCROLL TO TOP AFTER ANIMATION
+  ---------------------------- */
+  useEffect(() => {
+    const sectionAnimationDelay = 100 // 0.1s delay in ms
+    const timer = setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }, sectionAnimationDelay + 50)
+    return () => clearTimeout(timer)
+  }, [])
 
   /* ---------------------------
      PDF EMBEDDING LOGIC
   ---------------------------- */
-
   const renderedPDFs = new Set()
-
   const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
     replace: node => {
       if (
@@ -119,15 +120,12 @@ export default function Post({ post }) {
         node.attribs.href.toLowerCase().endsWith('.pdf')
       ) {
         const href = node.attribs.href
-
         if (renderedPDFs.has(href)) return <></>
         renderedPDFs.add(href)
-
         const title = node.children?.[0]?.data || 'PDF Document'
 
         return (
           <Box my={4} width="100%" key={href}>
-            {/* Desktop PDF viewer */}
             {!isMobile && (
               <iframe
                 src={href}
@@ -136,8 +134,6 @@ export default function Post({ post }) {
                 style={{ border: 'none' }}
               />
             )}
-
-            {/* Mobile fallback */}
             {isMobile && (
               <Button
                 as="a"
@@ -150,7 +146,6 @@ export default function Post({ post }) {
                 Open PDF
               </Button>
             )}
-
             <Box mt={2}>
               <a href={href} target="_blank" rel="noopener noreferrer">
                 {title}
@@ -159,7 +154,6 @@ export default function Post({ post }) {
           </Box>
         )
       }
-
       return undefined
     }
   })
@@ -167,7 +161,6 @@ export default function Post({ post }) {
   /* ---------------------------
      COMMENT SUBMIT
   ---------------------------- */
-
   const handleCommentSubmit = async () => {
     if (!authorName || !email || !newComment) {
       setIsCommentValid(false)
@@ -208,7 +201,6 @@ export default function Post({ post }) {
   /* ===========================
           RENDER
   =========================== */
-
   return (
     <Layout>
       <Container maxWidth="4xl">
@@ -233,6 +225,7 @@ export default function Post({ post }) {
                 </div>
               </Blog>
             </Box>
+
             <Heading
               as="h1"
               fontSize="7xl"
@@ -285,7 +278,6 @@ export default function Post({ post }) {
 
             {/* COMMENTS */}
             <Divider my={6} />
-
             {post.comments.nodes.map(comment => (
               <Box key={comment.id} mb={4} p={3} borderRadius="lg">
                 <div dangerouslySetInnerHTML={{ __html: comment.content }} />
@@ -332,7 +324,6 @@ export default function Post({ post }) {
 /* ===========================
    SERVER SIDE PROPS
 =========================== */
-
 export async function getServerSideProps({ params }) {
   const { postSlug } = params
   const apolloClient = getApolloClient()
