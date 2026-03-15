@@ -7,7 +7,6 @@ import { spectral, roboto, cartaMarina } from '../lib/fonts'
 export default class Document extends NextDocument {
   render() {
     return (
-      // ✅ add the font variables to Html
       <Html lang="en" className={`${spectral.variable} ${roboto.variable}`}>
         <Head />
         <body>

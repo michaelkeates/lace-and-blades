@@ -1,16 +1,14 @@
 // pages/_app.js
-import Chakra from '../components/chakra'       // default import
-import Layout from '../components/layouts/main'  // default import
+import Chakra from '../components/chakra'
+import Layout from '../components/layouts/main'
 import { ApolloProvider } from '@apollo/client'
 import { getApolloClient } from '../lib/wordpress'
 import { spectral, roboto } from '../lib/fonts'
 import '../styles/fonts.css';
 import '../styles/globals.css'
-import { AnimatePresence } from 'framer-motion'  // correct
+import { AnimatePresence } from 'framer-motion'
 
-if (typeof window !== 'undefined') {
-  window.history.scrollRestoration = 'manual'
-}
+if (typeof window !== 'undefined') window.history.scrollRestoration = 'manual'
 
 function Website({ Component, pageProps, router }) {
   const client = getApolloClient()

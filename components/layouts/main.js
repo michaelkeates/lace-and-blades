@@ -1,38 +1,54 @@
+// components/layouts/main.js
 import Head from 'next/head'
 import NavBar from '../navbar'
 import Footer from '../footer'
 import { Box, Container, useColorModeValue } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
+import { useEffect, useState } from 'react'
 
 const Main = ({ children, router }) => {
-  const isHome = router.pathname === '/'
-  const overlayBg = useColorModeValue('#e988ec40', '#26192980')
+  const [mounted, setMounted] = useState(false)
 
+  // Ensure client-only mounting for animations to avoid hydration errors
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  const overlayBg = useColorModeValue('#e988ec40', '#26192980')
   const bgVariants = {
     hidden: { opacity: 0 },
     enter: { opacity: 1 },
-    exit: { opacity: 0 }
+    exit: { opacity: 0 },
   }
 
+  const isHome = router.pathname === '/'
+
+  if (!mounted) {
+    // SSR: render static layout without motion wrappers
+    return (
+      <Box position="relative" minH="100vh">
+        <NavBar path={router.asPath} />
+        <Container maxW="1200px">
+          {children}
+          <Footer />
+        </Container>
+      </Box>
+    )
+  }
+
+  // Client: full motion + animations
   return (
     <Box position="relative" minH="100vh">
       <AnimatePresence mode="wait">
         {isHome && (
           <>
+            {/* Background Image */}
             <motion.div
               key="bgImage"
-              initial="hidden"
-              animate="enter"
-              exit="exit"
-              variants={{
-                hidden: { opacity: 0 },
-                enter: { opacity: 0.25 },
-                exit: { opacity: 0 }
-              }}
-              transition={{
-                enter: { duration: 1 },
-                exit: { duration: 4, ease: 'easeInOut' }
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.25 }}
+              exit={{ opacity: 0 }}
+              transition={{ enter: { duration: 1 }, exit: { duration: 4, ease: 'easeInOut' } }}
               style={{
                 position: 'fixed',
                 inset: 0,
@@ -41,20 +57,17 @@ const Main = ({ children, router }) => {
                 backgroundPosition: 'center',
                 backgroundRepeat: 'no-repeat',
                 zIndex: -2,
-                pointerEvents: 'none'
+                pointerEvents: 'none',
               }}
             />
 
+            {/* Overlay */}
             <motion.div
               key="bgOverlay"
-              initial="hidden"
-              animate="enter"
-              exit="exit"
-              variants={bgVariants}
-              transition={{
-                enter: { duration: 1 },
-                exit: { duration: 4, ease: 'easeInOut' }
-              }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ enter: { duration: 1 }, exit: { duration: 4, ease: 'easeInOut' } }}
               style={{
                 position: 'fixed',
                 inset: 0,
@@ -62,14 +75,16 @@ const Main = ({ children, router }) => {
                 WebkitBackdropFilter: 'blur(10px)',
                 background: overlayBg,
                 zIndex: -1,
-                pointerEvents: 'none'
+                pointerEvents: 'none',
               }}
             />
           </>
         )}
       </AnimatePresence>
 
-      <Head>{/* meta stuff */}</Head>
+      <Head>
+        {/* Optional: meta tags can go here */}
+      </Head>
 
       <NavBar path={router.asPath} />
 

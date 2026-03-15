@@ -1,27 +1,24 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react'
-import { SunIcon, MoonIcon } from '@chakra-ui/icons'
-import { IoLogoInstagram } from 'react-icons/io5'
-import nextLink from 'next/link'
+// components/buttons/linkedin-button.js
+import { IconButton, useColorModeValue } from '@chakra-ui/react'
+import { IoLogoLinkedin } from 'react-icons/io5'
 
 const LinkedinButton = () => {
-  const toggleColorMode = () => {
-    const linkedinUrl = 'https://www.instagram.com/lace_blades/'
-
-    //use window.location to navigate to the GitHub URL
-    window.open(linkedinUrl, '_blank');
-  }
+  const bg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
+  const color = useColorModeValue('blackAlpha.900', 'whiteAlpha.600')
 
   return (
     <IconButton
-      aria-label="Toggle theme"
-      bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+      as="a" // render as a real <a> tag
+      href="https://www.linkedin.com/in/lace-and-blades/" // your LinkedIn URL
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label="LinkedIn Button"
+      bg={bg}
       css={{ backdropFilter: 'blur(10px)' }}
       padding="10px"
       boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
-      color={useColorModeValue('blackAlpha.900', 'whiteAlpha.600')}
-      icon={<IoLogoInstagram />}
-      onClick={toggleColorMode}
+      color={color}
+      icon={<IoLogoLinkedin />}
     />
   )
 }

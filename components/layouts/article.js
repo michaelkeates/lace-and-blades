@@ -17,12 +17,6 @@ const Layout = ({ children, title }) => {
       exit="exit"
       variants={variants}
       transition={{ duration: 1.4, type: 'easeInOut' }}
-      //style={{
-      //  position: 'relative',
-      //  backdropFilter: 'blur(10px)',
-      //  WebkitBackdropFilter: 'blur(10px)',
-      //  transition: 'backdrop-filter 0.3s ease-out'
-      //}}
     >
       <>
         {title && (
