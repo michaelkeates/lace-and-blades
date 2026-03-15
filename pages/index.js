@@ -39,7 +39,7 @@ const Home = () => (
         fontFamily="CartaMarina"
         textAlign="center"
       >
-        Lace & Blades
+        Lace &Blades
       </Heading>
 
       <Box>
