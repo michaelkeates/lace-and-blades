@@ -1,36 +1,38 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { useColorModeValue } from '@chakra-ui/react'
 import styled from '@emotion/styled'
 
 const LogoBox = styled.span`
-  font-weight: bold;
-  font-size: 18px;
+margin-top: 6px;
   display: inline-flex;
   align-items: center;
-  height: 30px;
-  line-height: 20px;
-  padding: 20px;
+  justify-content: center;
+  height: 40px;         /* match navbar buttons */
+  width: 40px;          /* square container */
+  line-height: 1;
+  transition: transform 0.2s;
 
   img {
-    transition: 200ms ease;
+    display: block;      /* prevent baseline offset */
+    height: 100%;
+    width: auto;
     border-radius: 4px;
+    transition: transform 0.2s;
   }
 
   &:hover img {
-    transform: scale(1.4);
+    transform: scale(1.2);
   }
 `
-
 
 const Logo = () => {
   const logo = `/images/IMG-20260220-WA0017_2.jpg`
 
   return (
     <Link href="/" scroll={false}>
-        <LogoBox>
-          <Image src={logo} width={28} height={28} alt="logo" />
-        </LogoBox>
+      <LogoBox>
+        <Image src={logo} alt="logo" width={40} height={40} />
+      </LogoBox>
     </Link>
   )
 }
