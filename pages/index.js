@@ -35,7 +35,7 @@ const Home = () => (
 
       <Heading
         as="h1"
-        fontSize="7xl"
+        fontSize={{ base: '5xl', md: '6xl'}}
         fontFamily="CartaMarina"
         textAlign="center"
       >
