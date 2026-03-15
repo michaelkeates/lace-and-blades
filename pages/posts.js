@@ -139,7 +139,7 @@ export default function Home({ posts }) {
                     boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
                     borderRadius="10px"
                     padding="4px"
-                    height="620px"
+                    height="820px"
                   >
                     <Box flex="1" display="flex" flexDirection="column">
                       <img
