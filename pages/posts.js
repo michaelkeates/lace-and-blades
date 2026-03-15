@@ -6,7 +6,8 @@ import {
   Divider,
   Button,
   useColorModeValue,
-  Flex
+  Flex,
+  Image
 } from '@chakra-ui/react'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import Layout from '../components/layouts/article'
@@ -134,24 +135,19 @@ export default function Home({ posts }) {
                     boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
                     borderRadius="10px"
                     padding="4px"
-                    height="auto"       // dynamic height
-                    minHeight="610px"   // optional minimum height
+                    height="auto"
+                    minHeight="610px"
                   >
                     {/* Content */}
                     <Box flex="1" display="flex" flexDirection="column">
-                      <Box>
-                        <img
-                          src={imageUrl}
-                          alt={post.title}
-                          style={{
-                            width: '100%',
-                            height: 'auto',
-                            maxHeight: '250px',
-                            objectFit: 'cover',
-                            borderRadius: '8px'
-                          }}
-                        />
-                      </Box>
+                      <Image
+                        src={imageUrl}
+                        alt={post.title}
+                        w="100%"
+                        h={{ base: '150px', sm: '200px', md: '250px' }}
+                        objectFit="cover"
+                        borderRadius="8px"
+                      />
 
                       <Box fontWeight="bold" mt={2}>
                         {post.title}
