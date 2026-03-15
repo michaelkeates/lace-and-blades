@@ -1,4 +1,3 @@
-// pages/index.js
 import { useState } from 'react'
 import {
   SimpleGrid,
@@ -6,12 +5,12 @@ import {
   Container,
   Divider,
   Button,
-  useColorModeValue
+  useColorModeValue,
+  Flex
 } from '@chakra-ui/react'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
-import { GridItem } from '../components/grid-item'
 import NextLink from 'next/link'
 import Bubble from '../components/emoji/heart'
 import { getApolloClient } from '../lib/wordpress'
@@ -22,7 +21,7 @@ function dayMonth(dateString) {
   const monthNames = [
     'null',
     'January',
-    'Febuary',
+    'February',
     'March',
     'April',
     'May',
@@ -43,7 +42,7 @@ function dayMonth(dateString) {
 
 export default function Home({ posts }) {
   const apolloClient = getApolloClient()
-  const { loading, error, data } = useQuery(GET_ALL_POSTS, {
+  const { loading, error } = useQuery(GET_ALL_POSTS, {
     fetchPolicy: 'cache-first',
     client: apolloClient
   })
@@ -64,6 +63,7 @@ export default function Home({ posts }) {
     setCurrentPage(prev => Math.max(prev - 1, 1))
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
+
   const isBeginning = currentPage === 1
   const isEnd = currentPage === totalPages
 
@@ -78,36 +78,48 @@ export default function Home({ posts }) {
   return (
     <Layout title="Portfolio">
       <Container maxW="5xl" mt="3rem">
-        <Bubble text="View my latest posts!" emoji="❤️" />
         <Section delay={0.2}>
-          <SimpleGrid columns={[2, 1, 2]} gap={4} mt={2} mb={4} justifyContent="center">
+          {/* Pagination Header using Grid */}
+          <Flex gap={3} mb={6} alignItems="stretch" height="64px">
+            {' '}
+            {/* set desired height */}
+            {/* Previous Button */}
             <Button
               onClick={goToPreviousPage}
               disabled={isBeginning}
-              opacity={isBeginning ? 0.5 : 1}
-              style={{ pointerEvents: isBeginning ? 'none' : 'auto' }}
               leftIcon={<ChevronLeftIcon />}
               bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
+              borderRadius="md"
+              width="120px"
+              height="100%" // stretch to match Flex height
             >
               Previous
             </Button>
-
+            {/* Bubble */}
+            <Box flex="1" height="100%">
+              {' '}
+              {/* stretch bubble to same height */}
+              <Bubble text="View my latest posts!" emoji="❤️" />
+            </Box>
+            {/* Next Button */}
             <Button
               onClick={goToNextPage}
               disabled={isEnd}
-              opacity={isEnd ? 0.5 : 1}
-              style={{ pointerEvents: isEnd ? 'none' : 'auto' }}
               rightIcon={<ChevronRightIcon />}
               bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+              boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
+              borderRadius="md"
+              width="120px"
+              height="100%" // stretch to match Flex height
             >
               Next
             </Button>
-          </SimpleGrid>
+          </Flex>
+
+          {/* Posts Grid */}
           <SimpleGrid columns={[2, 2, 4]} gap={4}>
             {postsToDisplay.map(post => {
-              // Use the thumbnail if available, fallback to featured image
               const imageUrl =
                 post?.featuredImage?.node?.mediaDetails?.sizes?.find(
                   s => s.name === 'thumbnail'
@@ -124,13 +136,12 @@ export default function Home({ posts }) {
                     textAlign="center"
                     bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
                     css={{ backdropFilter: 'blur(10px)' }}
-                    boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+                    boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
                     borderRadius="10px"
                     padding="4px"
-                    height="610px" // fixed height for all cards
+                    height="620px"
                   >
                     <Box flex="1" display="flex" flexDirection="column">
-                      {/* Image */}
                       <img
                         src={imageUrl}
                         alt={post.title}
@@ -142,19 +153,16 @@ export default function Home({ posts }) {
                         }}
                       />
 
-                      {/* Title */}
                       <Box fontWeight="bold" mt={2}>
                         {post.title}
                       </Box>
 
                       <Divider mt={2} />
 
-                      {/* Excerpt */}
                       <Box mt={2} fontSize="12px">
                         {truncate(post.excerpt, 100)}
                       </Box>
 
-                      {/* Tags immediately below excerpt */}
                       <Box
                         mt={2}
                         mb={2}
@@ -166,7 +174,7 @@ export default function Home({ posts }) {
                         {post.tags?.nodes?.slice(0, 4)?.map(tag => (
                           <Box
                             key={tag.name}
-                            boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+                            boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
                             fontSize="10px"
                             mr={1}
                             mb={1}
@@ -186,10 +194,9 @@ export default function Home({ posts }) {
                       </Box>
                     </Box>
 
-                    {/* Read More button stays at the bottom */}
                     <NextLink href={post.path} passHref scroll={false}>
                       <Button
-                        boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05);"
+                        boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
                         fontSize="14px"
                         mt={2}
                         mb={2}
@@ -205,6 +212,7 @@ export default function Home({ posts }) {
                 </Section>
               )
             })}
+
             {!postsToDisplay || postsToDisplay.length === 0 ? (
               <li>Oops, no posts found!</li>
             ) : null}
@@ -218,21 +226,11 @@ export default function Home({ posts }) {
 export async function getServerSideProps({ req }) {
   const apolloClient = getApolloClient()
 
-  const { data } = await apolloClient.query({
-    query: GET_ALL_POSTS
-  })
+  const { data } = await apolloClient.query({ query: GET_ALL_POSTS })
 
   const posts = data?.posts.edges
     .map(({ node }) => node)
-    .map(post => ({
-      ...post,
-      path: `/posts/${post.slug}`
-    }))
+    .map(post => ({ ...post, path: `/posts/${post.slug}` }))
 
-  return {
-    props: {
-      posts,
-      cookies: req.headers.cookie ?? ''
-    }
-  }
+  return { props: { posts, cookies: req.headers.cookie ?? '' } }
 }
