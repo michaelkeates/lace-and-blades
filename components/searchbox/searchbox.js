@@ -86,7 +86,7 @@ const SearchBox = () => {
   const closeSearch = () => setQuery('')
 
   return (
-    <Box ref={ref} position="relative" w="160px">
+    <Box ref={ref} position="relative" w="110px">
       <InputGroup
         h="40px"
         bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')}
