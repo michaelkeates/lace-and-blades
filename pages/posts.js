@@ -79,11 +79,8 @@ export default function Home({ posts }) {
     <Layout title="Portfolio">
       <Container maxW="5xl" mt="3rem">
         <Section delay={0.2}>
-          {/* Pagination Header using Grid */}
+          {/* Pagination Header */}
           <Flex gap={3} mb={6} alignItems="stretch" height="64px">
-            {' '}
-            {/* set desired height */}
-            {/* Previous Button */}
             <Button
               onClick={goToPreviousPage}
               disabled={isBeginning}
@@ -92,17 +89,15 @@ export default function Home({ posts }) {
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
               borderRadius="md"
               width="120px"
-              height="100%" // stretch to match Flex height
+              height="100%"
             >
               Previous
             </Button>
-            {/* Bubble */}
+
             <Box flex="1" height="100%">
-              {' '}
-              {/* stretch bubble to same height */}
               <Bubble text="View my latest posts!" emoji="❤️" />
             </Box>
-            {/* Next Button */}
+
             <Button
               onClick={goToNextPage}
               disabled={isEnd}
@@ -111,14 +106,14 @@ export default function Home({ posts }) {
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
               borderRadius="md"
               width="120px"
-              height="100%" // stretch to match Flex height
+              height="100%"
             >
               Next
             </Button>
           </Flex>
 
           {/* Posts Grid */}
-          <SimpleGrid columns={[2, 2, 4]} gap={4}>
+          <SimpleGrid columns={[1, 2, 4]} gap={4}>
             {postsToDisplay.map(post => {
               const imageUrl =
                 post?.featuredImage?.node?.mediaDetails?.sizes?.find(
@@ -139,19 +134,24 @@ export default function Home({ posts }) {
                     boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
                     borderRadius="10px"
                     padding="4px"
-                    height="820px"
+                    height="auto"       // dynamic height
+                    minHeight="610px"   // optional minimum height
                   >
+                    {/* Content */}
                     <Box flex="1" display="flex" flexDirection="column">
-                      <img
-                        src={imageUrl}
-                        alt={post.title}
-                        style={{
-                          width: '100%',
-                          height: '250px',
-                          objectFit: 'cover',
-                          borderRadius: '8px'
-                        }}
-                      />
+                      <Box>
+                        <img
+                          src={imageUrl}
+                          alt={post.title}
+                          style={{
+                            width: '100%',
+                            height: 'auto',
+                            maxHeight: '250px',
+                            objectFit: 'cover',
+                            borderRadius: '8px'
+                          }}
+                        />
+                      </Box>
 
                       <Box fontWeight="bold" mt={2}>
                         {post.title}
@@ -194,6 +194,7 @@ export default function Home({ posts }) {
                       </Box>
                     </Box>
 
+                    {/* Read More Button */}
                     <NextLink href={post.path} passHref scroll={false}>
                       <Button
                         boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
