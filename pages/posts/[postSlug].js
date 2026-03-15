@@ -4,7 +4,7 @@ import NextLink from 'next/link'
 import {
   Textarea,
   Container,
-  Flex,
+  Heading,
   Box,
   SimpleGrid,
   Button,
@@ -227,19 +227,20 @@ export default function Post({ post }) {
               <Blog>
                 <div style={{ fontSize: '12px' }}>
                   {post.title}
-                  <Badge
-  ml={2}
-  bg="transparent"
-  p={0}
-  textTransform="none"
->
-  {dayMonth(post.date)}
-</Badge>
+                  <Badge ml={2} bg="transparent" p={0} textTransform="none">
+                    {dayMonth(post.date)}
+                  </Badge>
                 </div>
               </Blog>
             </Box>
-
-            <h1 className={styles.title}>{post.title}</h1>
+            <Heading
+              as="h1"
+              fontSize="7xl"
+              fontFamily="CartaMarina"
+              textAlign="center"
+            >
+              {post.title}
+            </Heading>
 
             {post.tags?.edges?.length > 0 && (
               <Box
