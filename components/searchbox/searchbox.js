@@ -11,7 +11,8 @@ import {
   ListItem,
   Link,
   useColorModeValue,
-  useOutsideClick
+  useOutsideClick,
+  Container
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -60,9 +61,9 @@ const SearchBox = () => {
   const wpPages =
     pagesData?.pages?.nodes?.map(page => {
       const textContent = page.content
-        .replace(/<[^>]+>/g, '')        // remove HTML tags
-        .replace(/[^\w\s]/g, ' ')       // remove punctuation
-        .toLowerCase()                   // lowercase
+        .replace(/<[^>]+>/g, '') // remove HTML tags
+        .replace(/[^\w\s]/g, ' ') // remove punctuation
+        .toLowerCase() // lowercase
       const words = textContent.split(/\s+/).filter(Boolean)
       return {
         title: page.title,
@@ -120,7 +121,8 @@ const SearchBox = () => {
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.15 }}
             position="absolute"
-            mt={2}
+            top="120%" // positions it right below the input
+            right={0} // aligns the right edge with the input's right edge
             w="260px"
             bg={menuBg}
             style={{ backdropFilter: 'blur(10px)' }}
