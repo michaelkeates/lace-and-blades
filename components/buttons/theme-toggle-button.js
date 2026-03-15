@@ -30,9 +30,9 @@ const ThemeToggleButton = () => {
   return (
     <IconButton
       aria-label="Toggle theme"
-      bg={useColorModeValue('orange.200', 'whiteAlpha.200')}
+      bg={useColorModeValue('whiteAlpha.600', 'whiteAlpha.200')}
       _hover={{
-        bg: useColorModeValue('orange.300', 'whiteAlpha.300'),
+        bg: useColorModeValue('whiteAlpha.900', 'whiteAlpha.300'),
         transform: 'none', //disable zoom effect on hover
       }}
       css={{ backdropFilter: 'blur(10px)' }}
