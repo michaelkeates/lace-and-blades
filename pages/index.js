@@ -13,6 +13,7 @@ import Bubble from '../components/emoji/default'
 import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/instagram-button'
 import LinktrButton from '../components/buttons/linktr-button'
+import YoutubeButton from '../components/buttons/youtube-button'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -35,7 +36,7 @@ const Home = () => (
 
       <Heading
         as="h1"
-        fontSize={{ base: '5xl', md: '6xl'}}
+        fontSize={{ base: '5xl', md: '6xl' }}
         fontFamily="CartaMarina"
         textAlign="center"
       >
@@ -43,7 +44,11 @@ const Home = () => (
       </Heading>
 
       <Box>
-        <Bubble text="I wrote Lace & Blades to give voice to experiences that are often hidden behind closed doors - where love, fear, and control become dangerously intertwined." />
+        <Bubble
+          text={`Lace & Blades is about turning my lived experience into action and support. From survival to justice, this space shares support from multiple organisations, the impact of coercive control, and the fight to rebuild life after sexual assault and trauma. But this is more than storytelling. It is a call for change. Lace & Blades has taken on the challenges on the housing and safeguarding failures with the Government systems. Pushing for change. Because survival should never depend on employment status, location, or silence.
+
+Real Stories | Domestic Abuse | System Change`}
+        />
       </Box>
 
       <Divider />
@@ -54,6 +59,7 @@ const Home = () => (
         gap={4}
         mt={4}
       >
+        <YoutubeButton />
         <TikTokButton />
         <LinkedinButton />
         <LinktrButton />
@@ -67,10 +73,10 @@ const Home = () => (
         paddingBottom={12}
       >
         <Image
-          src="/images/IMG-20260222-WA0005.jpg"
+          src="/images/IMG-20260320-WA0004.jpg"
           alt="Lace and Blades book cover"
-          width={300}
-          height={450}
+          width={550}
+          height={350}
           objectFit="cover"
           borderRadius="md"
         />

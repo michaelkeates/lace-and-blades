@@ -1,4 +1,3 @@
-// components/navbar.js
 'use client'
 
 import NextLink from 'next/link'
@@ -7,29 +6,32 @@ import {
   Box,
   Link,
   Stack,
-  Heading,
   Flex,
   Menu,
-  MenuItem,
   MenuList,
   MenuButton,
   IconButton,
   useColorModeValue,
   Button,
-  useDisclosure
+  useDisclosure,
+  Divider,
+  Text
 } from '@chakra-ui/react'
 import { HamburgerIcon } from '@chakra-ui/icons'
 import {
   LuMenu,
-  LuClipboard,
   LuBook,
   LuCastle,
   LuPhone,
   LuShoppingBag,
   LuFileHeart,
   LuPersonStanding,
-  LuDoorClosed
+  LuDoorClosed,
+  LuInstagram,
+  LuLink,
+  LuYoutube
 } from 'react-icons/lu'
+import { FaTiktok } from 'react-icons/fa'
 
 import Logo from './logo'
 import ThemeToggleButton from './buttons/theme-toggle-button'
@@ -42,79 +44,95 @@ const allMenuItems = [
   {
     label: "Georgia's Law",
     icon: <LuCastle size={18} />,
-    path: '/georgias-law',
-    type: 'icon'
+    path: '/georgias-law'
   },
   {
     label: 'Support & Helplines',
     icon: <LuPhone size={18} />,
-    path: '/support-helplines',
-    type: 'icon'
+    path: '/support-helplines'
   },
-  { label: 'Blog', icon: <LuBook size={18} />, path: '/posts', type: 'icon' },
+  { label: 'Blog', icon: <LuBook size={18} />, path: '/posts' },
   {
     label: 'Support Agencies Information',
     icon: <LuBook size={18} />,
-    path: '/get-information-agencies',
-    type: 'icon'
+    path: '/get-information-agencies'
   },
   {
     label: 'Giving Back - Donations & Fundraisers',
     icon: <LuFileHeart size={18} />,
-    path: '/giving-back-donations-fundraisers',
-    type: 'icon'
+    path: '/giving-back-donations-fundraisers'
   },
   {
     label: 'Speaking & Testimony',
     icon: <LuPersonStanding size={18} />,
-    path: '/speaking-testimony',
-    type: 'icon'
+    path: '/speaking-testimony'
   },
   {
     label: 'Shop - Buy the Book',
     icon: <LuShoppingBag size={18} />,
-    path: '/shop',
-    type: 'icon'
+    path: '/shop'
   },
   {
     label: "Questions we don't want to answer",
     icon: <LuBook size={18} />,
-    path: '/questions-we-dont-want-to-answer',
-    type: 'icon'
+    path: '/questions-we-dont-want-to-answer'
   },
   {
     label: 'Campaign News & Action',
     icon: <LuBook size={18} />,
-    path: '/media-press',
-    type: 'icon'
+    path: '/media-press'
   },
   {
     label: 'Terms, Transparency, Privacy & Affiliations',
     icon: <LuBook size={18} />,
-    path: '/terms-transparency-privacy-affiliations',
-    type: 'icon'
-  },
+    path: '/terms-transparency-privacy-affiliations'
+  }
+]
+
+const adminItems = [
   {
     label: 'Admin Login',
     icon: <LuDoorClosed size={18} />,
     path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
-    type: 'icon',
+    external: true
+  }
+]
+
+const socialItems = [
+  {
+    label: 'Instagram',
+    icon: <LuInstagram size={18} />,
+    path: 'https://www.instagram.com/lace_blades/',
+    external: true
+  },
+  {
+    label: 'Linktree',
+    icon: <LuLink size={18} />,
+    path: 'https://linktr.ee/laceandblades/',
+    external: true
+  },
+  {
+    label: 'TikTok',
+    icon: <FaTiktok size={18} />,
+    path: 'https://www.tiktok.com/@lace_blades?_r=1&_t=zn-92jym5mhogm/',
+    external: true
+  },
+  {
+    label: 'YouTube',
+    icon: <LuYoutube size={18} />,
+    path: 'https://www.youtube.com/@Lace-BladesGrace',
     external: true
   }
 ]
 
 const Navbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure()
+
   const menuBg = useColorModeValue(
     'rgba(206,158,224,0.95)',
     'rgba(36,31,39,0.95)'
   )
-  const menuHover = useColorModeValue(
-    'rgba(141,84,180,0.9)',
-    'rgba(81,43,113,0.9)'
-  )
 
-  // Reusable function for rendering a menu item
   const renderMenuItem = item => {
     if (item.external) {
       return (
@@ -130,7 +148,7 @@ const Navbar = () => {
           justifyContent="center"
           p={2}
           borderRadius="md"
-          _hover={{ bg: 'whiteAlpha.200' }}
+          _hover={{ bg: 'whiteAlpha.200', transform: 'scale(1.05)' }}
         >
           {item.icon && <Box mb={1}>{item.icon}</Box>}
           <Box fontSize="xs" textAlign="center">
@@ -138,27 +156,27 @@ const Navbar = () => {
           </Box>
         </Link>
       )
-    } else {
-      return (
-        <NextLink key={item.label} href={item.path} passHref legacyBehavior>
-          <Flex
-            as={Link}
-            direction="column"
-            align="center"
-            cursor="pointer"
-            onClick={onClose}
-            p={2}
-            borderRadius="md"
-            _hover={{ bg: 'whiteAlpha.200' }}
-          >
-            {item.icon && <Box mb={1}>{item.icon}</Box>}
-            <Box fontSize="xs" textAlign="center">
-              {item.label}
-            </Box>
-          </Flex>
-        </NextLink>
-      )
     }
+
+    return (
+      <NextLink key={item.label} href={item.path} passHref legacyBehavior>
+        <Flex
+          as={Link}
+          direction="column"
+          align="center"
+          cursor="pointer"
+          onClick={onClose}
+          p={2}
+          borderRadius="md"
+          _hover={{ bg: 'whiteAlpha.200', transform: 'scale(1.05)' }}
+        >
+          {item.icon && <Box mb={1}>{item.icon}</Box>}
+          <Box fontSize="xs" textAlign="center">
+            {item.label}
+          </Box>
+        </Flex>
+      </NextLink>
+    )
   }
 
   return (
@@ -177,61 +195,85 @@ const Navbar = () => {
         align="center"
         justify="space-between"
       >
-        {/* Logo */}
         <Flex align="center" h="40px" marginRight={2}>
           <Logo />
         </Flex>
+
         {/* Desktop Menu */}
-        <Stack
-          direction="row"
-          display={{ base: 'none', md: 'flex' }}
-          align="center"
-        >
+        <Stack direction="row" display={{ base: 'none', md: 'flex' }}>
           <Menu isOpen={isOpen} onClose={onClose}>
             <MenuButton
               as={Button}
               onClick={onOpen}
               leftIcon={<LuMenu />}
               bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              opacity={0.6}
             >
               Menu
             </MenuButton>
+
             <MenuList
               bg={menuBg}
               style={{ backdropFilter: 'blur(10px)' }}
               maxW="400px"
               minW="300px"
-              w="fit-content"
             >
-              {/* Icon Grid */}
-              <Flex mb={2} px={2}>
-                <Box
-                  display="grid"
-                  gridTemplateColumns="repeat(4, 1fr)"
-                  gap={1}
-                  w="100%"
-                  justifyItems="center"
-                >
-                  {allMenuItems
-                    .filter(item => item.type === 'icon')
-                    .map(renderMenuItem)}
-                </Box>
-              </Flex>
+              {/* MAIN GRID */}
+              <Box
+                display="grid"
+                gridTemplateColumns="repeat(4, 1fr)"
+                gap={1}
+                p={2}
+              >
+                {allMenuItems.map(renderMenuItem)}
+              </Box>
+
+              {/* ADMIN */}
+              <Divider my={2} />
+              <Text
+                px={3}
+                fontSize="xs"
+                fontWeight="bold"
+                textTransform="uppercase"
+                opacity={0.6}
+              >
+                Admin
+              </Text>
+              <Box
+                display="grid"
+                gridTemplateColumns="repeat(4, 1fr)"
+                gap={1}
+                px={2}
+              >
+                {adminItems.map(renderMenuItem)}
+              </Box>
+
+              {/* SOCIAL */}
+              <Divider my={2} />
+              <Text
+                px={3}
+                fontSize="xs"
+                fontWeight="bold"
+                textTransform="uppercase"
+                opacity={0.6}
+              >
+                Social Links
+              </Text>
+              <Box
+                display="grid"
+                gridTemplateColumns="repeat(4, 1fr)"
+                gap={1}
+                px={2}
+                pb={2}
+              >
+                {socialItems.map(renderMenuItem)}
+              </Box>
             </MenuList>
           </Menu>
         </Stack>
 
-        {/* Right side social & theme buttons */}
+        {/* Right side */}
         <Flex flex={1} ml={1} justify="flex-end" align="center">
-          <Box ml={2}>
-            <TikTokButton />
-          </Box>
-          <Box ml={2}>
-            <LinkedinButton />
-          </Box>
-          <Box ml={2}>
-            <LinktrButton />
-          </Box>
           <Box ml={2}>
             <SearchBox />
           </Box>
@@ -239,7 +281,7 @@ const Navbar = () => {
             <ThemeToggleButton />
           </Box>
 
-          {/* Mobile Menu */}
+          {/* Mobile */}
           <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
             <Menu isLazy>
               <MenuButton
@@ -247,22 +289,64 @@ const Navbar = () => {
                 icon={<HamburgerIcon />}
                 variant="outline"
                 aria-label="Options"
-                _focus={{ boxShadow: 'none' }}
               />
+
               <MenuList
                 bg={menuBg}
-                css={{ backdropFilter: 'blur(10px)' }}
-                maxW="400px"
-                w="fit-content"
+                style={{ backdropFilter: 'blur(10px)' }}
+                maxW="300px"
               >
+                {/* MAIN */}
                 <Box
                   display="grid"
                   gridTemplateColumns="repeat(2, 1fr)"
                   gap={2}
                   p={2}
-                  justifyItems="center"
                 >
                   {allMenuItems.map(renderMenuItem)}
+                </Box>
+
+                {/* ADMIN */}
+                <Divider my={2} />
+                <Text
+                  px={3}
+                  fontSize="xs"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                  opacity={0.6}
+                >
+                  Admin
+                </Text>
+
+                <Box
+                  display="grid"
+                  gridTemplateColumns="repeat(2, 1fr)"
+                  gap={2}
+                  px={2}
+                >
+                  {adminItems.map(renderMenuItem)}
+                </Box>
+
+                {/* SOCIAL */}
+                <Divider my={2} />
+                <Text
+                  px={3}
+                  fontSize="xs"
+                  fontWeight="bold"
+                  textTransform="uppercase"
+                  opacity={0.6}
+                >
+                  Social Links
+                </Text>
+
+                <Box
+                  display="grid"
+                  gridTemplateColumns="repeat(2, 1fr)"
+                  gap={2}
+                  px={2}
+                  pb={2}
+                >
+                  {socialItems.map(renderMenuItem)}
                 </Box>
               </MenuList>
             </Menu>
