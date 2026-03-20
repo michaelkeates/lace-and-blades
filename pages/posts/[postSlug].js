@@ -22,35 +22,12 @@ import { getApolloClient } from '../../lib/wordpress'
 import { Blog } from '../../components/work'
 import AuthorBio from '../../components/post/author-bio'
 import styles from '../../styles/Home.module.css'
-import parse from 'html-react-parser'
+import { parseHtmlContent } from '../../lib/wordpress-parser'
 import {
   GET_POST_BY_SLUG,
   useCreateCommentMutation
 } from '../../lib/queries'
 import { useEffect, useRef, useState } from 'react'
-
-/* ---------------------------
-   IMAGE WRAPPER
----------------------------- */
-export function parseHtml(html) {
-  if (typeof window !== 'undefined') {
-    const doc = new DOMParser().parseFromString(html, 'text/html')
-    const images = doc.querySelectorAll('img')
-
-    images.forEach(img => {
-      const src = img.getAttribute('src')
-      const wrapper = document.createElement('a')
-      wrapper.setAttribute('href', src)
-      wrapper.setAttribute('target', '_blank')
-      img.parentNode.replaceChild(wrapper, img)
-      wrapper.appendChild(img)
-    })
-
-    return doc.body.innerHTML
-  } else {
-    return html
-  }
-}
 
 /* ---------------------------
    DATE FORMAT
@@ -92,7 +69,6 @@ export default function Post({ post }) {
   const [authorName, setAuthorName] = useState('')
   const [email, setEmail] = useState('')
   const [createCommentMutation] = useCreateCommentMutation()
-  const renderedPDFs = new Set()
 
   /* ---------------------------
      SCROLL TO TOP ON LOAD
@@ -100,53 +76,11 @@ export default function Post({ post }) {
   useEffect(() => window.scrollTo(0, 0), [])
 
   /* ---------------------------
-     PARSE CONTENT (VIDEOS + PDFs)
+     PARSE CONTENT
+     Uses wordpress-parser to render
+     images, videos, PDFs, buttons, pullquotes
   ---------------------------- */
-  const contentWithMedia = parse(parseHtml(post.content), {
-    replace: node => {
-      // VIDEO
-      if (node.name === 'div' && node.attribs?.class?.includes('wp-block-embed__wrapper')) {
-        // Find the <video> inside
-        const videoNode = node.children?.find(c => c.name === 'div')?.children?.find(c => c.name === 'video')
-        const src = videoNode?.children?.[0]?.attribs?.src || videoNode?.attribs?.src
-        if (src) {
-          return (
-            <video
-              controls
-              style={{ width: '100%', maxWidth: '640px', display: 'block', margin: '20px auto' }}
-            >
-              <source src={src} type="video/mp4" />
-            </video>
-          )
-        }
-      }
-
-      // PDF
-      if (node.name === 'a' && node.attribs?.href?.toLowerCase().endsWith('.pdf')) {
-        const href = node.attribs.href
-        if (renderedPDFs.has(href)) return <></>
-        renderedPDFs.add(href)
-        const title = node.children?.[0]?.data || 'PDF Document'
-
-        return (
-          <Box my={4} width="100%" key={href}>
-            {!isMobile ? (
-              <iframe src={href} width="100%" height="600px" style={{ border: 'none' }} />
-            ) : (
-              <Button as="a" href={href} target="_blank" rel="noopener noreferrer" width="100%" colorScheme="blue">
-                Open PDF
-              </Button>
-            )}
-            <Box mt={2}>
-              <a href={href} target="_blank" rel="noopener noreferrer">{title}</a>
-            </Box>
-          </Box>
-        )
-      }
-
-      return undefined
-    }
-  })
+  const contentWithMedia = parseHtmlContent(post.content, isMobile)
 
   /* ---------------------------
      COMMENT SUBMIT
