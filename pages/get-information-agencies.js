@@ -45,7 +45,7 @@ export default function GeorgiasLaw({ page }) {
 
   return (
     <layout>
-      <Container maxW="4xl" mt="-7rem">
+      <Container maxW="4xl">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>
@@ -73,13 +73,20 @@ export default function GeorgiasLaw({ page }) {
                       height="400px"
                     />
                     <Box mt={2} display="flex" justifyContent="center">
-<Link href={pdf.href} isExternal _hover={{ textDecoration: 'none' }}>
-  <Button
-    bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-  >
-    {pdf.title}
-  </Button>
-</Link>
+                      <Link
+                        href={pdf.href}
+                        isExternal
+                        _hover={{ textDecoration: 'none' }}
+                      >
+                        <Button
+                          bg={useColorModeValue(
+                            'whiteAlpha.500',
+                            'whiteAlpha.200'
+                          )}
+                        >
+                          {pdf.title}
+                        </Button>
+                      </Link>
                     </Box>
                   </Box>
                 ))}

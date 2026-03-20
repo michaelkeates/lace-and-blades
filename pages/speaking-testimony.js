@@ -10,7 +10,7 @@ export default function SpeakingTestimony({ page }) {
 
   return (
     <layout>
-      <Container maxW="4xl" mt="-7rem">
+      <Container maxW="4xl">
         <Section delay={0.1}>
           <main className={styles.main}>
             <div>

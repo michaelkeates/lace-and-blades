@@ -177,7 +177,7 @@ export default function GivingBackDonationsFundraisers({ page }) {
   const content = parse(page.content, { replace: replaceNode })
 
   return (
-    <Container maxW="4xl" mt="-7rem">
+      <Container maxW="4xl">
       <Section delay={0.1}>
         <main className={styles.main}>
           <h1>{page.title}</h1>
@@ -196,45 +196,53 @@ export default function GivingBackDonationsFundraisers({ page }) {
           </Box>
 
           {/* PDFs below content */}
-{pdfs.length > 0 && (
-  <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mb={10} mt={6}>
-    {pdfs.map(pdf => (
-      <Box
-        key={pdf.href}
-        borderWidth="1px"
-        borderRadius="lg"
-        overflow="hidden"
-        p={3}
-      >
-        <embed
-          src={pdf.href}
-          type="application/pdf"
-          width="100%"
-          height="300px"
-        />
-        <Box mt={2} display="flex" justifyContent="center">
-          <Link
-            href={pdf.href}
-            isExternal
-            width="100%"
-            _hover={{ textDecoration: 'none' }}
-          >
-            <Button
-              width="100%" // Button fills column width
-              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-              _hover={{ bg: useColorModeValue('whiteAlpha.600', 'whiteAlpha.300') }}
-              whiteSpace="normal" // Allow text to wrap
-              textAlign="center"
-              py={4}
-            >
-              {pdf.title}
-            </Button>
-          </Link>
-        </Box>
-      </Box>
-    ))}
-  </SimpleGrid>
-)}
+          {pdfs.length > 0 && (
+            <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6} mb={10} mt={6}>
+              {pdfs.map(pdf => (
+                <Box
+                  key={pdf.href}
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  p={3}
+                >
+                  <embed
+                    src={pdf.href}
+                    type="application/pdf"
+                    width="100%"
+                    height="300px"
+                  />
+                  <Box mt={2} display="flex" justifyContent="center">
+                    <Link
+                      href={pdf.href}
+                      isExternal
+                      width="100%"
+                      _hover={{ textDecoration: 'none' }}
+                    >
+                      <Button
+                        width="100%" // Button fills column width
+                        bg={useColorModeValue(
+                          'whiteAlpha.500',
+                          'whiteAlpha.200'
+                        )}
+                        _hover={{
+                          bg: useColorModeValue(
+                            'whiteAlpha.600',
+                            'whiteAlpha.300'
+                          )
+                        }}
+                        whiteSpace="normal" // Allow text to wrap
+                        textAlign="center"
+                        py={4}
+                      >
+                        {pdf.title}
+                      </Button>
+                    </Link>
+                  </Box>
+                </Box>
+              ))}
+            </SimpleGrid>
+          )}
         </main>
       </Section>
     </Container>
