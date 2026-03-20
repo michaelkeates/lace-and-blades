@@ -37,13 +37,13 @@ const SearchBox = () => {
     'rgba(100, 100, 100, 0.9)'
   )
   // Inside your component
-const iconOpacity = useColorModeValue(1, 0.7)      // 1 for light, 0.7 for dark
-const placeholderOpacity = useColorModeValue(1, 0.6)
-const textColor = useColorModeValue('blackAlpha.900', 'whiteAlpha.800')
-const placeholderColor = useColorModeValue(
-  `rgba(0,0,0,${placeholderOpacity})`,
-  `rgba(255,255,255,${placeholderOpacity})`
-)
+  const iconOpacity = useColorModeValue(1, 0.7) // 1 for light, 0.7 for dark
+  const placeholderOpacity = useColorModeValue(1, 0.6)
+  const textColor = useColorModeValue('blackAlpha.900', 'whiteAlpha.800')
+  const placeholderColor = useColorModeValue(
+    `rgba(0,0,0,${placeholderOpacity})`,
+    `rgba(255,255,255,${placeholderOpacity})`
+  )
 
   useOutsideClick({
     ref,
@@ -93,7 +93,7 @@ const placeholderColor = useColorModeValue(
   const closeSearch = () => setQuery('')
 
   return (
-    <Box ref={ref} position="relative" w="110px">
+    <Box ref={ref} position="relative" w={{ base: "120px", md: "250px" }}>
       <InputGroup
         h="40px"
         bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')}
@@ -105,18 +105,18 @@ const placeholderColor = useColorModeValue(
           <SearchIcon opacity={iconOpacity} />
         </InputLeftElement>
 
-<Input
-  h="40px"
-  placeholder="Search..."
-  value={query}
-  onChange={e => setQuery(e.target.value)}
-  border="none"
-  _focus={{ boxShadow: 'none' }}
-  color={textColor}
-  caretColor={textColor}
-  fontSize="sm"
-  _placeholder={{ color: placeholderColor }}
-/>
+        <Input
+          h="40px"
+          placeholder="Search..."
+          value={query}
+          onChange={e => setQuery(e.target.value)}
+          border="none"
+          _focus={{ boxShadow: 'none' }}
+          color={textColor}
+          caretColor={textColor}
+          fontSize="sm"
+          _placeholder={{ color: placeholderColor }}
+        />
       </InputGroup>
 
       <AnimatePresence>

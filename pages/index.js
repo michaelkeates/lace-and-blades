@@ -39,6 +39,7 @@ const Home = () => (
         fontSize={{ base: '5xl', md: '6xl' }}
         fontFamily="CartaMarina"
         textAlign="center"
+        paddingBottom={4}
       >
         Lace &Blades
       </Heading>

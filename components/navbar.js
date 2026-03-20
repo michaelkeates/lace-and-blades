@@ -35,9 +35,6 @@ import { FaTiktok } from 'react-icons/fa'
 
 import Logo from './logo'
 import ThemeToggleButton from './buttons/theme-toggle-button'
-import TikTokButton from './buttons/tiktok-button'
-import LinkedinButton from './buttons/instagram-button'
-import LinktrButton from './buttons/linktr-button'
 import SearchBox from './searchbox/searchbox'
 
 const allMenuItems = [
