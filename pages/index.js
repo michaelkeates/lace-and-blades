@@ -45,9 +45,7 @@ const Home = () => (
 
       <Box>
         <Bubble
-          text={`Lace & Blades is about turning my lived experience into action and support. From survival to justice, this space shares support from multiple organisations, the impact of coercive control, and the fight to rebuild life after sexual assault and trauma. But this is more than storytelling. It is a call for change. Lace & Blades has taken on the challenges on the housing and safeguarding failures with the Government systems. Pushing for change. Because survival should never depend on employment status, location, or silence.
-
-Real Stories | Domestic Abuse | System Change`}
+          text={`Lace & Blades is about turning my lived experience into action and support. From survival to justice, this space shares support from multiple organisations, the impact of coercive control, and the fight to rebuild life after sexual assault and trauma. But this is more than storytelling. It is a call for change. Lace & Blades has taken on the challenges on the housing and safeguarding failures with the Government systems. Pushing for change. Because survival should never depend on employment status, location, or silence.`}
         />
       </Box>
 
