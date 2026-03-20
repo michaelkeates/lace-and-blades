@@ -75,7 +75,7 @@ Real Stories | Domestic Abuse | System Change`}
         <Image
           src="/images/IMG-20260320-WA0004.jpg"
           alt="Lace and Blades book cover"
-          width={550}
+          width={650}
           height={350}
           objectFit="cover"
           borderRadius="md"

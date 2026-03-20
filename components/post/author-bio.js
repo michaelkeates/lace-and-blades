@@ -49,12 +49,15 @@ const AuthorBio = () => (
 
     <Section delay={0.1}>
       <Paragraph>
-        Lace & Blades didn't begin as a book. It was the first words and were
-        never meant to be read. Fragments written in fear just to keep reality.
-        I didn't know it was abuse. I thought I was failing at a relationship.
-        The darkness arrived quietly - through affection and control disguised
-        as care. As control and trauma bonding tightened, writing became my
-        lifeline, real-time truth with no polish or hindsight.
+        Lace & Blades is about turning my lived experience into action and
+        support. From survival to justice, this space shares support from
+        multiple organisations, the impact of coercive control, and the fight to
+        rebuild life after sexual assault and trauma. But this is more than
+        storytelling. It is a call for change. Lace & Blades has taken on the
+        challenges on the housing and safeguarding failures with the Government
+        systems. Pushing for change. Because survival should never depend on
+        employment status, location, or silence. Real Stories | Domestic Abuse |
+        System Change
       </Paragraph>
     </Section>
   </Section>

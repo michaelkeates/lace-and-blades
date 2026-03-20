@@ -11,29 +11,26 @@ import {
   Input,
   useToast,
   useColorModeValue,
-  chakra,
   Badge,
   useBreakpointValue
 } from '@chakra-ui/react'
 import { ChevronRightIcon } from '@chakra-ui/icons'
 import Paragraph from '../../components/paragraph'
 import Section from '../../components/section'
-import Image from 'next/image'
 import Layout from '../../components/layouts/article'
 import { getApolloClient } from '../../lib/wordpress'
-import { Title, Portfolio, Blog, WorkImage, Meta } from '../../components/work'
-import styles from '../../styles/Home.module.css'
+import { Blog } from '../../components/work'
 import AuthorBio from '../../components/post/author-bio'
+import styles from '../../styles/Home.module.css'
 import parse from 'html-react-parser'
 import {
   GET_POST_BY_SLUG,
-  GET_ALL_POSTS,
   useCreateCommentMutation
 } from '../../lib/queries'
 import { useEffect, useRef, useState } from 'react'
 
 /* ---------------------------
-   IMAGE WRAPPING FUNCTION
+   IMAGE WRAPPER
 ---------------------------- */
 export function parseHtml(html) {
   if (typeof window !== 'undefined') {
@@ -55,11 +52,14 @@ export function parseHtml(html) {
   }
 }
 
+/* ---------------------------
+   DATE FORMAT
+---------------------------- */
 function dayMonth(data) {
   const monthNames = [
     'null',
     'January',
-    'Febuary',
+    'February',
     'March',
     'April',
     'May',
@@ -72,9 +72,9 @@ function dayMonth(data) {
     'December'
   ]
 
-  var month = parseInt(data.slice(5, 7))
-  var day = data.slice(8, 10)
-  var year = data.slice(0, 4)
+  let month = parseInt(data.slice(5, 7))
+  let day = data.slice(8, 10)
+  let year = data.slice(0, 4)
 
   if (day[0] === '0') day = day.slice(1)
 
@@ -87,35 +87,42 @@ function dayMonth(data) {
 export default function Post({ post }) {
   const toast = useToast()
   const blockquoteRefs = useRef([])
-  const isMounted = useRef(false)
-
+  const isMobile = useBreakpointValue({ base: true, md: false })
   const [newComment, setNewComment] = useState('')
   const [authorName, setAuthorName] = useState('')
   const [email, setEmail] = useState('')
-  const [isCommentValid, setIsCommentValid] = useState(true)
-
-  const isMobile = useBreakpointValue({ base: true, md: false })
   const [createCommentMutation] = useCreateCommentMutation()
-
-  /* ---------------------------
-     SCROLL TO TOP AFTER ANIMATION
-  ---------------------------- */
-  useEffect(() => {
-    // Instantly scroll to top on page load
-    window.scrollTo(0, 0)
-  }, [])
-
-  /* ---------------------------
-     PDF EMBEDDING LOGIC
-  ---------------------------- */
   const renderedPDFs = new Set()
-  const contentWithEmbeddedPDFs = parse(parseHtml(post.content), {
+
+  /* ---------------------------
+     SCROLL TO TOP ON LOAD
+  ---------------------------- */
+  useEffect(() => window.scrollTo(0, 0), [])
+
+  /* ---------------------------
+     PARSE CONTENT (VIDEOS + PDFs)
+  ---------------------------- */
+  const contentWithMedia = parse(parseHtml(post.content), {
     replace: node => {
-      if (
-        node.name === 'a' &&
-        node.attribs?.href &&
-        node.attribs.href.toLowerCase().endsWith('.pdf')
-      ) {
+      // VIDEO
+      if (node.name === 'div' && node.attribs?.class?.includes('wp-block-embed__wrapper')) {
+        // Find the <video> inside
+        const videoNode = node.children?.find(c => c.name === 'div')?.children?.find(c => c.name === 'video')
+        const src = videoNode?.children?.[0]?.attribs?.src || videoNode?.attribs?.src
+        if (src) {
+          return (
+            <video
+              controls
+              style={{ width: '100%', maxWidth: '640px', display: 'block', margin: '20px auto' }}
+            >
+              <source src={src} type="video/mp4" />
+            </video>
+          )
+        }
+      }
+
+      // PDF
+      if (node.name === 'a' && node.attribs?.href?.toLowerCase().endsWith('.pdf')) {
         const href = node.attribs.href
         if (renderedPDFs.has(href)) return <></>
         renderedPDFs.add(href)
@@ -123,34 +130,20 @@ export default function Post({ post }) {
 
         return (
           <Box my={4} width="100%" key={href}>
-            {!isMobile && (
-              <iframe
-                src={href}
-                width="100%"
-                height="600px"
-                style={{ border: 'none' }}
-              />
-            )}
-            {isMobile && (
-              <Button
-                as="a"
-                href={href}
-                target="_blank"
-                rel="noopener noreferrer"
-                width="100%"
-                colorScheme="blue"
-              >
+            {!isMobile ? (
+              <iframe src={href} width="100%" height="600px" style={{ border: 'none' }} />
+            ) : (
+              <Button as="a" href={href} target="_blank" rel="noopener noreferrer" width="100%" colorScheme="blue">
                 Open PDF
               </Button>
             )}
             <Box mt={2}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                {title}
-              </a>
+              <a href={href} target="_blank" rel="noopener noreferrer">{title}</a>
             </Box>
           </Box>
         )
       }
+
       return undefined
     }
   })
@@ -160,7 +153,6 @@ export default function Post({ post }) {
   ---------------------------- */
   const handleCommentSubmit = async () => {
     if (!authorName || !email || !newComment) {
-      setIsCommentValid(false)
       toast({
         title: 'Please fill in all fields.',
         status: 'error',
@@ -261,12 +253,14 @@ export default function Post({ post }) {
 
             <SimpleGrid paddingTop="25px" paddingBottom="25px">
               <Paragraph>
-                <div
-                  className="post-content"
-                  ref={el => (blockquoteRefs.current = el)}
-                >
-                  {contentWithEmbeddedPDFs}
-                </div>
+                <Box w="100%" display="flex" flexDirection="column" alignItems="center">
+                  <div
+                    className="post-content"
+                    ref={el => (blockquoteRefs.current = el)}
+                  >
+                    {contentWithMedia}
+                  </div>
+                </Box>
               </Paragraph>
             </SimpleGrid>
 
