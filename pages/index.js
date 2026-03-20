@@ -65,20 +65,22 @@ Real Stories | Domestic Abuse | System Change`}
         <LinktrButton />
       </Box>
       <Divider paddingTop={4} />
-<Box
-  position="relative"
-  width={{ base: '90%', md: '650px' }}  // responsive width
-  height={{ base: '200px', md: '260px' }} // give a minimum height on mobile
-  borderRadius="md"
-  overflow="hidden"
->
-  <Image
-    src="/images/IMG-20260320-WA0004.jpg"
-    alt="Lace and Blades book cover"
-    fill
-    style={{ objectFit: 'cover' }}
-  />
-</Box>
+      <Box
+        position="relative"
+        width={{ base: '90%', md: '650px' }} // responsive width
+        height={{ base: '200px', md: '260px' }} // give a minimum height on mobile
+        borderRadius="md"
+        overflow="hidden"
+        marginTop={5}
+        marginBottom={5}
+      >
+        <Image
+          src="/images/IMG-20260320-WA0004.jpg"
+          alt="Lace and Blades book cover"
+          fill
+          style={{ objectFit: 'cover' }}
+        />
+      </Box>
       <Divider />
     </Container>
   </Layout>
