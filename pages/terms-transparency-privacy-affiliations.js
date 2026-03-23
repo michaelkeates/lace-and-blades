@@ -1,33 +1,64 @@
-// pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
-import { Container } from '@chakra-ui/react'
+import { 
+  Container, 
+  Heading, 
+  Box, 
+  useBreakpointValue 
+} from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
+import Layout from '../components/layouts/article'
 import { GET_TERMS_PAGE } from '../lib/queries'
+import { parseHtmlContent } from '../lib/wordpress-parser'
 
-export default function Terms({ page }) {
+export default function TermsTransparencyPrivacy({ page }) {
+  const isMobile = useBreakpointValue({ base: true, md: false })
+
   if (!page) return <p>Page not found</p>
 
+  // The parser handles the Georgia font, line height, and any columns/links
+  const renderedContent = parseHtmlContent(page.content, isMobile)
+
   return (
-    <layout>
-      <Container maxW="4xl">
+    <Layout title={page.title}>
+      <Container maxW="4xl" mt="4rem">
         <Section delay={0.1}>
           <main className={styles.main}>
-            <div>
-              <h1>{page.title}</h1>
+            {/* Standardized CartaMarina Heading */}
+            <Heading 
+              as="h1" 
+              textAlign="center" 
+              fontFamily="CartaMarina" 
+              fontSize={{ base: "4xl", md: "6xl" }} // Slightly smaller for long titles
+              mb={6}
+            >
+              {page.title}
+            </Heading>
+
             {page.featuredImage && (
-              <img
-                className={styles.featuredImage}
-                src={page.featuredImage.node.sourceUrl}
-                alt={page.title}
-              />
+              <Box display="flex" justifyContent="center" mb={10}>
+                <img
+                  className={styles.featuredImage}
+                  src={page.featuredImage.node.sourceUrl}
+                  alt={page.title}
+                  style={{ 
+                    width: '100%', 
+                    maxWidth: '800px', 
+                    height: 'auto', 
+                    borderRadius: '15px' 
+                  }}
+                />
+              </Box>
             )}
-              <div dangerouslySetInnerHTML={{ __html: page.content }} />
-            </div>
+
+            {/* Legal content rendered with the custom parser logic */}
+            <Box className="post-content" pb={20}>
+              {renderedContent}
+            </Box>
           </main>
         </Section>
       </Container>
-    </layout>
+    </Layout>
   )
 }
 

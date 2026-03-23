@@ -1,101 +1,151 @@
-// pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
 import {
-  Container,
   Box,
+  Heading,
   SimpleGrid,
-  Link,
   Button,
-  useColorModeValue
+  useColorModeValue,
+  useBreakpointValue
 } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
+import Layout from '../components/layouts/article'
 import { GET_SUPPORT_AGENCIES_INFORMATION } from '../lib/queries'
+import { parseHtmlContent } from '../lib/wordpress-parser'
 import parse from 'html-react-parser'
-import NextLink from 'next/link'
 
 export default function GeorgiasLaw({ page }) {
+  const isMobile = useBreakpointValue({ base: true, md: false })
+
   if (!page) return <p>Page not found</p>
 
-  const renderedPDFs = new Set()
   const pdfs = []
+  const renderedPDFs = new Set()
 
-  const contentWithoutPDFLinks = parse(page.content, {
+  // 1. Extraction logic (The one that works for you)
+  parse(page.content, {
     replace: node => {
       if (
         node.name === 'a' &&
-        node.attribs?.href &&
-        node.attribs.href.toLowerCase().endsWith('.pdf')
+        node.attribs?.href?.toLowerCase().endsWith('.pdf')
       ) {
         const href = node.attribs.href
-
-        if (renderedPDFs.has(href)) return <></>
-        renderedPDFs.add(href)
-
-        const title = node.children?.[0]?.data || 'PDF Document'
-
-        pdfs.push({ href, title })
-
-        return <></> // remove original link
+        if (!renderedPDFs.has(href)) {
+          renderedPDFs.add(href)
+          const title = node.children?.[0]?.data || 'PDF Document'
+          pdfs.push({ href, title })
+        }
       }
-
-      return undefined
     }
   })
 
+  const renderedText = parseHtmlContent(page.content, isMobile, true)
+
   return (
-    <layout>
-      <Container maxW="4xl">
+    <Layout title={page.title}>
+      {/* 2. Using a Box instead of Container to bypass narrow constraints */}
+      <Box px={{ base: 4, md: 8, lg: 20 }} py={10} mx="auto" maxW="1400px">
         <Section delay={0.1}>
           <main className={styles.main}>
-            <div>
-              <h1>{page.title}</h1>
+            <Heading
+              as="h1"
+              textAlign="center"
+              fontFamily="CartaMarina"
+              fontSize={{ base: '5xl', md: '7xl' }}
+              mb={6}
+            >
+              {page.title}
+            </Heading>
 
-              {page.featuredImage && (
+            {page.featuredImage && (
+              <Box display="flex" justifyContent="center" mb={10}>
                 <img
                   className={styles.featuredImage}
                   src={page.featuredImage.node.sourceUrl}
                   alt={page.title}
+                  // 3. Ensuring the image stays large (Adjust width as needed)
+                  style={{
+                    width: '100%',
+                    maxWidth: '800px',
+                    height: 'auto',
+                    borderRadius: '15px'
+                  }}
                 />
-              )}
+              </Box>
+            )}
 
-              {/* Render non-PDF content */}
-              <Box mb={10}>{contentWithoutPDFLinks}</Box>
+            <SimpleGrid
+              columns={{ base: 1, md: 2, lg: 3 }}
+              spacing={10}
+              w="100%"
+            >
+              {pdfs.map((pdf, idx) => {
+                const thumbnailUrl = pdf.href.replace(/\.pdf$/i, '-pdf.jpg')
 
-              {/* Render PDFs in 4-column grid */}
-              <SimpleGrid columns={{ base: 1, md: 2, lg: 3 }} spacing={6}>
-                {pdfs.map(pdf => (
-                  <Box key={pdf.href}>
-                    <embed
-                      src={pdf.href}
-                      type="application/pdf"
-                      width="100%"
-                      height="400px"
-                    />
-                    <Box mt={2} display="flex" justifyContent="center">
-                      <Link
-                        href={pdf.href}
-                        isExternal
-                        _hover={{ textDecoration: 'none' }}
-                      >
-                        <Button
-                          bg={useColorModeValue(
-                            'whiteAlpha.500',
-                            'whiteAlpha.200'
-                          )}
+                return (
+                  <Box key={idx} display="flex" flexDirection="column">
+                    <Box
+                      borderRadius="lg"
+                      overflow="hidden"
+                      boxShadow="lg"
+                      height={isMobile ? 'auto' : '450px'}
+                      bg="blackAlpha.50"
+                      border="1px solid"
+                      borderColor={useColorModeValue(
+                        'gray.100',
+                        'whiteAlpha.100'
+                      )}
+                    >
+                      {isMobile ? (
+                        <img
+                          src={thumbnailUrl}
+                          alt={pdf.title}
+                          style={{ width: '100%', height: 'auto' }}
+                          onError={e => {
+                            e.target.src = pdf.href.replace(/\.pdf$/i, '.jpg')
+                          }}
+                        />
+                      ) : (
+                        <object
+                          data={pdf.href}
+                          type="application/pdf"
+                          width="100%"
+                          height="100%"
                         >
-                          {pdf.title}
-                        </Button>
-                      </Link>
+                          <Box p={4}>No Preview</Box>
+                        </object>
+                      )}
                     </Box>
+
+                    <Button
+                      as="a"
+                      href={pdf.href}
+                      target="_blank"
+                      mt={4}
+                      w="100%"
+                      fontSize="sm"
+                      whiteSpace="normal"
+                      height="auto"
+                      py={4}
+                      lineHeight="1.4"
+                      bg={useColorModeValue('whiteAlpha.900', 'whiteAlpha.200')}
+                      boxShadow="0px 4px 12px rgba(0,0,0,0.05)"
+                      _hover={{
+                        bg: useColorModeValue('gray.50', 'whiteAlpha.300')
+                      }}
+                    >
+                      📄 {pdf.title}
+                    </Button>
                   </Box>
-                ))}
-              </SimpleGrid>
-            </div>
+                )
+              })}
+            </SimpleGrid>
+
+            {/* 4. THE GRID - Forced columns with 'minChildWidth' as a backup */}
           </main>
         </Section>
-      </Container>
-    </layout>
+      </Box>
+    </Layout>
   )
 }
 

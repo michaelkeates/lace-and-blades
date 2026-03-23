@@ -1,75 +1,64 @@
-// pages/georgias-law.js
 import { getApolloClient } from '../lib/wordpress'
-import { Container, Box } from '@chakra-ui/react'
+import { 
+  Container, 
+  Heading, 
+  Box, 
+  useBreakpointValue 
+} from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
+import Layout from '../components/layouts/article'
 import { GET_MEDIA_PRESS_BOOK } from '../lib/queries'
-
-import parse from 'html-react-parser'
+import { parseHtmlContent } from '../lib/wordpress-parser'
 
 export default function MediaPress({ page }) {
+  const isMobile = useBreakpointValue({ base: true, md: false })
+
   if (!page) return <p>Page not found</p>
 
-  const renderedPDFs = new Set()
-
-  const contentWithEmbeddedPDFs = parse(page.content, {
-    replace: node => {
-      // Only process <a> tags with PDF links
-      if (
-        node.name === 'a' &&
-        node.attribs?.href &&
-        node.attribs.href.toLowerCase().endsWith('.pdf')
-      ) {
-        const href = node.attribs.href
-
-        // Deduplicate: skip if already rendered
-        if (renderedPDFs.has(href)) return <></>
-        renderedPDFs.add(href)
-
-        const title = node.children?.[0]?.data || 'PDF Document'
-
-        return (
-          <Box marginY={4} key={href}>
-            <embed
-              src={href}
-              type="application/pdf"
-              width="100%"
-              height="600px"
-            />
-            <Box marginTop={2}>
-              <a href={href} target="_blank" rel="noopener noreferrer">
-                Read More
-              </a>
-            </Box>
-          </Box>
-        )
-      }
-
-      // Explicitly remove original <a> node content
-      return undefined
-    }
-  })
+  // Use the parser - it already handles embedding PDFs and mobile thumbnails!
+  const renderedContent = parseHtmlContent(page.content, isMobile)
 
   return (
-    <layout>
-      <Container maxW="4xl">
+    <Layout title={page.title}>
+      <Container maxW="4xl" mt="4rem">
         <Section delay={0.1}>
           <main className={styles.main}>
-            <div>
-              <h1>{page.title}</h1>
+            {/* Standardized CartaMarina Heading */}
+            <Heading 
+              as="h1" 
+              textAlign="center" 
+              fontFamily="CartaMarina" 
+              fontSize={{ base: "5xl", md: "7xl" }} 
+              mb={6}
+            >
+              {page.title}
+            </Heading>
+
             {page.featuredImage && (
-              <img
-                className={styles.featuredImage}
-                src={page.featuredImage.node.sourceUrl}
-                alt={page.title}
-              />
+              <Box display="flex" justifyContent="center" mb={10}>
+                <img
+                  className={styles.featuredImage}
+                  src={page.featuredImage.node.sourceUrl}
+                  alt={page.title}
+                  style={{ 
+                    width: '100%', 
+                    maxWidth: '800px', 
+                    height: 'auto', 
+                    borderRadius: '15px' 
+                  }}
+                />
+              </Box>
             )}
-              <div>{contentWithEmbeddedPDFs}</div>
-            </div>
+
+            {/* Rendered content with embedded PDFs, columns, and proper typography */}
+            <Box className="post-content" pb={16}>
+              {renderedContent}
+            </Box>
           </main>
         </Section>
       </Container>
-    </layout>
+    </Layout>
   )
 }
 

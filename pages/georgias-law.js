@@ -1,106 +1,60 @@
-// pages/georgias-law.js
-
 import { getApolloClient } from '../lib/wordpress'
 import {
   Container,
   Box,
   Heading,
   SimpleGrid,
-  Link,
   Button,
-  useColorModeValue
+  useColorModeValue,
+  useBreakpointValue
 } from '@chakra-ui/react'
 import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
-import parse from 'html-react-parser'
+import { parseHtmlContent } from '../lib/wordpress-parser'
 
 export default function GeorgiasLaw({ page }) {
+  const isMobile = useBreakpointValue({ base: true, md: false })
+  
   if (!page) return <p>Page not found</p>
-
-  const renderedPDFs = new Set()
-  const pdfs = []
 
   const imageUrl = page?.featuredImage?.node?.sourceUrl
   const isSpecificImage = imageUrl?.includes('Lace_Blades_300DPI')
 
-  /**
-   * Remove PDFs from content and collect them
-   */
-  const contentWithoutPDFLinks = parse(page.content, {
-    replace: node => {
-      if (
-        node.name === 'a' &&
-        node.attribs?.href?.toLowerCase().endsWith('.pdf')
-      ) {
-        const href = node.attribs.href
-
-        if (renderedPDFs.has(href)) return <></>
-        renderedPDFs.add(href)
-
-        const title = node.children?.[0]?.data || 'PDF Document'
-
-        pdfs.push({ href, title })
-
-        return <></>
-      }
-
-      return undefined
-    }
-  })
+  /* Use your custom parser here! 
+     This ensures h1-h6, p, and buttons look exactly like your posts.
+  */
+  const renderedContent = parseHtmlContent(page.content, isMobile)
 
   return (
-    <Layout title="Georgias Law">
+    <Layout title="Georgia's Law">
       <Container maxW="4xl" mt="4rem">
         <Section delay={0.1}>
-          <Heading as="h1" mb={4}>
+          <Heading as="h1" mb={4} textAlign="center" fontFamily="CartaMarina" fontSize="7xl">
             {page.title}
           </Heading>
 
           {imageUrl && (
-            <img
-              className={styles.featuredImage}
-              src={imageUrl}
-              alt={page.title}
-              style={
-                isSpecificImage
-                  ? { maxWidth: '300px', height: 'auto' }
-                  : undefined
-              }
-            />
+            <Box display="flex" justifyContent="center" mb={6}>
+              <img
+                className={styles.featuredImage}
+                src={imageUrl}
+                alt={page.title}
+                style={
+                  isSpecificImage
+                    ? { maxWidth: '300px', height: 'auto' }
+                    : { maxWidth: '100%', height: 'auto' }
+                }
+              />
+            </Box>
           )}
 
-          {/* Render main page content */}
-          <Box mb={10}>{contentWithoutPDFLinks}</Box>
+          {/* This now uses all your custom styling for Headings, P, and Twitter */}
+          <Box mb={10} className="post-content">
+            {renderedContent}
+          </Box>
 
-          {/* Render PDFs in 2-column grid */}
-          <SimpleGrid columns={{ base: 1, md: 2 }} spacing={6}>
-            {pdfs.map(pdf => (
-              <Box key={pdf.href}>
-                <embed
-                  src={pdf.href}
-                  type="application/pdf"
-                  width="100%"
-                  height="500px"
-                />
-
-                <Box mt={2} display="flex" justifyContent="center">
-                  <Link
-                    href={pdf.href}
-                    isExternal
-                    _hover={{ textDecoration: 'none' }}
-                  >
-                    <Button
-                      bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
-                    >
-                      {pdf.title}
-                    </Button>
-                  </Link>
-                </Box>
-              </Box>
-            ))}
-          </SimpleGrid>
         </Section>
       </Container>
     </Layout>
