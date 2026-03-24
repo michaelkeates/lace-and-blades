@@ -207,7 +207,27 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <Stack direction="row" display={{ base: 'none', md: 'flex' }}>
           <Menu isOpen={isOpen} onClose={onClose}>
-            <MenuButton as={Button} onClick={onOpen} leftIcon={<LuMenu />} bg={useColorModeValue('whiteAlpha.600', 'whiteAlpha.100')}>
+            <MenuButton
+              as={Button}
+              onClick={onOpen}
+              leftIcon={<LuMenu />}
+              variant="ghost"
+              h="40px"
+              px={4}
+              fontSize="sm"
+              fontWeight="normal"
+              opacity={0.9}
+              color={useColorModeValue('blackAlpha.900', 'whiteAlpha.800')}
+              bg={useColorModeValue('whiteAlpha.600', 'whiteAlpha.100')}
+              border="none"
+              _focus={{ boxShadow: 'none' }}
+              _active={{
+                bg: useColorModeValue('whiteAlpha.800', 'whiteAlpha.300')
+              }}
+              _hover={{
+                bg: useColorModeValue('whiteAlpha.700', 'whiteAlpha.200')
+              }}
+            >
               Menu
             </MenuButton>
             <Portal>
@@ -216,13 +236,11 @@ const Navbar = () => {
                 minW="300px"
                 zIndex="popover"
                 sx={{
-                  // Using 'backdrop-filter' here is more reliable than the theme
-                  // when dealing with Portal/Popper conflicts
                   backdropFilter: 'blur(15px) !important',
                   WebkitBackdropFilter: 'blur(15px) !important',
                   backgroundColor: useColorModeValue(
                     'rgba(206,158,224,0.4)',
-                    'rgba(36,31,39,0.5)'
+                    'rgba(31, 26, 33, 0.5)'
                   )
                 }}
               >
@@ -242,6 +260,7 @@ const Navbar = () => {
                   fontWeight="bold"
                   textTransform="uppercase"
                   opacity={0.6}
+                  textAlign="center"
                 >
                   Admin
                 </Text>
@@ -261,6 +280,7 @@ const Navbar = () => {
                   fontWeight="bold"
                   textTransform="uppercase"
                   opacity={0.6}
+                  textAlign="center"
                 >
                   Social Links
                 </Text>
@@ -326,6 +346,7 @@ const Navbar = () => {
                     fontWeight="bold"
                     textTransform="uppercase"
                     opacity={0.6}
+                    textAlign="center"
                   >
                     Admin
                   </Text>
@@ -344,6 +365,7 @@ const Navbar = () => {
                     fontWeight="bold"
                     textTransform="uppercase"
                     opacity={0.6}
+                    textAlign="center"
                   >
                     Social Links
                   </Text>
