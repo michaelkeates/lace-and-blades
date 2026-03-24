@@ -23,10 +23,7 @@ import { Blog } from '../../components/work'
 import AuthorBio from '../../components/post/author-bio'
 import styles from '../../styles/Home.module.css'
 import { parseHtmlContent } from '../../lib/wordpress-parser'
-import {
-  GET_POST_BY_SLUG,
-  useCreateCommentMutation
-} from '../../lib/queries'
+import { GET_POST_BY_SLUG, useCreateCommentMutation } from '../../lib/queries'
 import { useEffect, useRef, useState } from 'react'
 
 /* ---------------------------
@@ -185,18 +182,16 @@ export default function Post({ post }) {
               </Box>
             )}
 
-            <SimpleGrid paddingTop="25px" paddingBottom="25px">
-              <Paragraph>
-                <Box w="100%" display="flex" flexDirection="column" alignItems="center">
-                  <div
-                    className="post-content"
-                    ref={el => (blockquoteRefs.current = el)}
-                  >
-                    {contentWithMedia}
-                  </div>
-                </Box>
-              </Paragraph>
-            </SimpleGrid>
+            <Box w="100%" py="25px">
+              {/* Remove the <Paragraph> wrapper here so the content can use the full 4xl width */}
+              <Box
+                w="100%"
+                className="post-content"
+                ref={el => (blockquoteRefs.current = el)}
+              >
+                {contentWithMedia}
+              </Box>
+            </Box>
 
             <Divider my={6} />
             <AuthorBio />
