@@ -72,6 +72,8 @@ const Home = () => (
         overflow="hidden"
         marginTop={5}
         marginBottom={5}
+        //center the box
+        mx="auto"
       >
         <Image
           src="/images/IMG-20260320-WA0004.jpg"
