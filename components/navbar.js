@@ -38,100 +38,39 @@ import ThemeToggleButton from './buttons/theme-toggle-button'
 import SearchBox from './searchbox/searchbox'
 
 const allMenuItems = [
-  {
-    label: "Georgia's Law",
-    icon: <LuCastle size={18} />,
-    path: '/georgias-law'
-  },
-  {
-    label: 'Support & Helplines',
-    icon: <LuPhone size={18} />,
-    path: '/support-helplines'
-  },
+  { label: "Georgia's Law", icon: <LuCastle size={18} />, path: '/georgias-law' },
+  { label: 'Support & Helplines', icon: <LuPhone size={18} />, path: '/support-helplines' },
   { label: 'Blog', icon: <LuBook size={18} />, path: '/posts' },
-  {
-    label: 'Support Agencies Information',
-    icon: <LuBook size={18} />,
-    path: '/get-information-agencies'
-  },
-  {
-    label: 'Giving Back - Donations & Fundraisers',
-    icon: <LuFileHeart size={18} />,
-    path: '/giving-back-donations-fundraisers'
-  },
-  {
-    label: 'Speaking & Testimony',
-    icon: <LuPersonStanding size={18} />,
-    path: '/speaking-testimony'
-  },
-  {
-    label: 'Shop - Buy the Book',
-    icon: <LuShoppingBag size={18} />,
-    path: '/shop'
-  },
-  {
-    label: "Questions we don't want to answer",
-    icon: <LuBook size={18} />,
-    path: '/questions-we-dont-want-to-answer'
-  },
-  {
-    label: 'Campaign News & Action',
-    icon: <LuBook size={18} />,
-    path: '/media-press'
-  },
-  {
-    label: 'Terms, Transparency, Privacy & Affiliations',
-    icon: <LuBook size={18} />,
-    path: '/terms-transparency-privacy-affiliations'
-  }
+  { label: 'Support Agencies Information', icon: <LuBook size={18} />, path: '/get-information-agencies' },
+  { label: 'Giving Back - Donations & Fundraisers', icon: <LuFileHeart size={18} />, path: '/giving-back-donations-fundraisers' },
+  { label: 'Speaking & Testimony', icon: <LuPersonStanding size={18} />, path: '/speaking-testimony' },
+  { label: 'Shop - Buy the Book', icon: <LuShoppingBag size={18} />, path: '/shop' },
+  { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer' },
+  { label: 'Campaign News & Action', icon: <LuBook size={18} />, path: '/media-press' },
+  { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' }
 ]
 
 const adminItems = [
-  {
-    label: 'Admin Login',
-    icon: <LuDoorClosed size={18} />,
-    path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
-    external: true
-  }
+  { label: 'Admin Login', icon: <LuDoorClosed size={18} />, path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php', external: true }
 ]
 
 const socialItems = [
-  {
-    label: 'Instagram',
-    icon: <LuInstagram size={18} />,
-    path: 'https://www.instagram.com/lace_blades/',
-    external: true
-  },
-  {
-    label: 'Linktree',
-    icon: <LuLink size={18} />,
-    path: 'https://linktr.ee/laceandblades/',
-    external: true
-  },
-  {
-    label: 'TikTok',
-    icon: <FaTiktok size={18} />,
-    path: 'https://www.tiktok.com/@lace_blades?_r=1&_t=zn-92jym5mhogm/',
-    external: true
-  },
-  {
-    label: 'YouTube',
-    icon: <LuYoutube size={18} />,
-    path: 'https://www.youtube.com/@Lace-BladesGrace',
-    external: true
-  }
+  { label: 'Instagram', icon: <LuInstagram size={18} />, path: 'https://www.instagram.com/lace_blades/', external: true },
+  { label: 'Linktree', icon: <LuLink size={18} />, path: 'https://linktr.ee/laceandblades/', external: true },
+  { label: 'TikTok', icon: <FaTiktok size={18} />, path: 'https://www.tiktok.com/@lace_blades?_r=1&_t=zn-92jym5mhogm/', external: true },
+  { label: 'YouTube', icon: <LuYoutube size={18} />, path: 'https://www.youtube.com/@Lace-BladesGrace', external: true }
 ]
 
 const Navbar = () => {
-  // We'll use these Disclosure methods to control BOTH menus
   const { isOpen, onOpen, onClose } = useDisclosure()
+  const mobileDisc = useDisclosure()
 
-  const menuBg = useColorModeValue(
-    'rgba(206,158,224,0.95)',
-    'rgba(36,31,39,0.95)'
-  )
+  // FIXED: Lowering opacity to 0.4 so the blur is visible
+  const menuBg = useColorModeValue('rgba(206,158,224,0.4)', 'rgba(36,31,39,0.5)')
 
-  const renderMenuItem = item => {
+  const renderMenuItem = (item, isMobileItem = false) => {
+    const closeAction = isMobileItem ? mobileDisc.onClose : onClose
+    
     if (item.external) {
       return (
         <Link
@@ -139,7 +78,7 @@ const Navbar = () => {
           href={item.path}
           target="_blank"
           rel="noopener noreferrer"
-          onClick={onClose} // This triggers when a link is clicked
+          onClick={closeAction}
           display="flex"
           flexDirection="column"
           alignItems="center"
@@ -149,9 +88,7 @@ const Navbar = () => {
           _hover={{ bg: 'whiteAlpha.200', transform: 'scale(1.05)' }}
         >
           {item.icon && <Box mb={1}>{item.icon}</Box>}
-          <Box fontSize="xs" textAlign="center">
-            {item.label}
-          </Box>
+          <Box fontSize="xs" textAlign="center">{item.label}</Box>
         </Link>
       )
     }
@@ -163,15 +100,13 @@ const Navbar = () => {
           direction="column"
           align="center"
           cursor="pointer"
-          onClick={onClose} // This triggers when a link is clicked
+          onClick={closeAction}
           p={2}
           borderRadius="md"
           _hover={{ bg: 'whiteAlpha.200', transform: 'scale(1.05)' }}
         >
           {item.icon && <Box mb={1}>{item.icon}</Box>}
-          <Box fontSize="xs" textAlign="center">
-            {item.label}
-          </Box>
+          <Box fontSize="xs" textAlign="center">{item.label}</Box>
         </Flex>
       </NextLink>
     )
@@ -183,31 +118,45 @@ const Navbar = () => {
       as="nav"
       w="100%"
       bg={useColorModeValue('#e988ec40', '#26192980')}
-      style={{ backdropFilter: 'blur(10px)' }}
+      style={{ backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}
       zIndex="999"
     >
-      <Container
-        display="flex"
-        p={2}
-        maxW="container.md"
-        align="center"
-        justify="space-between"
-      >
+      <Container display="flex" p={2} maxW="container.md" align="center" justify="space-between">
         <Flex align="center" h="40px" marginRight={2}>
           <Logo />
         </Flex>
 
-        {/* Desktop Menu - (Already working) */}
+        {/* Desktop Menu */}
         <Stack direction="row" display={{ base: 'none', md: 'flex' }}>
-          <Menu isOpen={isOpen} onClose={onClose}>
-             {/* ... Desktop menu content ... */}
-             <MenuButton as={Button} onClick={onOpen} leftIcon={<LuMenu />}>Menu</MenuButton>
-             <MenuList bg={menuBg}>
-                <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gap={1} p={2}>
-                  {allMenuItems.map(renderMenuItem)}
-                </Box>
-                {/* ... other desktop items ... */}
-             </MenuList>
+          <Menu isOpen={isOpen} onClose={onClose}> 
+            <MenuButton
+              as={Button}
+              onClick={onOpen}
+              leftIcon={<LuMenu />}
+            >
+              Menu
+            </MenuButton>
+
+            <MenuList
+              maxW="400px"
+              minW="300px"
+            >
+              <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gap={1} p={2}>
+                {allMenuItems.map(item => renderMenuItem(item, false))}
+              </Box>
+
+              <Divider my={2} />
+              <Text px={3} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6}>Admin</Text>
+              <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gap={1} px={2}>
+                {adminItems.map(item => renderMenuItem(item, false))}
+              </Box>
+
+              <Divider my={2} />
+              <Text px={3} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6}>Social Links</Text>
+              <Box display="grid" gridTemplateColumns="repeat(4, 1fr)" gap={1} px={2} pb={2}>
+                {socialItems.map(item => renderMenuItem(item, false))}
+              </Box>
+            </MenuList>
           </Menu>
         </Stack>
 
@@ -215,43 +164,31 @@ const Navbar = () => {
           <Box ml={2}><SearchBox /></Box>
           <Box ml={2}><ThemeToggleButton /></Box>
 
-          {/* --- FIXED MOBILE MENU --- */}
+          {/* Mobile Menu */}
           <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
-            {/* Added isOpen and onClose props here */}
-            <Menu isOpen={isOpen} onClose={onClose} isLazy>
+            <Menu isOpen={mobileDisc.isOpen} onClose={mobileDisc.onClose}>
               <MenuButton
                 as={IconButton}
                 icon={<HamburgerIcon />}
                 variant="outline"
                 aria-label="Options"
-                onClick={onOpen} // Ensures the menu opens correctly
+                onClick={mobileDisc.onOpen}
               />
-
               <MenuList
-                bg={menuBg}
-                style={{ backdropFilter: 'blur(10px)' }}
                 maxW="300px"
               >
-                {/* MAIN */}
-                <Box
-                  display="grid"
-                  gridTemplateColumns="repeat(2, 1fr)"
-                  gap={2}
-                  p={2}
-                >
-                  {allMenuItems.map(renderMenuItem)}
+                <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} p={2}>
+                  {allMenuItems.map(item => renderMenuItem(item, true))}
                 </Box>
-
-                {/* ADMIN */}
                 <Divider my={2} />
+                <Text px={3} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6}>Admin</Text>
                 <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} px={2}>
-                  {adminItems.map(renderMenuItem)}
+                  {adminItems.map(item => renderMenuItem(item, true))}
                 </Box>
-
-                {/* SOCIAL */}
                 <Divider my={2} />
+                <Text px={3} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6}>Social Links</Text>
                 <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} px={2} pb={2}>
-                  {socialItems.map(renderMenuItem)}
+                  {socialItems.map(item => renderMenuItem(item, true))}
                 </Box>
               </MenuList>
             </Menu>
