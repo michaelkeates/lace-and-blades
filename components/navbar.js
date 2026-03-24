@@ -87,15 +87,6 @@ const allMenuItems = [
   }
 ]
 
-const adminItems = [
-  {
-    label: 'Admin Login',
-    icon: <LuDoorClosed size={18} />,
-    path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
-    external: true
-  }
-]
-
 const socialItems = [
   {
     label: 'Instagram',
@@ -119,6 +110,15 @@ const socialItems = [
     label: 'YouTube',
     icon: <LuYoutube size={18} />,
     path: 'https://www.youtube.com/@Lace-BladesGrace',
+    external: true
+  }
+]
+
+const adminItems = [
+  {
+    label: 'Admin Login',
+    icon: <LuDoorClosed size={18} />,
+    path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
     external: true
   }
 ]
@@ -262,15 +262,16 @@ const Navbar = () => {
                   opacity={0.6}
                   textAlign="center"
                 >
-                  Admin
+                  Social Links
                 </Text>
                 <Box
                   display="grid"
                   gridTemplateColumns="repeat(4, 1fr)"
                   gap={1}
                   px={2}
+                  pb={2}
                 >
-                  {adminItems.map(item => renderMenuItem(item, false))}
+                  {socialItems.map(item => renderMenuItem(item, false))}
                 </Box>
 
                 <Divider my={2} />
@@ -282,16 +283,15 @@ const Navbar = () => {
                   opacity={0.6}
                   textAlign="center"
                 >
-                  Social Links
+                  Admin
                 </Text>
                 <Box
                   display="grid"
                   gridTemplateColumns="repeat(4, 1fr)"
                   gap={1}
                   px={2}
-                  pb={2}
                 >
-                  {socialItems.map(item => renderMenuItem(item, false))}
+                  {adminItems.map(item => renderMenuItem(item, false))}
                 </Box>
               </MenuList>
             </Portal>
@@ -348,25 +348,6 @@ const Navbar = () => {
                     opacity={0.6}
                     textAlign="center"
                   >
-                    Admin
-                  </Text>
-                  <Box
-                    display="grid"
-                    gridTemplateColumns="repeat(2, 1fr)"
-                    gap={2}
-                    px={2}
-                  >
-                    {adminItems.map(item => renderMenuItem(item, true))}
-                  </Box>
-                  <Divider my={2} />
-                  <Text
-                    px={3}
-                    fontSize="xs"
-                    fontWeight="bold"
-                    textTransform="uppercase"
-                    opacity={0.6}
-                    textAlign="center"
-                  >
                     Social Links
                   </Text>
                   <Box
@@ -377,6 +358,25 @@ const Navbar = () => {
                     pb={2}
                   >
                     {socialItems.map(item => renderMenuItem(item, true))}
+                  </Box>
+                  <Divider my={2} />
+                  <Text
+                    px={3}
+                    fontSize="xs"
+                    fontWeight="bold"
+                    textTransform="uppercase"
+                    opacity={0.6}
+                    textAlign="center"
+                  >
+                    Admin
+                  </Text>
+                  <Box
+                    display="grid"
+                    gridTemplateColumns="repeat(2, 1fr)"
+                    gap={2}
+                    px={2}
+                  >
+                    {adminItems.map(item => renderMenuItem(item, true))}
                   </Box>
                 </MenuList>
               </Portal>
