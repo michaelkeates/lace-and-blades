@@ -26,25 +26,29 @@ const MotionBox = motion(Box)
 const SearchBox = () => {
   const [query, setQuery] = useState('')
   const containerRef = useRef()
-  const [topCoord, setTopCoord] = useState(0)
+  // Track both top and right distance
+  const [coords, setCoords] = useState({ top: 0, right: 0 })
 
   const { data: postsData } = useQuery(GET_ALL_POSTS)
   const { data: pagesData } = useQuery(GET_ALL_PAGES)
 
-  // We only need the Top coordinate now, because Right will be fixed to the page edge
-  const updateTopCoord = () => {
+  const updateCoords = () => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      setTopCoord(rect.bottom + window.scrollY)
+      setCoords({
+        top: rect.bottom + window.scrollY,
+        // Distance from right edge of screen to right edge of search bar
+        right: window.innerWidth - rect.right
+      })
     }
   }
 
   useEffect(() => {
     if (query) {
-      updateTopCoord()
-      window.addEventListener('resize', updateTopCoord)
+      updateCoords()
+      window.addEventListener('resize', updateCoords)
     }
-    return () => window.removeEventListener('resize', updateTopCoord)
+    return () => window.removeEventListener('resize', updateCoords)
   }, [query])
 
   const menuBg = useColorModeValue('rgba(206, 158, 224, 0.4)', 'rgba(36, 31, 39, 0.5)')
@@ -97,13 +101,14 @@ const SearchBox = () => {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15 }}
               position="absolute"
-              top={`${topCoord + 8}px`}
+              top={`${coords.top + 8}px`}
               
-              /* --- RIGHT SIDE OF WEBSITE ALIGNMENT --- */
-              right="20px" // This keeps it 20px away from the right edge of the whole page
+              /* --- ALIGNED TO RIGHT OF INPUT --- */
+              right={`${coords.right}px`} 
               
-              w={{ base: "calc(100vw - 40px)", md: "600px" }} // Wider menu for better 2x2 rows
-              maxW="1200px" // Prevents it from getting too huge on ultra-wide screens
+              /* Width set to 500px to allow for the 2x2 grid without squeezing text */
+              w={{ base: "280px", md: "500px" }}
+              maxW="95vw" 
               zIndex="popover"
               p={3}
               borderRadius="xl"
@@ -136,11 +141,7 @@ const SearchBox = () => {
                           _hover={{ bg: menuHover, textDecoration: 'none' }}
                           onClick={() => setQuery('')}
                         >
-                          <Text 
-                            lineHeight="1.2" 
-                            fontWeight="500" 
-                            isTruncated
-                          >
+                          <Text lineHeight="1.2" fontWeight="500" isTruncated>
                             {page.title}
                           </Text>
                           <Text fontSize="10px" opacity={0.6} textTransform="uppercase">
