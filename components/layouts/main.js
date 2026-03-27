@@ -6,10 +6,10 @@ import { Box, Container, useColorModeValue } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-const Main = ({ children, router }) => {
+// Added isConnected to the destructuring here
+const Main = ({ children, router, isConnected }) => {
   const [mounted, setMounted] = useState(false)
 
-  // Ensure client-only mounting for animations to avoid hydration errors
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -24,25 +24,23 @@ const Main = ({ children, router }) => {
   const isHome = router.pathname === '/'
 
   if (!mounted) {
-    // SSR: render static layout without motion wrappers
     return (
       <Box position="relative" minH="100vh">
         <NavBar path={router.asPath} />
         <Container maxW="1200px">
           {children}
-          <Footer />
+          {/* Pass status to Footer here */}
+          <Footer isConnected={isConnected} />
         </Container>
       </Box>
     )
   }
 
-  // Client: full motion + animations
   return (
     <Box position="relative" minH="100vh">
       <AnimatePresence mode="wait">
         {isHome && (
           <>
-            {/* Background Image */}
             <motion.div
               key="bgImage"
               initial={{ opacity: 0 }}
@@ -61,7 +59,6 @@ const Main = ({ children, router }) => {
               }}
             />
 
-            {/* Overlay */}
             <motion.div
               key="bgOverlay"
               initial={{ opacity: 0 }}
@@ -83,15 +80,14 @@ const Main = ({ children, router }) => {
       </AnimatePresence>
 
       <Head>
-        {/* Optional: meta tags can go here */}
+        {/* Meta tags */}
       </Head>
 
       <NavBar path={router.asPath} />
 
-      {/* Page content */}
       <Box
         as={motion.div}
-        key={router.route} // ensures exit/enter animation
+        key={router.route}
         initial="hidden"
         animate="enter"
         exit="exit"
@@ -106,7 +102,8 @@ const Main = ({ children, router }) => {
       >
         <Container maxW="1200px">
           {children}
-          <Footer />
+          {/* Pass status to Footer here too */}
+          <Footer isConnected={isConnected} />
         </Container>
       </Box>
     </Box>

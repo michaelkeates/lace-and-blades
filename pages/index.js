@@ -14,6 +14,8 @@ import LinkedinButton from '../components/buttons/instagram-button'
 import LinktrButton from '../components/buttons/linktr-button'
 import YoutubeButton from '../components/buttons/youtube-button'
 import Section from '../components/section'
+import { getApolloClient } from '../lib/wordpress'
+import { gql } from '@apollo/client'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -92,9 +94,32 @@ const Home = () => (
 export default Home
 
 export async function getServerSideProps({ req }) {
-  return {
-    props: {
-      cookies: req.headers.cookie ?? ''
+  const client = getApolloClient()
+  
+  try {
+    await client.query({
+      query: gql`
+        query GetHealthCheck {
+          generalSettings {
+            title
+          }
+        }
+      `
+    })
+
+    return {
+      props: {
+        isConnected: true, // If the query above works, the dot turns GREEN
+        cookies: req.headers.cookie ?? ''
+      }
+    }
+  } catch (error) {
+    console.error("WordPress Connection Failed:", error)
+    return {
+      props: {
+        isConnected: false, // If WordPress is down, the dot stays RED
+        cookies: req.headers.cookie ?? ''
+      }
     }
   }
 }

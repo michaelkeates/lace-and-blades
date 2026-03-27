@@ -10,14 +10,20 @@ import { AnimatePresence } from 'framer-motion'
 
 if (typeof window !== 'undefined') window.history.scrollRestoration = 'manual'
 
+// pages/_app.js
 function Website({ Component, pageProps, router }) {
   const client = getApolloClient()
+
+  // Determine if the connection is "up" based on the existence of data 
+  // or a custom isConnected prop passed from getServerSideProps
+  const isConnected = pageProps.isConnected !== false
 
   return (
     <Chakra cookies={pageProps.cookies}>
       <ApolloProvider client={client}>
         <div className={`${spectral.variable} ${roboto.variable}`}>
-          <Layout router={router}>
+          {/* Pass the status to your Layout */}
+          <Layout router={router} isConnected={isConnected}>
             <AnimatePresence
               mode="wait"
               initial={true}
