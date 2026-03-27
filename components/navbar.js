@@ -123,9 +123,9 @@ const adminItems = [
     external: true
   },
   {
-    label: 'Statistics',
+    label: 'Analytics',
     icon: <LuBook size={18} />,
-    path: '/statistics'
+    path: '/analytics'
   }
 ]
 
@@ -311,7 +311,7 @@ const Navbar = () => {
           <Box ml={2}>
             <QuickExitButton />
           </Box>
-                    <Box ml={2}>
+          <Box ml={2}>
             <ThemeToggleButton />
           </Box>
 
