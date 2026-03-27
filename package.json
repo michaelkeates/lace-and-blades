@@ -29,7 +29,8 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.6.0",
     "react-pdf": "^10.4.1",
-    "react-twitter-embed": "^4.0.4"
+    "react-twitter-embed": "^4.0.4",
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "cross-env": "^10.0.0",

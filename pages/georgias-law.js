@@ -3,7 +3,7 @@ import {
   Container,
   Box,
   Heading,
-  SimpleGrid,
+  Badge,
   Button,
   useColorModeValue,
   useBreakpointValue
@@ -13,10 +13,24 @@ import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
 import { parseHtmlContent } from '../lib/wordpress-parser'
+import { Page } from '../components/work'
+import { useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import { INCREMENT_VIEWS_MUTATION } from '../lib/queries'
 
 export default function GeorgiasLaw({ page }) {
   const isMobile = useBreakpointValue({ base: true, md: false })
-  
+  const [incrementViews] = useMutation(INCREMENT_VIEWS_MUTATION)
+
+  // Trigger the view count increment
+  useEffect(() => {
+    if (page?.databaseId) {
+      incrementViews({ variables: { id: page.databaseId } }).catch(e =>
+        console.error('Could not increment page views:', e)
+      )
+    }
+  }, [page?.databaseId, incrementViews])
+
   if (!page) return <p>Page not found</p>
 
   const imageUrl = page?.featuredImage?.node?.sourceUrl
@@ -31,7 +45,27 @@ export default function GeorgiasLaw({ page }) {
     <Layout title="Georgia's Law">
       <Container maxW="4xl" mt="4rem">
         <Section delay={0.1}>
-          <Heading as="h1" mb={4} textAlign="center" fontFamily="CartaMarina" fontSize="7xl">
+          <Box
+            borderRadius="lg"
+            mt={6}
+            mb={2}
+            p={2}
+            pt={4}
+            textAlign="center"
+            bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+            css={{ backdropFilter: 'blur(10px)' }}
+          >
+            <Page>
+              <div style={{ fontSize: '12px' }}>{page.title}</div>
+            </Page>
+          </Box>
+          <Heading
+            as="h1"
+            mb={4}
+            textAlign="center"
+            fontFamily="CartaMarina"
+            fontSize="7xl"
+          >
             {page.title}
           </Heading>
 
@@ -54,7 +88,6 @@ export default function GeorgiasLaw({ page }) {
           <Box mb={10} className="post-content">
             {renderedContent}
           </Box>
-
         </Section>
       </Container>
     </Layout>

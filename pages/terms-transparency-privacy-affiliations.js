@@ -1,15 +1,11 @@
 import { getApolloClient } from '../lib/wordpress'
-import { 
-  Container, 
-  Heading, 
-  Box, 
-  useBreakpointValue 
-} from '@chakra-ui/react'
+import { Container, Heading, Box, useBreakpointValue, useColorModeValue } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article'
 import { GET_TERMS_PAGE } from '../lib/queries'
 import { parseHtmlContent } from '../lib/wordpress-parser'
+import { Page } from '../components/work'
 
 export default function TermsTransparencyPrivacy({ page }) {
   const isMobile = useBreakpointValue({ base: true, md: false })
@@ -24,12 +20,25 @@ export default function TermsTransparencyPrivacy({ page }) {
       <Container maxW="4xl" mt="4rem">
         <Section delay={0.1}>
           <main className={styles.main}>
-            {/* Standardized CartaMarina Heading */}
-            <Heading 
-              as="h1" 
-              textAlign="center" 
-              fontFamily="CartaMarina" 
-              fontSize={{ base: "4xl", md: "6xl" }} // Slightly smaller for long titles
+            <Box
+              borderRadius="lg"
+              mt={6}
+              mb={2}
+              p={2}
+              pt={4}
+              textAlign="center"
+              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              css={{ backdropFilter: 'blur(10px)' }}
+            >
+              <Page>
+                <div style={{ fontSize: '12px' }}>{page.title}</div>
+              </Page>
+            </Box>
+            <Heading
+              as="h1"
+              textAlign="center"
+              fontFamily="CartaMarina"
+              fontSize={{ base: '4xl', md: '6xl' }} // Slightly smaller for long titles
               mb={6}
             >
               {page.title}
@@ -41,11 +50,11 @@ export default function TermsTransparencyPrivacy({ page }) {
                   className={styles.featuredImage}
                   src={page.featuredImage.node.sourceUrl}
                   alt={page.title}
-                  style={{ 
-                    width: '100%', 
-                    maxWidth: '800px', 
-                    height: 'auto', 
-                    borderRadius: '15px' 
+                  style={{
+                    width: '100%',
+                    maxWidth: '800px',
+                    height: 'auto',
+                    borderRadius: '15px'
                   }}
                 />
               </Box>

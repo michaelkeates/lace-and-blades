@@ -120,6 +120,11 @@ const adminItems = [
     icon: <LuDoorClosed size={18} />,
     path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
     external: true
+  },
+    {
+    label: 'Statistics',
+    icon: <LuBook size={18} />,
+    path: '/statistics'
   }
 ]
 
