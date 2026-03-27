@@ -34,7 +34,6 @@ const SearchBox = () => {
   const updateCoords = () => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      // We only need the Bottom coordinate to place it below the bar
       setTopPos(rect.bottom + window.scrollY)
     }
   }
@@ -67,12 +66,7 @@ const SearchBox = () => {
 
   return (
     <Box ref={containerRef} position="relative" w={{ base: "120px", md: "250px" }}>
-      <InputGroup
-        h="40px"
-        bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')}
-        css={{ backdropFilter: 'blur(10px)' }}
-        borderRadius="md"
-      >
+      <InputGroup h="40px" bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')} borderRadius="md">
         <InputLeftElement h="40px" pointerEvents="none">
           <SearchIcon opacity={0.7} />
         </InputLeftElement>
@@ -98,23 +92,25 @@ const SearchBox = () => {
               transition={{ duration: 0.15 }}
               position="absolute"
               zIndex="popover"
-              
-              /* --- PLACEMENT LOGIC --- */
               top={`${topPos + 8}px`}
-              // This pins the result menu to the right side of the screen
-              // Match this to your Container padding (usually 16px or 20px)
-              right={{ base: "10px", md: "40px", lg: "80px" }} 
+
+              /* THE CONTAINER LOGIC:
+                On desktop, we calculate the right margin: (Window Width - Container MaxW) / 2.
+                This pins it to the right edge of your 1200px layout.
+              */
+              right={{ 
+                base: "10px", 
+                md: "calc((100vw - 1200px) / 2 + 15px)",
+                xl: "calc((100vw - 1200px) / 2 + 15px)" 
+              }}
               
-              /* --- SIZING --- */
               w={{ base: "calc(100vw - 20px)", md: "500px" }}
-              maxW="1200px" 
-              
+              maxW="95vw" 
               p={3}
               borderRadius="xl"
               boxShadow="2xl"
               sx={{
                 backdropFilter: 'blur(15px) !important',
-                WebkitBackdropFilter: 'blur(15px) !important',
                 backgroundColor: menuBg, 
                 border: '1px solid',
                 borderColor: useColorModeValue('whiteAlpha.400', 'whiteAlpha.200')
@@ -140,12 +136,8 @@ const SearchBox = () => {
                           _hover={{ bg: menuHover, textDecoration: 'none' }}
                           onClick={() => setQuery('')}
                         >
-                          <Text lineHeight="1.2" fontWeight="500" isTruncated>
-                            {page.title}
-                          </Text>
-                          <Text fontSize="10px" opacity={0.6} textTransform="uppercase">
-                            {page.type}
-                          </Text>
+                          <Text lineHeight="1.2" fontWeight="500" isTruncated>{page.title}</Text>
+                          <Text fontSize="10px" opacity={0.6} textTransform="uppercase">{page.type}</Text>
                         </Link>
                       </NextLink>
                     </ListItem>
