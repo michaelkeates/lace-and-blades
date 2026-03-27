@@ -387,7 +387,7 @@ export default function Post({ post }) {
 /* ===========================
    SERVER SIDE PROPS
 =========================== */
-export async function getServerSideProps({ params }) {
+export async function getServerSideProps({ params, req }) {
   const { postSlug } = params
   const apolloClient = getApolloClient()
 
