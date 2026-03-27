@@ -26,8 +26,7 @@ const MotionBox = motion(Box)
 const SearchBox = () => {
   const [query, setQuery] = useState('')
   const containerRef = useRef()
-  // Track both top and right distance
-  const [coords, setCoords] = useState({ top: 0, right: 0 })
+  const [topPos, setTopPos] = useState(0)
 
   const { data: postsData } = useQuery(GET_ALL_POSTS)
   const { data: pagesData } = useQuery(GET_ALL_PAGES)
@@ -35,11 +34,8 @@ const SearchBox = () => {
   const updateCoords = () => {
     if (containerRef.current) {
       const rect = containerRef.current.getBoundingClientRect()
-      setCoords({
-        top: rect.bottom + window.scrollY,
-        // Distance from right edge of screen to right edge of search bar
-        right: window.innerWidth - rect.right
-      })
+      // We only need the Bottom coordinate to place it below the bar
+      setTopPos(rect.bottom + window.scrollY)
     }
   }
 
@@ -101,15 +97,18 @@ const SearchBox = () => {
               exit={{ opacity: 0, y: -6 }}
               transition={{ duration: 0.15 }}
               position="absolute"
-              top={`${coords.top + 8}px`}
-              
-              /* --- ALIGNED TO RIGHT OF INPUT --- */
-              right={`${coords.right}px`} 
-              
-              /* Width set to 500px to allow for the 2x2 grid without squeezing text */
-              w={{ base: "280px", md: "500px" }}
-              maxW="95vw" 
               zIndex="popover"
+              
+              /* --- PLACEMENT LOGIC --- */
+              top={`${topPos + 8}px`}
+              // This pins the result menu to the right side of the screen
+              // Match this to your Container padding (usually 16px or 20px)
+              right={{ base: "10px", md: "40px", lg: "80px" }} 
+              
+              /* --- SIZING --- */
+              w={{ base: "calc(100vw - 20px)", md: "500px" }}
+              maxW="1200px" 
+              
               p={3}
               borderRadius="xl"
               boxShadow="2xl"
@@ -122,7 +121,7 @@ const SearchBox = () => {
               }}
             >
               <List>
-                <SimpleGrid columns={2} spacing={2}>
+                <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
                   {results.length === 0 && (
                     <Box gridColumn="span 2" px={2} py={1} fontSize="xs" color={textColor}>
                       No results found
