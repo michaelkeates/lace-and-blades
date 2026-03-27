@@ -308,7 +308,7 @@ const Statistics = ({
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
   const client = getApolloClient()
   try {
     const { data } = await client.query({
@@ -382,7 +382,6 @@ export async function getServerSideProps() {
       second: '2-digit',
       hour12: true
     })
-
     return {
       props: {
         totalPosts,
@@ -390,7 +389,9 @@ export async function getServerSideProps() {
         categories,
         mostViewed: mostViewed.slice(0, 6),
         chartData,
-        lastUpdated
+        lastUpdated,
+        // ADD THIS LINE HERE:
+        cookies: req.headers.cookie ?? ''
       }
     }
   } catch (e) {
@@ -402,7 +403,9 @@ export async function getServerSideProps() {
         categories: [],
         mostViewed: [],
         chartData: [],
-        lastUpdated: 'Error'
+        lastUpdated: 'Error',
+        // Note: 'data' isn't defined in catch, so I cleaned this up:
+        cookies: req.headers.cookie ?? ''
       }
     }
   }

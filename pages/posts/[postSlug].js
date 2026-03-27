@@ -399,7 +399,8 @@ export async function getServerSideProps({ params }) {
 
   return {
     props: {
-      post: postData?.data.postBy
+      post: postData?.data.postBy,
+      cookies: req.headers.cookie ?? ''
     }
   }
 }

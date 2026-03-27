@@ -94,7 +94,7 @@ export default function GeorgiasLaw({ page }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
   const apolloClient = getApolloClient()
 
   const { data } = await apolloClient.query({
@@ -104,7 +104,8 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      page: data?.pageBy ?? null
+      page: data?.pageBy ?? null,
+      cookies: req.headers.cookie ?? ''
     }
   }
 }

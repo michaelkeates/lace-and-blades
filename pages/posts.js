@@ -198,5 +198,10 @@ export async function getServerSideProps({ req }) {
     .map(({ node }) => node)
     .map(post => ({ ...post, path: `/posts/${post.slug}` }))
 
-  return { props: { posts } }
+  return { 
+    props: { 
+      posts,
+      cookies: req.headers.cookie ?? '' 
+    } 
+  }
 }

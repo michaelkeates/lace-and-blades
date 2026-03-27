@@ -91,7 +91,7 @@ export default function Shop({ page }) {
   )
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ req }) {
   const apolloClient = getApolloClient()
   const { data } = await apolloClient.query({
     query: GET_SHOP_BUY_BOOK_PAGE,
@@ -100,7 +100,8 @@ export async function getServerSideProps() {
 
   return {
     props: {
-      page: data?.pageBy ?? null
+      page: data?.pageBy ?? null,
+      cookies: req.headers.cookie ?? ''
     }
   }
 }

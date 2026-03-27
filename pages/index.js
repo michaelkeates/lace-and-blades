@@ -2,7 +2,6 @@ import {
   Container,
   Heading,
   Box,
-  useColorModeValue,
   chakra,
   Divider,
   Button
@@ -14,6 +13,7 @@ import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/instagram-button'
 import LinktrButton from '../components/buttons/linktr-button'
 import YoutubeButton from '../components/buttons/youtube-button'
+import Section from '../components/section'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -22,6 +22,7 @@ const ProfileImage = chakra(Image, {
 const Home = () => (
   <Layout>
     <Container maxWidth="2xl">
+      <Section delay={0.2}>
       <Box display="flex" justifyContent="center" mt={10} mb={4}>
         <Box>
           <ProfileImage
@@ -83,6 +84,7 @@ const Home = () => (
         />
       </Box>
       <Divider />
+      </Section>
     </Container>
   </Layout>
 )
