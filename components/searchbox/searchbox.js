@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import NextLink from 'next/link'
 import {
   Box,
@@ -12,7 +12,9 @@ import {
   Link,
   useColorModeValue,
   useOutsideClick,
-  Container
+  Portal,
+  Text,
+  SimpleGrid
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { motion, AnimatePresence } from 'framer-motion'
@@ -23,88 +25,57 @@ const MotionBox = motion(Box)
 
 const SearchBox = () => {
   const [query, setQuery] = useState('')
-  const ref = useRef()
+  const containerRef = useRef()
+  const [topCoord, setTopCoord] = useState(0)
 
   const { data: postsData } = useQuery(GET_ALL_POSTS)
   const { data: pagesData } = useQuery(GET_ALL_PAGES)
 
-  const menuBg = useColorModeValue(
-    'rgba(206,158,224,0.95)',
-    'rgba(36,31,39,0.95)'
-  )
-  const menuHover = useColorModeValue(
-    'rgba(255, 201, 250, 0.9)',
-    'rgba(100, 100, 100, 0.9)'
-  )
-  // Inside your component
-  const iconOpacity = useColorModeValue(1, 0.7) // 1 for light, 0.7 for dark
-  const placeholderOpacity = useColorModeValue(1, 0.6)
+  // We only need the Top coordinate now, because Right will be fixed to the page edge
+  const updateTopCoord = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect()
+      setTopCoord(rect.bottom + window.scrollY)
+    }
+  }
+
+  useEffect(() => {
+    if (query) {
+      updateTopCoord()
+      window.addEventListener('resize', updateTopCoord)
+    }
+    return () => window.removeEventListener('resize', updateTopCoord)
+  }, [query])
+
+  const menuBg = useColorModeValue('rgba(206, 158, 224, 0.4)', 'rgba(36, 31, 39, 0.5)')
   const textColor = useColorModeValue('blackAlpha.900', 'whiteAlpha.800')
-  const placeholderColor = useColorModeValue(
-    `rgba(0,0,0,${placeholderOpacity})`,
-    `rgba(255,255,255,${placeholderOpacity})`
-  )
+  const menuHover = useColorModeValue('whiteAlpha.400', 'whiteAlpha.200')
 
   useOutsideClick({
-    ref,
+    ref: containerRef,
     handler: () => setQuery('')
   })
 
-  // --- Convert WordPress posts ---
-  const wpPosts =
-    postsData?.posts?.edges?.map(({ node }) => ({
-      title: node.title,
-      path: `/posts/${node.slug}`,
-      type: 'post',
-      keywords: [
-        node.title.toLowerCase(),
-        ...(node.categories?.nodes?.map(c => c.name.toLowerCase()) || []),
-        ...(node.tags?.nodes?.map(t => t.name.toLowerCase()) || [])
-      ]
-    })) || []
+  const searchablePages = [
+    ...(postsData?.posts?.edges?.map(({ node }) => ({ title: node.title, path: `/posts/${node.slug}`, type: 'post' })) || []),
+    ...(pagesData?.pages?.nodes?.map(page => ({ title: page.title, path: `/${page.slug}`, type: 'page' })) || [])
+  ]
 
-  // --- Convert WordPress pages ---
-  const wpPages =
-    pagesData?.pages?.nodes?.map(page => {
-      const textContent = page.content
-        .replace(/<[^>]+>/g, '') // remove HTML tags
-        .replace(/[^\w\s]/g, ' ') // remove punctuation
-        .toLowerCase() // lowercase
-      const words = textContent.split(/\s+/).filter(Boolean)
-      return {
-        title: page.title,
-        path: `/${page.slug}`,
-        type: 'page',
-        keywords: [page.title.toLowerCase(), ...words]
-      }
-    }) || []
-
-  const searchablePages = [...wpPages, ...wpPosts]
-
-  // Filter results
-  const results = searchablePages.filter(page => {
-    const q = query.toLowerCase()
-    return (
-      page.title.toLowerCase().includes(q) ||
-      page.keywords.some(k => k.includes(q))
-    )
-  })
-
-  const closeSearch = () => setQuery('')
+  const results = searchablePages.filter(page => 
+    page.title.toLowerCase().includes(query.toLowerCase())
+  )
 
   return (
-    <Box ref={ref} position="relative" w={{ base: "120px", md: "250px" }}>
+    <Box ref={containerRef} position="relative" w={{ base: "120px", md: "250px" }}>
       <InputGroup
         h="40px"
         bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')}
         css={{ backdropFilter: 'blur(10px)' }}
         borderRadius="md"
-        boxShadow="0px 0px 12px rgba(0,0,0,0.05)"
       >
         <InputLeftElement h="40px" pointerEvents="none">
-          <SearchIcon opacity={iconOpacity} />
+          <SearchIcon opacity={0.7} />
         </InputLeftElement>
-
         <Input
           h="40px"
           placeholder="Search..."
@@ -113,60 +84,76 @@ const SearchBox = () => {
           border="none"
           _focus={{ boxShadow: 'none' }}
           color={textColor}
-          caretColor={textColor}
           fontSize="sm"
-          _placeholder={{ color: placeholderColor }}
         />
       </InputGroup>
 
       <AnimatePresence>
         {query && (
-          <MotionBox
-            initial={{ opacity: 0, y: -6 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -6 }}
-            transition={{ duration: 0.15 }}
-            position="absolute"
-            top="120%" // positions it right below the input
-            right={0} // aligns the right edge with the input's right edge
-            w="260px"
-            bg={menuBg}
-            style={{ backdropFilter: 'blur(10px)' }}
-            borderRadius="md"
-            boxShadow="lg"
-            zIndex={2000}
-            p={2}
-          >
-            <List display="grid" gridTemplateColumns="1fr 1fr" gap={1}>
-              {results.length === 0 && (
-                <Box gridColumn="span 2" px={2} py={1} fontSize="xs">
-                  No results
-                </Box>
-              )}
-
-              {results.slice(0, 8).map(page => (
-                <ListItem key={page.path}>
-                  <NextLink href={page.path} passHref legacyBehavior>
-                    <Link
-                      display="block"
-                      px={2}
-                      py={1}
-                      color={textColor}
-                      borderRadius="md"
-                      fontSize="sm"
-                      _hover={{ bg: menuHover }}
-                      onClick={closeSearch}
-                    >
-                      <Box lineHeight="1.2">{page.title}</Box>
-                      <Box fontSize="xs" opacity={0.6}>
-                        {page.type === 'post' ? 'Post' : 'Page'}
-                      </Box>
-                    </Link>
-                  </NextLink>
-                </ListItem>
-              ))}
-            </List>
-          </MotionBox>
+          <Portal>
+            <MotionBox
+              initial={{ opacity: 0, y: -6 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.15 }}
+              position="absolute"
+              top={`${topCoord + 8}px`}
+              
+              /* --- RIGHT SIDE OF WEBSITE ALIGNMENT --- */
+              right="20px" // This keeps it 20px away from the right edge of the whole page
+              
+              w={{ base: "calc(100vw - 40px)", md: "600px" }} // Wider menu for better 2x2 rows
+              maxW="1200px" // Prevents it from getting too huge on ultra-wide screens
+              zIndex="popover"
+              p={3}
+              borderRadius="xl"
+              boxShadow="2xl"
+              sx={{
+                backdropFilter: 'blur(15px) !important',
+                WebkitBackdropFilter: 'blur(15px) !important',
+                backgroundColor: menuBg, 
+                border: '1px solid',
+                borderColor: useColorModeValue('whiteAlpha.400', 'whiteAlpha.200')
+              }}
+            >
+              <List>
+                <SimpleGrid columns={2} spacing={2}>
+                  {results.length === 0 && (
+                    <Box gridColumn="span 2" px={2} py={1} fontSize="xs" color={textColor}>
+                      No results found
+                    </Box>
+                  )}
+                  {results.slice(0, 8).map(page => (
+                    <ListItem key={page.path}>
+                      <NextLink href={page.path} passHref legacyBehavior>
+                        <Link
+                          display="block"
+                          px={3}
+                          py={2}
+                          color={textColor}
+                          borderRadius="lg"
+                          fontSize="sm"
+                          _hover={{ bg: menuHover, textDecoration: 'none' }}
+                          onClick={() => setQuery('')}
+                        >
+                          <Text 
+                            lineHeight="1.2" 
+                            fontWeight="500" 
+                            isTruncated
+                          >
+                            {page.title}
+                          </Text>
+                          <Text fontSize="10px" opacity={0.6} textTransform="uppercase">
+                            {page.type}
+                          </Text>
+                        </Link>
+                      </NextLink>
+                    </ListItem>
+                  ))}
+                </SimpleGrid>
+              </List>
+            </MotionBox>
+          </Portal>
         )}
       </AnimatePresence>
     </Box>
