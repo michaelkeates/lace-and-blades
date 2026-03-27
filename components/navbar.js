@@ -37,6 +37,7 @@ import { FaTiktok } from 'react-icons/fa'
 import Logo from './logo'
 import ThemeToggleButton from './buttons/theme-toggle-button'
 import SearchBox from './searchbox/searchbox'
+import QuickExitButton from './buttons/quick-exit'
 
 const allMenuItems = [
   {
@@ -121,7 +122,7 @@ const adminItems = [
     path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
     external: true
   },
-    {
+  {
     label: 'Statistics',
     icon: <LuBook size={18} />,
     path: '/statistics'
@@ -308,6 +309,9 @@ const Navbar = () => {
             <SearchBox />
           </Box>
           <Box ml={2}>
+            <QuickExitButton />
+          </Box>
+                    <Box ml={2}>
             <ThemeToggleButton />
           </Box>
 
