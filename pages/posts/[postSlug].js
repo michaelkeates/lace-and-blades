@@ -314,7 +314,7 @@ export default function Post({ post }) {
                   alt={post.title}
                   borderRadius="20px"
                   width="60%"
-                  maxHeight="600px" // Slightly taller to give it room
+                  maxHeight="300px" // Slightly taller to give it room
                   objectFit="contain" // Shows the full image, no cropping
                   bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
                   boxShadow="0px 10px 30px rgba(0,0,0,0.1)"
