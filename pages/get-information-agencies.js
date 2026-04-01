@@ -93,7 +93,7 @@ export default function GeorgiasLaw({ page }) {
                   // 3. Ensuring the image stays large (Adjust width as needed)
                   style={{
                     width: '100%',
-                    maxWidth: '800px',
+                    maxWidth: '600px',
                     height: 'auto',
                     borderRadius: '15px'
                   }}

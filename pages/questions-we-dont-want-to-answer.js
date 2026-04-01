@@ -71,7 +71,7 @@ export default function QuestionsWeDontWantToAnswer({ page }) {
                   alt={page.title}
                   style={{
                     width: '100%',
-                    maxWidth: '800px',
+                    maxWidth: '600px',
                     height: 'auto',
                     borderRadius: '15px'
                   }}
