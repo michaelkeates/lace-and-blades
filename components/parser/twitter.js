@@ -2,25 +2,24 @@ import dynamic from 'next/dynamic'
 import { Box, useBreakpointValue } from '@chakra-ui/react'
 import { useEffect } from 'react'
 
-// Load dynamically so Next.js SSR doesn't break
+// Load dynamically to prevent SSR issues with the Twitter library
 const TwitterTweetEmbed = dynamic(
   () => import('react-twitter-embed').then(mod => mod.TwitterTweetEmbed),
   { ssr: false }
 )
 
-export default function TwitterEmbed({ url }) {
-  // Use Chakra's breakpoint system to define the width
-  // Base (mobile): 300px, md (tablet/desktop): 550px
+export const WPTwitter = ({ node, idx, findTwitterUrl }) => {
   const tweetWidth = useBreakpointValue({ base: 300, md: 550 })
+  
+  // Extract URL using the helper passed from the main parser
+  const tweetUrl = findTwitterUrl([node])
+  if (!tweetUrl) return null
 
-  if (!url) return null
-
-  // Extract the Tweet ID from URL
-  const match = url.match(/status\/(\d+)/)
+  // Clean the URL and extract the ID
+  const cleanUrl = tweetUrl.split('?')[0].trim()
+  const match = cleanUrl.match(/status\/(\d+)/)
   const tweetId = match ? match[1] : null
-  if (!tweetId) return null
 
-  // Load Twitter widgets.js if not already loaded
   useEffect(() => {
     if (!window.twttr) {
       const script = document.createElement('script')
@@ -30,16 +29,18 @@ export default function TwitterEmbed({ url }) {
     }
   }, [])
 
+  if (!tweetId) return null
+
   return (
     <Box
+      key={idx}
       my={6}
       display="flex"
       justifyContent="center"
-      w="100%" // Parent container takes full width
+      w="100%"
       sx={{
         '& .twitter-tweet': {
           margin: '0 auto !important',
-          // Force the injected iframe to respect the dynamic width
           width: `${tweetWidth}px !important` 
         }
       }}

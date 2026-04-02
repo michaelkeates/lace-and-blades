@@ -6,7 +6,6 @@ import { Box, Container, useColorModeValue } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
-// Added isConnected to the destructuring here
 const Main = ({ children, router, isConnected }) => {
   const [mounted, setMounted] = useState(false)
 
@@ -15,21 +14,22 @@ const Main = ({ children, router, isConnected }) => {
   }, [])
 
   const overlayBg = useColorModeValue('#e988ec40', '#26192980')
+  
   const bgVariants = {
-    hidden: { opacity: 0 },
-    enter: { opacity: 1 },
-    exit: { opacity: 0 },
+    hidden: { opacity: 0, y: 0 },
+    enter: { opacity: 1, y: 0 },
+    exit: { opacity: 0, y: 0 },
   }
 
-  const isHome = router.pathname === '/'
+  const isHome = router?.pathname === '/'
 
+  // Pre-hydration fallback to prevent layout shift
   if (!mounted) {
     return (
-      <Box position="relative" minH="100vh">
-        <NavBar path={router.asPath} />
+      <Box minH="100vh" pt="100px">
+        <NavBar path={router?.asPath || '/'} />
         <Container maxW="1200px">
           {children}
-          {/* Pass status to Footer here */}
           <Footer isConnected={isConnected} />
         </Container>
       </Box>
@@ -38,15 +38,20 @@ const Main = ({ children, router, isConnected }) => {
 
   return (
     <Box position="relative" minH="100vh">
+      <Head>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Lace & Blades</title>
+      </Head>
+
       <AnimatePresence mode="wait">
         {isHome && (
-          <>
+          <Box key="home-bg-wrapper">
             <motion.div
               key="bgImage"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.25 }}
               exit={{ opacity: 0 }}
-              transition={{ enter: { duration: 1 }, exit: { duration: 4, ease: 'easeInOut' } }}
+              transition={{ duration: 1 }}
               style={{
                 position: 'fixed',
                 inset: 0,
@@ -64,7 +69,7 @@ const Main = ({ children, router, isConnected }) => {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ enter: { duration: 1 }, exit: { duration: 4, ease: 'easeInOut' } }}
+              transition={{ duration: 1 }}
               style={{
                 position: 'fixed',
                 inset: 0,
@@ -75,14 +80,11 @@ const Main = ({ children, router, isConnected }) => {
                 pointerEvents: 'none',
               }}
             />
-          </>
+          </Box>
         )}
       </AnimatePresence>
 
-      <Head>
-        {/* Meta tags */}
-      </Head>
-
+      {/* Navbar is kept outside the motion div to prevent it from jumping during transitions */}
       <NavBar path={router.asPath} />
 
       <Box
@@ -92,17 +94,13 @@ const Main = ({ children, router, isConnected }) => {
         animate="enter"
         exit="exit"
         variants={bgVariants}
-        transition={{ duration: 1.2, type: 'easeInOut' }}
-        flex="1"
-        display="flex"
-        flexDirection="column"
-        alignItems="flex-start"
-        justifyContent="center"
-        pt="100px"
+        transition={{ duration: 0.5, type: 'easeInOut' }}
+        pt="100px" 
+        minH="100vh"
+        display="block" 
       >
         <Container maxW="1200px">
           {children}
-          {/* Pass status to Footer here too */}
           <Footer isConnected={isConnected} />
         </Container>
       </Box>

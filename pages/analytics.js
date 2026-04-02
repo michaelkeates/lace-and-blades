@@ -28,7 +28,7 @@ import Layout from '../components/layouts/article'
 import NextLink from 'next/link'
 import Section from '../components/section'
 import { keyframes } from '@emotion/react'
-import { getApolloClient } from '../lib/wordpress'
+import { getApolloClient } from '../lib/apollo'
 import { GET_GLOBAL_STATS } from '../lib/queries'
 
 const pulse = keyframes`

@@ -14,7 +14,7 @@ import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import NextLink from 'next/link'
 import Bubble from '../components/emoji/heart'
-import { getApolloClient } from '../lib/wordpress'
+import { getApolloClient } from '../lib/apollo'
 import { GET_ALL_POSTS } from '../lib/queries'
 import { useRouter } from 'next/router'
 

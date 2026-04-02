@@ -1,4 +1,4 @@
-import { getApolloClient } from '../lib/wordpress'
+import { getApolloClient } from '../lib/apollo'
 import {
   Container,
   Heading,
@@ -10,7 +10,7 @@ import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article'
 import { GET_SHOP_BUY_BOOK_PAGE } from '../lib/queries'
-import { parseHtmlContent } from '../lib/wordpress-parser'
+import { parseHtmlContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'

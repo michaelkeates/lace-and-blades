@@ -1,4 +1,4 @@
-import { getApolloClient } from '../lib/wordpress'
+import { getApolloClient } from '../lib/apollo'
 import {
   Container,
   Box,
@@ -12,7 +12,7 @@ import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
-import { parseHtmlContent } from '../lib/wordpress-parser'
+import { parseHtmlContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
