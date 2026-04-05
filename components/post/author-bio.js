@@ -23,6 +23,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import Paragraph from '../../components/paragraph'
 import Section from '../../components/section'
 import Image from 'next/image'
+import Logo from '/components/heading'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -40,13 +41,14 @@ const AuthorBio = () => (
       />
     </Box>
     <Box>
-      <Box flexGrow={1}>
-        <Heading as="h1" fontFamily="CartaMarina" textAlign="center">
-          Lace & Blades
-        </Heading>
-      </Box>
     </Box>
-
+    <Box display="flex" justifyContent="center" width="full" paddingTop={4}>
+      <Logo
+        fontSize={{ base: '4xl', md: '5xl' }}
+        paddingBottom={4}
+        color="white"
+      />
+    </Box>
     <Section delay={0.1}>
       <Paragraph>
         Lace & Blades is about turning my lived experience into action and

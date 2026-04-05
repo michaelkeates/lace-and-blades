@@ -22,13 +22,14 @@ import Head from 'next/head'
 import { getApolloClient } from '../lib/apollo'
 import { gql } from '@apollo/client'
 import { useRouter } from 'next/router'
+import Logo from '../components/heading'
 
 // --- SINGLE SOURCE OF TRUTH ---
 // Production Date: April 10, 2026 at 5:00 PM BST
 const FINAL_TARGET = new Date('2026-04-10T17:00:00+01:00').getTime()
 
 // Testing Date: (Toggle this to test specific times)
-//const FINAL_TARGET = new Date('2026-04-01T23:00:00+01:00').getTime()
+//const FINAL_TARGET = new Date('2026-04-05T15:35:00+01:00').getTime()
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -53,10 +54,7 @@ const Home = () => {
     seconds: 0
   })
 
-  const overlayBg = useColorModeValue(
-    '#e988ec40',
-    '#26192980'
-  )
+  const overlayBg = useColorModeValue('#e988ec40', '#26192980')
 
   useEffect(() => {
     // If we are already past the date, don't run the interval
@@ -122,15 +120,13 @@ const Home = () => {
 
         <Container maxWidth="2xl" textAlign="center" zIndex={1}>
           <VStack spacing={6}>
-            <Heading
-              as="h1"
-              fontSize={{ base: '6xl', md: '9xl' }}
-              fontFamily="CartaMarina"
-              color="white"
-              lineHeight="1"
-            >
-              Lace & Blades
-            </Heading>
+            <Box width="full" textAlign="center">
+              <Logo
+                fontSize={{ base: '6xl', md: '9xl' }}
+                paddingBottom={4}
+                color="white"
+              />
+            </Box>
             <Divider />
             <Box
               display="flex"
@@ -186,15 +182,13 @@ const Home = () => {
           </Box>
         </Box>
 
-        <Heading
-          as="h1"
-          fontSize={{ base: '6xl', md: '7xl' }}
-          fontFamily="CartaMarina"
-          textAlign="center"
-          paddingBottom={4}
-        >
-          Lace &Blades
-        </Heading>
+        <Box display="flex" justifyContent="center" width="full">
+          <Logo
+            fontSize={{ base: '6xl', md: '7xl' }}
+            paddingBottom={4}
+            color="white"
+          />
+        </Box>
 
         <Box>
           <Bubble
