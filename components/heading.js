@@ -9,29 +9,25 @@ const LogoHeading = ({
       as="h1"
       fontFamily="CartaMarina"
       textAlign="center"
-      lineHeight="1" // Tighter line height helps keeping the TM aligned
+      lineHeight="1.1"
       {...props}
     >
-      <Box as="span" position="relative" display="inline-block">
+      {/* Using a standard span (Box as span) keeps the TM 
+        inline with the text flow. 
+      */}
+      <Box as="span" position="relative" display="inline">
         {title}
         <Text
           as="span"
           fontFamily="'Roboto', sans-serif"
-          fontSize="0.20em"
+          fontSize="0.22em"
           fontWeight="bold"
-          position="absolute"
-          
-          /* 1. Anchors it to the very end of the 's' */
-          left="100%" 
-          
-          /* 2. Adjust this to bring it closer (e.g., -2px) or further (e.g., 5px) */
-          ml="2px" 
-          
-          /* 3. Adjust vertical height */
-          top="0.1em" 
-          
-          lineHeight="1"
-          whiteSpace="nowrap"
+          position="relative" // Changed from absolute to relative
+          top="-1.2em"        // Lifts it up like a superscript
+          left="0.1em"        // Tucks it closer to the 's'
+          marginLeft="0.5em"  // Ensures it doesn't overlap the 's'
+          verticalAlign="middle"
+          whiteSpace="nowrap" // Prevents TM from ever dropping to a 3rd line
         >
           TM
         </Text>
