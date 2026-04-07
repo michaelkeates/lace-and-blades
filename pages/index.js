@@ -186,7 +186,6 @@ const Home = () => {
           <Logo
             fontSize={{ base: '6xl', md: '7xl' }}
             paddingBottom={4}
-            color="white"
           />
         </Box>
 
@@ -239,8 +238,8 @@ const CountdownItem = ({ label, value }) => (
       fontSize={{ base: '4xl', md: '6xl' }}
       fontWeight="normal"
       fontFamily="Roboto Mono"
-      color="white"
       lineHeight="1"
+      color="white"
     >
       {String(value).padStart(2, '0')}
     </Text>

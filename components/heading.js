@@ -2,10 +2,16 @@ import { Heading, Text, Box, useColorModeValue } from '@chakra-ui/react';
 
 const LogoHeading = ({
   title = "Lace & Blades",
-  ...props // This contains any styles passed from the parent
+  color, // Extract color from props
+  ...props 
 }) => {
-  const textColor = useColorModeValue('black.100', 'whiteAlpha.900');
-  const tmColor = useColorModeValue('black.100', 'whiteAlpha.900');
+  // Define our fallback theme colors
+  const themeTextColor = useColorModeValue('gray.800', 'whiteAlpha.900');
+  const themeTmColor = useColorModeValue('gray.600', 'whiteAlpha.700');
+
+  // Use the passed color if it exists, otherwise use themeTextColor
+  const finalTextColor = color || themeTextColor;
+  const finalTmColor = color || themeTmColor;
 
   return (
     <Heading
@@ -13,8 +19,8 @@ const LogoHeading = ({
       fontFamily="CartaMarina"
       textAlign="center"
       lineHeight="1.1"
-      {...props}       // 1. Spread props FIRST
-      color={textColor} // 2. Apply theme color SECOND to ensure it overrides
+      {...props}
+      color={finalTextColor} // Now uses 'white' when you pass it!
     >
       <Box as="span" position="relative" display="inline">
         {title}
@@ -29,7 +35,7 @@ const LogoHeading = ({
           marginLeft="0.5em"
           verticalAlign="middle"
           whiteSpace="nowrap"
-          color={tmColor}
+          color={finalTmColor} 
         >
           TM
         </Text>

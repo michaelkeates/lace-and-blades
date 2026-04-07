@@ -46,7 +46,6 @@ const AuthorBio = () => (
       <Logo
         fontSize={{ base: '4xl', md: '5xl' }}
         paddingBottom={4}
-        color="white"
       />
     </Box>
     <Section delay={0.1}>
