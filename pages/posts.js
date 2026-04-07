@@ -67,15 +67,15 @@ export default function Home({ posts = [] }) {
     if (!isBeginning) handlePageChange(activePage - 1)
   }
 
-const truncate = (text, length = 120) => {
+  const truncate = (text, length = 120) => {
     if (!text) return ''
 
     // 1. Remove HTML tags
     let cleaned = text.replace(/<\/?[^>]+(>|$)/g, '')
-    
+
     // 2. Hide/Remove all HTML entities (like &#8220;, &nbsp;, etc.)
     cleaned = cleaned.replace(/&#\d+;/g, '').replace(/&\w+;/g, '')
-    
+
     // 3. Truncate and add ellipsis
     if (cleaned.length <= length) return cleaned
     return cleaned.slice(0, length).replace(/\s+\S*$/, '') + '...'
@@ -147,36 +147,36 @@ const truncate = (text, length = 120) => {
                     height="auto"
                     minHeight="610px"
                   >
-<Box flex="1" display="flex" flexDirection="column">
-  <Image
-    src={imageUrl}
-    alt={post.title}
-    w="100%"
-    h={{ base: '150px', sm: '200px', md: '250px' }}
-    objectFit="cover"
-    borderRadius="8px"
-  />
-  
-  {/* Flex container to align title and emoji */}
-  <Flex 
-    fontWeight="bold" 
-    mt={2} 
-    px={2} 
-    alignItems="center" 
-    justifyContent="center" 
-    gap={1}
-  >
-    {post.title}
-    {post.tags?.nodes?.some(tag => tag.name.toLowerCase() === 'pinned') && (
-      <Box as="span" fontSize="14px">📌</Box>
-    )}
-  </Flex>
+                    <Box flex="1" display="flex" flexDirection="column">
+                      <Image
+                        src={imageUrl}
+                        alt={post.title}
+                        w="100%"
+                        h={{ base: '150px', sm: '200px', md: '250px' }}
+                        objectFit="cover"
+                        borderRadius="8px"
+                      />
 
-  <Divider mt={2} />
-  <Box mt={2} fontSize="12px" px={2}>
-    {truncate(post.excerpt, 100)}
-  </Box>
-</Box>
+                      {/* Flex container to align title and emoji */}
+                      <Flex
+                        fontWeight="bold"
+                        mt={2}
+                        px={2}
+                        alignItems="center"
+                        justifyContent="center"
+                        gap={1}
+                      >
+                        {post.title}
+                        {post.tags?.nodes?.some(tag => tag.name.toLowerCase() === 'pinned') && (
+                          <Box as="span" fontSize="14px">📌</Box>
+                        )}
+                      </Flex>
+
+                      <Divider mt={2} />
+                      <Box mt={2} fontSize="12px" px={2}>
+                        {truncate(post.excerpt, 100)}
+                      </Box>
+                    </Box>
 
                     <NextLink href={post.path} passHref scroll={false}>
                       <Button
