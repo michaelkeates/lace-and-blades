@@ -1,13 +1,13 @@
 import { Heading, Text, Box, useColorModeValue } from '@chakra-ui/react';
 
 const LogoHeading = ({
-  title = "Lace & Blades",
+  title = "Lace &Blades",
   color, // Extract color from props
   ...props 
 }) => {
   // Define our fallback theme colors
   const themeTextColor = useColorModeValue('gray.800', 'whiteAlpha.900');
-  const themeTmColor = useColorModeValue('gray.600', 'whiteAlpha.700');
+  const themeTmColor = useColorModeValue('gray.800', 'whiteAlpha.900');
 
   // Use the passed color if it exists, otherwise use themeTextColor
   const finalTextColor = color || themeTextColor;
