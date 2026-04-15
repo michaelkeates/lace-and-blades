@@ -26,10 +26,10 @@ import Logo from '../components/heading'
 
 // --- SINGLE SOURCE OF TRUTH ---
 // Production Date: April 10, 2026 at 5:00 PM BST
-const FINAL_TARGET = new Date('2026-04-10T17:00:00+01:00').getTime()
+//const FINAL_TARGET = new Date('2026-04-10T17:00:00+01:00').getTime()
 
 // Testing Date: (Toggle this to test specific times)
-//const FINAL_TARGET = new Date('2026-04-05T17:05:00+01:00').getTime()
+const FINAL_TARGET = new Date('2026-04-10T13:40:00+01:00').getTime()
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
@@ -95,7 +95,7 @@ const Home = () => {
         zIndex={2000} // High z-index so it sits ABOVE the navbar provided by _app.js
       >
         <Head>
-          <title>Lace & Blades | Coming Soon</title>
+          <title>Lace & Blades</title>
         </Head>
 
         <Box
@@ -185,12 +185,28 @@ const Home = () => {
         <Box display="flex" justifyContent="center" width="full">
           <Logo
             fontSize={{ base: '6xl', md: '7xl' }}
-            paddingBottom={4}
+
           />
         </Box>
 
+        <Divider marginBottom={2} />
+
+        <Box textAlign="center">
+          <Heading
+            as="h2"
+            size="md"
+            fontWeight="semibold"
+            letterSpacing="tighter"
+          >
+            Domestic Abuse and Sexual Violence | Support, Awareness and Advocacy
+          </Heading>
+        </Box>
+
+        <Divider marginBottom={4} marginTop={2} />
+
+
         <Box>
-          <Bubble
+          <Bubble paddingTop={8}
             text={`Lace & Blades is about turning my lived experience into action and support. From survival to justice, this space shares support from multiple organisations, the impact of coercive control, and the fight to rebuild life after sexual assault and trauma. But this is more than storytelling. It is a call for change. Lace & Blades has taken on the challenges on the housing and safeguarding failures with the Government systems. Pushing for change. Because survival should never depend on employment status, location, or silence.`}
           />
         </Box>
