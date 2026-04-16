@@ -14,12 +14,13 @@ import {
   useOutsideClick,
   Portal,
   Text,
-  SimpleGrid
+  SimpleGrid,
+  Spinner // Added a spinner for better UX
 } from '@chakra-ui/react'
 import { SearchIcon } from '@chakra-ui/icons'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useQuery } from '@apollo/client'
-import { GET_ALL_POSTS, GET_ALL_PAGES } from '../../lib/queries'
+import { SEARCH_POSTS } from '../../lib/queries' // We only need this one now
 
 const MotionBox = motion(Box)
 
@@ -28,8 +29,25 @@ const SearchBox = () => {
   const containerRef = useRef()
   const [topPos, setTopPos] = useState(0)
 
-  const { data: postsData } = useQuery(GET_ALL_POSTS)
-  const { data: pagesData } = useQuery(GET_ALL_PAGES)
+  // 1. FETCH ON DEMAND
+  const { data, loading } = useQuery(SEARCH_POSTS, {
+    variables: { search: query },
+    skip: query.length < 2, // Don't even talk to WordPress until 2 letters are typed
+  })
+
+  // 2. FORMAT RESULTS
+  const results = [
+    ...(data?.posts?.nodes?.map(node => ({ 
+      title: node.title, 
+      path: `/posts/${node.slug}`, 
+      type: 'post' 
+    })) || []),
+    ...(data?.pages?.nodes?.map(node => ({ 
+      title: node.title, 
+      path: `/${node.slug}`, 
+      type: 'page' 
+    })) || [])
+  ]
 
   const updateCoords = () => {
     if (containerRef.current) {
@@ -55,20 +73,11 @@ const SearchBox = () => {
     handler: () => setQuery('')
   })
 
-  const searchablePages = [
-    ...(postsData?.posts?.edges?.map(({ node }) => ({ title: node.title, path: `/posts/${node.slug}`, type: 'post' })) || []),
-    ...(pagesData?.pages?.nodes?.map(page => ({ title: page.title, path: `/${page.slug}`, type: 'page' })) || [])
-  ]
-
-  const results = searchablePages.filter(page => 
-    page.title.toLowerCase().includes(query.toLowerCase())
-  )
-
   return (
     <Box ref={containerRef} position="relative" w={{ base: "120px", md: "250px" }}>
       <InputGroup h="40px" bg={useColorModeValue('whiteAlpha.400', 'whiteAlpha.50')} borderRadius="md">
         <InputLeftElement h="40px" pointerEvents="none">
-          <SearchIcon opacity={0.7} />
+          {loading ? <Spinner size="xs" /> : <SearchIcon opacity={0.7} />}
         </InputLeftElement>
         <Input
           h="40px"
@@ -83,7 +92,7 @@ const SearchBox = () => {
       </InputGroup>
 
       <AnimatePresence>
-        {query && (
+        {query.length >= 2 && (
           <Portal>
             <MotionBox
               initial={{ opacity: 0, y: -6 }}
@@ -93,17 +102,11 @@ const SearchBox = () => {
               position="absolute"
               zIndex="popover"
               top={`${topPos + 8}px`}
-
-              /* THE CONTAINER LOGIC:
-                On desktop, we calculate the right margin: (Window Width - Container MaxW) / 2.
-                This pins it to the right edge of your 1200px layout.
-              */
               right={{ 
                 base: "10px", 
                 md: "calc((100vw - 1200px) / 2 + 15px)",
                 xl: "calc((100vw - 1200px) / 2 + 15px)" 
               }}
-              
               w={{ base: "calc(100vw - 20px)", md: "500px" }}
               maxW="95vw" 
               p={3}
@@ -118,12 +121,12 @@ const SearchBox = () => {
             >
               <List>
                 <SimpleGrid columns={{ base: 1, md: 2 }} spacing={2}>
-                  {results.length === 0 && (
+                  {!loading && results.length === 0 && (
                     <Box gridColumn="span 2" px={2} py={1} fontSize="xs" color={textColor}>
-                      No results found
+                      No results found for "{query}"
                     </Box>
                   )}
-                  {results.slice(0, 8).map(page => (
+                  {results.map(page => (
                     <ListItem key={page.path}>
                       <NextLink href={page.path} passHref legacyBehavior>
                         <Link

@@ -212,12 +212,28 @@ export default function Home({ posts = [] }) {
 
 export async function getServerSideProps({ req }) {
   const apolloClient = getApolloClient()
-  const { data } = await apolloClient.query({ query: GET_ALL_POSTS })
+  let allPosts = []
+  let hasNextPage = true
+  let endCursor = null
 
-  const allPosts = data?.posts.edges.map(({ node }) => ({
-    ...node,
-    path: `/posts/${node.slug}`
-  })) || []
+  // Keep fetching until there are no more posts
+  while (hasNextPage) {
+    const { data } = await apolloClient.query({
+      query: GET_ALL_POSTS,
+      variables: { after: endCursor }
+    })
+
+    const fetchedPosts = data?.posts.edges.map(({ node }) => ({
+      ...node,
+      path: `/posts/${node.slug}`
+    })) || []
+
+    allPosts = [...allPosts, ...fetchedPosts]
+    
+    // Update pagination variables for the next loop
+    hasNextPage = data?.posts.pageInfo.hasNextPage
+    endCursor = data?.posts.pageInfo.endCursor
+  }
 
   // 1. Separate pinned posts from regular posts
   const pinnedPosts = allPosts.filter(post =>
@@ -228,7 +244,6 @@ export async function getServerSideProps({ req }) {
     !post.tags?.nodes?.some(tag => tag.name.toLowerCase() === 'pinned')
   )
 
-  // 2. Combine them (Pinned first)
   const sortedPosts = [...pinnedPosts, ...regularPosts]
 
   return {
