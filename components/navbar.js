@@ -174,6 +174,8 @@ const Navbar = () => {
       as="nav"
       w="100%"
       bg={useColorModeValue('#e988ec40', '#26192980')}
+      top={0} // <--- Add this
+      left={0} // <--- Add this
       style={{
         backdropFilter: 'blur(10px)',
         WebkitBackdropFilter: 'blur(10px)'
