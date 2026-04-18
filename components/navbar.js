@@ -77,11 +77,6 @@ const allMenuItems = [
     path: '/questions-we-dont-want-to-answer'
   },
   {
-    label: 'Campaign News & Action',
-    icon: <LuBook size={18} />,
-    path: '/media-press'
-  },
-  {
     label: 'Terms, Transparency, Privacy & Affiliations',
     icon: <LuBook size={18} />,
     path: '/terms-transparency-privacy-affiliations'
@@ -112,20 +107,6 @@ const socialItems = [
     icon: <LuYoutube size={18} />,
     path: 'https://www.youtube.com/@Lace-BladesGrace',
     external: true
-  }
-]
-
-const adminItems = [
-  {
-    label: 'Admin Login',
-    icon: <LuDoorClosed size={18} />,
-    path: 'https://laceandblades.michaelkeates.co.uk/wp-login.php',
-    external: true
-  },
-  {
-    label: 'Analytics',
-    icon: <LuBook size={18} />,
-    path: '/analytics'
   }
 ]
 
@@ -279,26 +260,6 @@ const Navbar = () => {
                 >
                   {socialItems.map(item => renderMenuItem(item, false))}
                 </Box>
-
-                <Divider my={2} />
-                <Text
-                  px={3}
-                  fontSize="xs"
-                  fontWeight="bold"
-                  textTransform="uppercase"
-                  opacity={0.6}
-                  textAlign="center"
-                >
-                  Admin
-                </Text>
-                <Box
-                  display="grid"
-                  gridTemplateColumns="repeat(4, 1fr)"
-                  gap={1}
-                  px={2}
-                >
-                  {adminItems.map(item => renderMenuItem(item, false))}
-                </Box>
               </MenuList>
             </Portal>
           </Menu>
@@ -367,25 +328,6 @@ const Navbar = () => {
                     pb={2}
                   >
                     {socialItems.map(item => renderMenuItem(item, true))}
-                  </Box>
-                  <Divider my={2} />
-                  <Text
-                    px={3}
-                    fontSize="xs"
-                    fontWeight="bold"
-                    textTransform="uppercase"
-                    opacity={0.6}
-                    textAlign="center"
-                  >
-                    Admin
-                  </Text>
-                  <Box
-                    display="grid"
-                    gridTemplateColumns="repeat(2, 1fr)"
-                    gap={2}
-                    px={2}
-                  >
-                    {adminItems.map(item => renderMenuItem(item, true))}
                   </Box>
                 </MenuList>
               </Portal>

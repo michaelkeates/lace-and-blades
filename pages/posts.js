@@ -7,7 +7,8 @@ import {
   Button,
   useColorModeValue,
   Flex,
-  Image
+  Image,
+  Text
 } from '@chakra-ui/react'
 import { ChevronRightIcon, ChevronLeftIcon } from '@chakra-ui/icons'
 import Layout from '../components/layouts/article'
@@ -86,7 +87,7 @@ export default function Home({ posts = [] }) {
       <Container maxW="5xl" mt="3rem">
         <Section delay={0.2}>
           {/* Pagination Header */}
-          <Flex gap={3} mb={6} alignItems="stretch" height="64px">
+          <Flex gap={{ base: 2, md: 3 }} mb={6} alignItems="stretch" height="64px">
             <Button
               onClick={goToPreviousPage}
               isDisabled={isBeginning}
@@ -94,16 +95,17 @@ export default function Home({ posts = [] }) {
               bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
               borderRadius="md"
-              width="120px"
+              // Smaller width on mobile (base), larger on tablet/desktop (md)
+              width={{ base: "60px", md: "120px" }}
               height="100%"
             >
-              Previous
+              {/* Hide text on mobile to save maximum space */}
+              <Text display={{ base: "none", md: "inline" }}>Previous</Text>
             </Button>
 
-            <Box flex="1" height="100%">
+            <Box flex="1" height="100%" minW="0">
               <Bubble
-                text={`View my latest posts on
- page ${activePage} of ${totalPages}`}
+                text={`View my latest posts on page ${activePage} of ${totalPages}`}
                 emoji="❤️"
               />
             </Box>
@@ -115,10 +117,10 @@ export default function Home({ posts = [] }) {
               bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
               boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
               borderRadius="md"
-              width="120px"
+              width={{ base: "60px", md: "120px" }}
               height="100%"
             >
-              Next
+              <Text display={{ base: "none", md: "inline" }}>Next</Text>
             </Button>
           </Flex>
 
@@ -229,7 +231,7 @@ export async function getServerSideProps({ req }) {
     })) || []
 
     allPosts = [...allPosts, ...fetchedPosts]
-    
+
     // Update pagination variables for the next loop
     hasNextPage = data?.posts.pageInfo.hasNextPage
     endCursor = data?.posts.pageInfo.endCursor
