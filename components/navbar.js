@@ -267,10 +267,10 @@ const Navbar = () => {
           </Menu>
         </Stack>
 
-        <Flex flex={1} ml={1} justify="flex-end" align="center">
-          <Box ml={2}>
-            <SearchBox />
-          </Box>
+<Flex flex={1} ml={1} justify="flex-end" align="center">
+  <Box ml={2} flex="1">
+    <SearchBox />
+  </Box>
           <Box ml={2}>
             <QuickExitButton />
           </Box>
