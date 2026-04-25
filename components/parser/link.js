@@ -1,4 +1,4 @@
-import { Box, Button } from '@chakra-ui/react'
+import { Box, Button, useColorModeValue } from '@chakra-ui/react'
 
 export const WPLink = ({ attribs, children, inColumn, hasImage, renderNodes }) => {
   // 1. WordPress Button Style
@@ -12,7 +12,9 @@ export const WPLink = ({ attribs, children, inColumn, hasImage, renderNodes }) =
           whiteSpace="normal"
           height="auto"
           py={3}
-          colorScheme="blue"
+          bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+          boxShadow="0px 0px 12px 0px rgba(0,0,0,0.05)"
+          borderRadius="md"
         >
           {renderNodes(children, inColumn)}
         </Button>

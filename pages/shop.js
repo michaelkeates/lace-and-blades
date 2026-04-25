@@ -70,8 +70,8 @@ export default function Shop({ page }) {
                   src={page.featuredImage.node.sourceUrl}
                   alt={page.title}
                   style={{
-                    width: '100%',
-                    maxWidth: '600px', // Slightly smaller for a book cover feel
+                    width: '45%',
+                    maxWidth: '400px', // Slightly smaller for a book cover feel
                     height: 'auto',
                     borderRadius: '10px',
                     boxShadow: '0px 10px 25px rgba(0,0,0,0.15)'
