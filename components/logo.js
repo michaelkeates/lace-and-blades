@@ -26,7 +26,7 @@ margin-top: 6px;
 `
 
 const Logo = () => {
-  const logo = `/images/IMG-20260220-WA0017_2.jpg`
+  const logo = `/images/logo.png`
 
   return (
     <Link href="/" scroll={false}>

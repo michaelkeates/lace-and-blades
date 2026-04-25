@@ -247,9 +247,9 @@ const Navbar = () => {
                     backgroundColor: useColorModeValue('rgba(206,158,224,0.9)', 'rgba(36,31,39,0.9)')
                   }}
                 >
-                                  <Text px={3} mb={1} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6} textAlign="center">
-                  Pages
-                </Text>
+                  <Text px={3} mb={1} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6} textAlign="center">
+                    Pages
+                  </Text>
                   <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} p={2}>
                     {allMenuItems.map(item => renderItemContent(item.label, item.icon, item.path, mobileDisc.onClose))}
                   </Box>
