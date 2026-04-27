@@ -26,25 +26,33 @@ const Home = () => {
   return (
     <Container maxWidth="2xl">
       <Section delay={0.2}>
-        {/* Profile Image Section */}
-        <Box display="flex" justifyContent="center" mt={10} mb={4}>
-          <Box>
-            <ProfileImage
-              src="/images/IMG-20260220-WA0017_2.jpg"
-              alt="Profile image"
-              width="120"
-              height="120"
-              borderRadius="full"
-            />
-          </Box>
-        </Box>
 
         {/* Branding / Logo */}
-        <Box display="flex" justifyContent="center" width="full">
+        <Box display="flex" justifyContent="center" width="full" marginTop='5rem'>
           <Logo fontSize={{ base: '6xl', md: '7xl' }} />
         </Box>
 
         <Divider marginBottom={2} />
+
+        {/* Profile Image Section */}
+        {/* Featured Image / Book Cover */}
+        <Box
+          position="relative"
+          width={{ base: '90%', md: '650px' }}
+          height={{ base: '200px', md: '260px' }}
+          borderRadius="md"
+          overflow="hidden"
+          marginTop={5}
+          marginBottom={5}
+          mx="auto"
+        >
+          <Image
+            src="/images/IMG-20260320-WA0004.jpg"
+            alt="Lace and Blades book cover"
+            fill
+            style={{ objectFit: 'cover' }}
+          />
+        </Box>
 
         {/* Headline */}
         <Box textAlign="center">
@@ -62,7 +70,7 @@ const Home = () => {
 
         {/* About / Mission Bubble */}
         <Box>
-          <Bubble 
+          <Bubble
             paddingTop={8}
             text={`Lace & Blades is about turning my lived experience into action and support. From survival to justice, this space shares support from multiple organisations, the impact of coercive control, and the fight to rebuild life after sexual assault and trauma. But this is more than storytelling. It is a call for change. Lace & Blades has taken on the challenges on the housing and safeguarding failures with the Government systems. Pushing for change. Because survival should never depend on employment status, location, or silence.`}
           />
@@ -85,27 +93,6 @@ const Home = () => {
         </Box>
 
         <Divider paddingTop={4} />
-
-        {/* Featured Image / Book Cover */}
-        <Box
-          position="relative"
-          width={{ base: '90%', md: '650px' }}
-          height={{ base: '200px', md: '260px' }}
-          borderRadius="md"
-          overflow="hidden"
-          marginTop={5}
-          marginBottom={5}
-          mx="auto"
-        >
-          <Image
-            src="/images/IMG-20260320-WA0004.jpg"
-            alt="Lace and Blades book cover"
-            fill
-            style={{ objectFit: 'cover' }}
-          />
-        </Box>
-        
-        <Divider />
       </Section>
     </Container>
   )
