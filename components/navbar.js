@@ -32,7 +32,8 @@ import {
   LuInstagram,
   LuLink,
   LuYoutube,
-  LuPin
+  LuPin,
+  LuHeart
 } from 'react-icons/lu'
 import { FaTiktok } from 'react-icons/fa'
 import { gql } from '@apollo/client'
@@ -45,7 +46,7 @@ import QuickExitButton from './buttons/quick-exit'
 
 const GET_NAVBAR_POSTS = gql`
   query GetNavbarPosts {
-    posts(first: 15) {
+    posts(first: 50) {
       nodes {
         title
         slug
@@ -68,7 +69,8 @@ const allMenuItems = [
   { label: 'Speaking & Testimony', icon: <LuPersonStanding size={18} />, path: '/speaking-testimony' },
   { label: 'Shop - Buy the Book', icon: <LuShoppingBag size={18} />, path: '/shop' },
   { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer' },
-  { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' }
+  { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' },
+  { label: 'With Thanks to', icon: <LuHeart size={18} />, path: '/with-thanks-to' }
 ]
 
 const socialItems = [
