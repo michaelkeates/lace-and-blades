@@ -7,7 +7,6 @@ const Footer = () => {
       align="center"
       opacity={0.4}
       fontSize="11px"
-      paddingTop="25px"
       paddingBottom="35px"
       fontFamily="footer"
     >
