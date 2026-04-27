@@ -28,7 +28,7 @@ const Home = () => {
       <Section delay={0.2}>
 
         {/* Branding / Logo */}
-        <Box display="flex" justifyContent="center" width="full" marginTop='5rem'>
+        <Box display="flex" justifyContent="center" width="full" marginTop='4rem'>
           <Logo fontSize={{ base: '6xl', md: '7xl' }} />
         </Box>
 
