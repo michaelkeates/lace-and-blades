@@ -12,11 +12,24 @@ import Layout from '../components/layouts/article'
 import { GET_THANKS_TO_PAGE } from '../lib/queries'
 import { parseHtmlContent } from '../lib/parser'
 import { Page } from '../components/work'
+import { useEffect } from 'react'
+import { useMutation } from '@apollo/client'
+import { INCREMENT_VIEWS_MUTATION } from '../lib/queries'
 
 export default function TermsTransparencyPrivacy({ page }) {
   const isMobile = useBreakpointValue({ base: true, md: false })
-
-  if (!page) return <p>Page not found</p>
+    const [incrementViews] = useMutation(INCREMENT_VIEWS_MUTATION)
+  
+    // Trigger the view count increment
+    useEffect(() => {
+      if (page?.databaseId) {
+        incrementViews({ variables: { id: page.databaseId } }).catch(e =>
+          console.error('Could not increment page views:', e)
+        )
+      }
+    }, [page?.databaseId, incrementViews])
+  
+    if (!page) return <p>Page not found</p>
 
   // The parser handles the Georgia font, line height, and any columns/links
   const renderedContent = parseHtmlContent(page.content, isMobile)
