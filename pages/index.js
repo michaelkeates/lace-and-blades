@@ -36,23 +36,29 @@ const Home = () => {
 
         {/* Profile Image Section */}
         {/* Featured Image / Book Cover */}
-        <Box
-          position="relative"
-          width={{ base: '90%', md: '650px' }}
-          height={{ base: '200px', md: '260px' }}
-          borderRadius="md"
-          overflow="hidden"
-          marginTop={5}
-          marginBottom={5}
-          mx="auto"
-        >
-          <Image
-            src="/images/IMG-20260320-WA0004.jpg"
-            alt="Lace and Blades book cover"
-            fill
-            style={{ objectFit: 'cover' }}
-          />
-        </Box>
+<Box
+  width="100%"
+  maxWidth="2xl"
+  borderRadius="md"
+  overflow="hidden"
+  marginTop={5}
+  marginBottom={5}
+  mx="auto"
+>
+  <Image
+    src="/images/IMG-20260320-WA0004.jpg"
+    alt="Lace and Blades book cover"
+    width={1536}
+    height={1024}
+    priority
+    style={{ 
+      width: '100%', 
+      height: '250px',
+      objectFit: 'cover',
+      objectPosition: 'center'
+    }}
+  />
+</Box>
 
         {/* Headline */}
         <Box textAlign="center">
@@ -62,7 +68,7 @@ const Home = () => {
             fontWeight="semibold"
             letterSpacing="tighter"
           >
-            Domestic Abuse and Sexual Violence | Support, Awareness and Advocacy
+            Domestic Abuse and Sexual Violence  |  Support, Awareness and Advocacy
           </Heading>
         </Box>
 
