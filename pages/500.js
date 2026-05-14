@@ -18,7 +18,7 @@ const NotFound = () => {
         emoji="🤦‍♂️"
       />
         <Text align="center" paddingTop="7px">
-          Website is down due to maintenance. Administrator has been notifed.
+          Website is down due to maintenance. The administrator has been notifed.
         </Text>
         <Divider my={6} />
         <Box my={6} align="center">
