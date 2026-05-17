@@ -67,7 +67,7 @@ const Statistics = ({
 
           {/* WordPress Dashboard Header Section */}
           <Box flex="1" height="100%" minW="0" mb={4}>
-            <AnalyticsHeaderBubble text="Wordpress Analytics" />
+            <AnalyticsHeaderBubble text="WordPress Analytics" />
           </Box>
 
           <Divider marginBottom={4} marginTop={2} />
