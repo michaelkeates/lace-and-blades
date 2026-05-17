@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react'
 import { Container, Heading, Box, SimpleGrid, Text, useColorModeValue, Flex, Divider } from '@chakra-ui/react'
 import { keyframes } from '@emotion/react'
-import Head from 'next/head' // 🚀 Directly handles page titles without <Layout> injection
+import Head from 'next/head'
 
-// 🚀 Crisp SVG self-drawing line animation header element
 import AnalyticsHeaderBubble from '../components/emoji/analytics'
-
 import StatCard from '@/components/analytics/statcard'
 import AnalyticsChart from '@/components/analytics/analyticschart'
 import PopularContent from '@/components/analytics/popularcontent'
@@ -28,6 +26,9 @@ const Statistics = ({
   cfPageViews = 0,
   cfChartData = [],
   cfCountryData = [],
+  cfTotalUniques = 0,
+  cfMaxUniques = 0,
+  cfMinUniques = 0,
   categories = [],
   mostViewed = [],
   chartData = [],
@@ -97,6 +98,22 @@ const Statistics = ({
 
           <Divider marginBottom={4} marginTop={2} />
 
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={10}>
+            <StatCard 
+              label="Total Unique Visitors" 
+              value={cfTotalUniques.toLocaleString()} 
+              valueColor={chartFill} 
+            />
+            <StatCard 
+              label="Max Daily Visitors" 
+              value={cfMaxUniques.toLocaleString()} 
+            />
+            <StatCard 
+              label="Min Daily Visitors" 
+              value={cfMinUniques.toLocaleString()} 
+            />
+          </SimpleGrid>
+
           <AnalyticsChart
             title="30-Day Network Traffic"
             data={cfChartData}
@@ -123,6 +140,9 @@ export async function getServerSideProps({ req }) {
   let cfPageViews = 0
   let cfChartData = []
   let cfCountryData = []
+  let cfTotalUniques = 0
+  let cfMaxUniques = 0
+  let cfMinUniques = 0
 
   const endObj = new Date()
   const startObj = new Date()
@@ -147,8 +167,10 @@ export async function getServerSideProps({ req }) {
       const dailyViewsArray = zoneDataNode?.dailyViews || []
       const countryMapArray = zoneDataNode?.countryViews?.[0]?.sum?.countryMap || []
 
+      // Compute total cumulative page views
       cfPageViews = dailyViewsArray.reduce((acc, currentDay) => acc + (currentDay?.sum?.pageViews || 0), 0)
 
+      // 🚀 1. RE-ADDED: Map the raw history nodes into cfChartData for the chart component
       cfChartData = dailyViewsArray.map(dayNode => {
         const rawDate = new Date(dayNode?.dimensions?.date)
         return {
@@ -158,19 +180,17 @@ export async function getServerSideProps({ req }) {
         }
       })
 
-      const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
-
+      // 🚀 2. RE-ADDED: Map country traffic metrics into cfCountryData for the maps and flags list
+      const regionNames = new Intl.DisplayNames(['en'], { type: 'region' })
       cfCountryData = countryMapArray.map(item => {
         const countryCode = (item.clientCountryName || 'Unknown').toUpperCase()
-
-        let officialName = countryCode;
+        let officialName = countryCode
         try {
-          officialName = regionNames.of(countryCode) || countryCode;
+          officialName = regionNames.of(countryCode) || countryCode
         } catch (e) {
-          officialName = countryCode;
+          officialName = countryCode
         }
-
-        if (countryCode === 'US') officialName = 'United States of America';
+        if (countryCode === 'US') officialName = 'United States of America'
 
         return {
           code: countryCode,
@@ -179,7 +199,17 @@ export async function getServerSideProps({ req }) {
         }
       }).sort((a, b) => b.views - a.views)
 
-      console.log('🎉 CLOUDFLARE CONNECTION SUCCESSFUL & COMPILED FOR 30 DAYS')
+      // 3. Keep Unique Visitor calculations intact
+      const dailyUniquesArray = dailyViewsArray.map(dayNode => {
+        const count = dayNode?.uniq?.uniques
+        return typeof count === 'number' ? count : 0
+      })
+
+      cfTotalUniques = dailyUniquesArray.reduce((acc, val) => acc + val, 0)
+      cfMaxUniques = dailyUniquesArray.length > 0 ? Math.max(...dailyUniquesArray) : 0
+      cfMinUniques = dailyUniquesArray.length > 0 ? Math.min(...dailyUniquesArray) : 0
+
+      console.log('🎉 CLOUDFLARE ARRAYS POPULATED & COMPILED SUCCESSFULLY')
     } catch (err) {
       console.error('❌ CLOUDFLARE DATA PARSING ERROR:', err.message)
     }
@@ -241,6 +271,9 @@ export async function getServerSideProps({ req }) {
         cfPageViews,
         cfChartData,
         cfCountryData,
+        cfTotalUniques,
+        cfMaxUniques,
+        cfMinUniques,
         categories,
         mostViewed: mostViewed.slice(0, 6),
         chartData,
@@ -257,6 +290,9 @@ export async function getServerSideProps({ req }) {
         cfPageViews: 0,
         cfChartData: [],
         cfCountryData: [],
+        cfTotalUniques: 0,
+        cfMaxUniques: 0,
+        cfMinUniques: 0,
         categories: [],
         mostViewed: [],
         chartData: [],
