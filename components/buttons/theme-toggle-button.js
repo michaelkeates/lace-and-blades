@@ -2,14 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { IconButton, useColorMode, useColorModeValue, Spinner } from '@chakra-ui/react';
-import { motion } from 'framer-motion'; // Import motion from Framer Motion
+import { motion } from 'framer-motion'; 
 import { SunIcon, MoonIcon } from '@chakra-ui/icons';
-import { GET_ALL_POSTS } from '/lib/queries'; // Import your GraphQL query
+import { GET_ALL_POSTS } from '../../lib/queries'; 
 
 const ThemeToggleButton = () => {
   const { toggleColorMode } = useColorMode();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
+  // 🚀 1. LIFTED HOOK OUT OF THE JSX BLOCK TO THE TOP LEVEL
+  const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
 
   // Use Apollo Client's useQuery hook to fetch data
   const { loading: gqlLoading } = useQuery(GET_ALL_POSTS);
@@ -33,7 +36,7 @@ const ThemeToggleButton = () => {
       bg={useColorModeValue('whiteAlpha.600', 'whiteAlpha.200')}
       _hover={{
         bg: useColorModeValue('whiteAlpha.900', 'whiteAlpha.300'),
-        transform: 'none', //disable zoom effect on hover
+        transform: 'none', 
       }}
       css={{ backdropFilter: 'blur(10px)' }}
       padding="10px"
@@ -48,9 +51,10 @@ const ThemeToggleButton = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.2 }}
-          style={{ marginTop: '-1.5px' }} // Adjust marginTop value as needed
+          style={{ marginTop: '-1.5px' }} 
         >
-          {useColorModeValue(<MoonIcon />, <SunIcon />)}
+          {/* 🚀 2. RENDER THE VARIABLE DIRECTLY HERE CLEANLY */}
+          {themeIcon}
         </motion.div>
       )}
     </IconButton>

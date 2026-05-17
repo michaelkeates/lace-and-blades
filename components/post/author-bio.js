@@ -23,7 +23,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import Paragraph from '../../components/paragraph'
 import Section from '../../components/section'
 import Image from 'next/image'
-import Logo from '/components/heading'
+import Logo from '../heading'
 
 const ProfileImage = chakra(Image, {
   shouldForwardProp: prop => ['width', 'height', 'src', 'alt'].includes(prop)
