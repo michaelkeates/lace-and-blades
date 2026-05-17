@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import { Box, Heading, Flex, Text, useColorModeValue } from '@chakra-ui/react'
+import { Box, Heading, Flex, Text, Portal, useColorModeValue } from '@chakra-ui/react'
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
 import { scaleLinear } from 'd3-scale'
 
@@ -42,118 +42,140 @@ const getFlagEmoji = (alpha2Code) => {
 
 const VisitorMap = ({ countryData = [], isMounted }) => {
   const cardBg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
-  const tooltipBg = useColorModeValue('rgba(255, 255, 255, 0.95)', 'rgba(26, 32, 44, 0.95)')
-  const borderColor = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
-  const emptyCountryColor = useColorModeValue('#5a5a5a', '#393939b1')
+  const emptyCountryColor = useColorModeValue('rgba(0, 0, 0, 0.04)', 'rgba(255, 255, 255, 0.04)')
+
+  // Theme checking for background injection inside the inline dynamic portal
+  const isLightMode = useColorModeValue(true, false)
+  const tooltipTextColor = useColorModeValue('gray.800', 'white')
+  const tooltipBorder = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
+  const labelSubColor = useColorModeValue('blackAlpha.600', 'whiteAlpha.600')
   
   const containerRef = useRef(null)
   
   const [hoveredCountry, setHoveredCountry] = useState(null)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  
-  // 🚀 Dynamic offsets state to track which direction the card should render
   const [offsets, setOffsets] = useState({ x: 12, y: 12 })
 
   const maxViews = Math.max(...countryData.map(c => c.views), 10)
   
   const mapFillScale = scaleLinear()
     .domain([1, maxViews])
-    .range(['#ebd3f8', '#b537f2'])
+    .range(['#e7baff', '#a21ae7'])
 
   const mapOpacityScale = scaleLinear()
     .domain([1, maxViews])
     .range([1.0, 0.35])
 
+  // 🚀 OPACITY SCALE: Maps higher views to stronger alpha weights (0.25 base up to 0.85 solid)
+  const tooltipAlphaScale = scaleLinear()
+    .domain([1, maxViews])
+    .range([0.25, 0.85])
+
   const handleMouseMove = (event) => {
     if (!containerRef.current) return
     const bounds = containerRef.current.getBoundingClientRect()
     
+    const screenX = event.pageX
+    const screenY = event.pageY
+    
     const localX = event.clientX - bounds.left
     const localY = event.clientY - bounds.top
     
-    // 🚀 EDGE DETECTION MATH
-    // Estimated maximum tooltip width is 150px, height is 80px
-    const tooltipWidth = 150
-    const tooltipHeight = 80
+    const isMobileDevice = window.innerWidth < 768
+    const tooltipWidth = isMobileDevice ? 110 : 150
+    const tooltipHeight = isMobileDevice ? 65 : 80
     
     const offsetX = localX + tooltipWidth > bounds.width ? -(tooltipWidth + 12) : 12
     const offsetY = localY + tooltipHeight > bounds.height ? -(tooltipHeight + 12) : 12
 
     setOffsets({ x: offsetX, y: offsetY })
-    setMousePos({ x: localX, y: localY })
+    setMousePos({ x: screenX, y: screenY })
   }
+
+  // Calculate dynamic opacity on the fly based on current active hover token
+  const currentAlpha = hoveredCountry?.views && hoveredCountry.views > 0
+    ? tooltipAlphaScale(hoveredCountry.views)
+    : 0.40 // Default alpha for unvisited nodes
+
+  const computedTooltipBg = isLightMode 
+    ? `rgba(255, 255, 255, ${currentAlpha})`
+    : `rgba(25, 25, 30, ${currentAlpha})`
 
   return (
     <Box
-      p={6}
+      p={{ base: 3, md: 6 }}
       bg={cardBg}
       backdropFilter="blur(15px)"
-      border="1px solid"
-      borderColor={borderColor}
       borderRadius="25px"
       mb={10}
       position="relative"
     >
-      <Heading as="h3" variant="section-title" mb={2}>
+      <Heading as="h3" variant="section-title" mb={2} px={{ base: 3, md: 0 }}>
         Geographic Distribution
       </Heading>
       
-      <Box ref={containerRef} position="relative" w="100%" h={{ base: '220px', md: '380px' }} overflow="hidden">
+      <Box ref={containerRef} position="relative" w="100%" h={{ base: '240px', md: '400px' }} overflow="hidden">
         
-        {/* ABSOLUTE BOUNDED FLOATING TOOLTIP BOX CONTAINER */}
-        <Box 
-          position="absolute" 
-          zIndex={50} 
-          pointerEvents="none" 
-          top={0}
-          left={0}
-          style={{
-            // 🚀 Uses dynamic offsets variable to switch translation direction on edge collisions
-            transform: `translate3d(${mousePos.x + offsets.x}px, ${mousePos.y + offsets.y}px, 0)`,
-            visibility: hoveredCountry ? 'visible' : 'hidden',
-            opacity: hoveredCountry ? 1 : 0,
-            transition: 'opacity 100ms ease-out, visibility 100ms ease-out'
-          }}
-          minW="140px"
-        >
-          {hoveredCountry && (
-            <Flex
-              p={3}
-              bg={tooltipBg} 
-              backdropFilter="blur(12px)"
-              border="1px solid"
-              borderColor={borderColor}
-              borderRadius="15px"
-              boxShadow="2xl"
-              direction="column"
-            >
-              {/* FLAG & COUNTRY NAME ROW */}
-              <Flex align="center" gap={2} mb={1}>
-                <Text fontSize="md" lineHeight="1">
-                  {getFlagEmoji(hoveredCountry.code)}
-                </Text>
-                <Text fontSize="12px" fontWeight="bold" noOfLines={1}>
-                  {hoveredCountry.name}
+        <Portal>
+          <Box 
+            position="absolute" 
+            zIndex={2000} 
+            pointerEvents="none" 
+            top={0}
+            left={0}
+            style={{
+              transform: `translate3d(${mousePos.x + offsets.x}px, ${mousePos.y + offsets.y}px, 0)`,
+              visibility: hoveredCountry ? 'visible' : 'hidden',
+              opacity: hoveredCountry ? 1 : 0,
+              transition: 'opacity 100ms ease-out, visibility 100ms ease-out'
+            }}
+            minW={{ base: "110px", md: "140px" }}
+          >
+            {hoveredCountry && (
+              <Flex
+                p={{ base: 2, md: 3 }}
+                direction="column"
+                border="1px solid"
+                borderColor={tooltipBorder}
+                borderRadius="12px"
+                boxShadow="2xl"
+                sx={{
+                  backdropFilter: 'blur(20px) !important',
+                  backgroundColor: computedTooltipBg,
+                  transition: 'background-color 150ms ease-in-out'
+                }}
+              >
+                {/* FLAG & COUNTRY NAME ROW */}
+                <Flex align="center" gap={{ base: 1, md: 2 }} mb={0.5}>
+                  <Text fontSize={{ base: "sm", md: "md" }} lineHeight="1">
+                    {getFlagEmoji(hoveredCountry.code)}
+                  </Text>
+                  <Text fontSize={{ base: "10px", md: "12px" }} fontWeight="bold" color={tooltipTextColor} noOfLines={1}>
+                    {hoveredCountry.name}
+                  </Text>
+                </Flex>
+
+                <Text fontSize={{ base: "12px", md: "14px" }} fontWeight="extrabold" color="#c966ff">
+                  {hoveredCountry.views.toLocaleString()}{' '}
+                  <Text as="span" fontSize={{ base: "8px", md: "10px" }} fontWeight="normal" color={labelSubColor}>
+                    visits
+                  </Text>
                 </Text>
               </Flex>
-
-              <Text fontSize="14px" fontWeight="extrabold" color="#b537f2">
-                {hoveredCountry.views.toLocaleString()} <Text as="span" fontSize="10px" fontWeight="normal" color="gray.500">visits</Text>
-              </Text>
-            </Flex>
-          )}
-        </Box>
+            )}
+          </Box>
+        </Portal>
 
         {isMounted && countryData.length > 0 ? (
           <ComposableMap 
             projectionConfig={{ 
               rotate: [-11, 0, 0], 
-              center: [0, 10], 
-              scale: 115 
+              center: [0, 0], 
+              scale: 155 
             }}
             width={800}
             height={400}
-            style={{ width: "100%", height: "100%" }}
+            style={{ width: "100%", height: "100%", transform: "scale(1.05)" }}
           >
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
