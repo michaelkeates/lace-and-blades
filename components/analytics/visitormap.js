@@ -3,10 +3,8 @@ import { Box, Heading, Flex, Text, Portal, useColorModeValue } from '@chakra-ui/
 import { ComposableMap, Geographies, Geography } from 'react-simple-maps'
 import { scaleLinear } from 'd3-scale'
 
-// TopoJSON world map data URL
 const geoUrl = 'https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json'
 
-// BULLETPROOF: Map Country Names directly to 2-letter Alpha-2 ISO codes (All Lowercase Keys)
 const nameToAlpha2 = {
   "afghanistan": "AF", "angola": "AO", "albania": "AL", "united arab emirates": "AE", "argentina": "AR", "armenia": "AM", "antarctica": "AQ", "australia": "AU", "austria": "AO", "azerbaijan": "AZ",
   "burundi": "BI", "belgium": "BE", "benin": "BJ", "burkina faso": "BF", "bangladesh": "BD", "bulgaria": "BG", "bahrain": "BH", "bahamas": "BS", "bosnia and herz.": "BA", "belarus": "BY",
@@ -44,7 +42,6 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
   const cardBg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
   const emptyCountryColor = useColorModeValue('rgba(0, 0, 0, 0.04)', 'rgba(255, 255, 255, 0.04)')
 
-  // Theme checking for background injection inside the inline dynamic portal
   const isLightMode = useColorModeValue(true, false)
   const tooltipTextColor = useColorModeValue('gray.800', 'white')
   const tooltipBorder = useColorModeValue('blackAlpha.200', 'whiteAlpha.200')
@@ -64,9 +61,8 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
 
   const mapOpacityScale = scaleLinear()
     .domain([1, maxViews])
-    .range([1.0, 0.35])
+    .range([0.45, 0.95]) // Tweak alpha directly in the SVG mapping matrix layer
 
-  // 🚀 OPACITY SCALE: Maps higher views to stronger alpha weights (0.25 base up to 0.85 solid)
   const tooltipAlphaScale = scaleLinear()
     .domain([1, maxViews])
     .range([0.25, 0.85])
@@ -92,10 +88,9 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
     setMousePos({ x: screenX, y: screenY })
   }
 
-  // Calculate dynamic opacity on the fly based on current active hover token
   const currentAlpha = hoveredCountry?.views && hoveredCountry.views > 0
     ? tooltipAlphaScale(hoveredCountry.views)
-    : 0.40 // Default alpha for unvisited nodes
+    : 0.40
 
   const computedTooltipBg = isLightMode 
     ? `rgba(255, 255, 255, ${currentAlpha})`
@@ -145,7 +140,6 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
                   transition: 'background-color 150ms ease-in-out'
                 }}
               >
-                {/* FLAG & COUNTRY NAME ROW */}
                 <Flex align="center" gap={{ base: 1, md: 2 }} mb={0.5}>
                   <Text fontSize={{ base: "sm", md: "md" }} lineHeight="1">
                     {getFlagEmoji(hoveredCountry.code)}
@@ -177,6 +171,17 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
             height={400}
             style={{ width: "100%", height: "100%", transform: "scale(1.05)" }}
           >
+            {/* 🚀 INJECT NATIVE SVG FILTER FOR DETACHED GLASS BLURRING */}
+            <defs>
+              <filter id="svg-glass-blur" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="1" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
+
             <Geographies geography={geoUrl}>
               {({ geographies }) =>
                 geographies.map(geo => {
@@ -220,13 +225,16 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
                         default: { 
                           outline: 'none', 
                           transition: 'opacity 200ms, fill 200ms',
-                          opacity: match ? mapOpacityScale(match.views) : 1 
+                          // Apply our dynamic range opacity to standard states
+                          opacity: match ? mapOpacityScale(match.views) : 1,
+                          filter: match ? 'url(#svg-glass-blur)' : 'none' // Apply glass filter safely to vectors
                         },
                         hover: {
-                          fill: match ? '#b537f2' : 'rgba(74, 85, 104, 0.3)',
+                          fill: match ? '#b537f2' : 'rgba(74, 85, 104, 0.15)',
                           opacity: 1, 
                           outline: 'none',
-                          cursor: 'pointer'
+                          cursor: 'pointer',
+                          filter: 'none' // Remove blur on focus hover to reveal crisp lines
                         },
                         pressed: { 
                           outline: 'none',
