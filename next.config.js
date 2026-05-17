@@ -1,24 +1,20 @@
 /** @type {import('next').NextConfig} */
-module.exports = {
+const nextConfig = {
   images: {
-    domains: [
-      'wordpress.laceandblades.co.uk',
-      'avatars.githubusercontent.com',
-      'repository-images.githubusercontent.com',
-      'opengraph.githubassets.com'
+    remotePatterns: [
+      { protocol: 'https', hostname: 'wordpress.laceandblades.co.uk' },
+      { protocol: 'https', hostname: 'avatars.githubusercontent.com' },
+      { protocol: 'https', hostname: 'repository-images.githubusercontent.com' },
+      { protocol: 'https', hostname: 'opengraph.githubassets.com' }
     ],
   },
-  eslint: {
-    // Warning: This allows production builds to successfully complete even if
-    // your project has ESLint errors.
-    ignoreDuringBuilds: true,
-  },
-  reactStrictMode: true,
-  swcMinify: true,
   
-  // 🚀 FIX: Prevent Vercel's multi-threaded chmod race condition on static pages
+  // 🚀 FIX: In modern Next.js versions, the worker override belongs directly 
+  // at the root config level, or via strict build worker management
   experimental: {
     workerThreads: false,
     cpus: 1
   }
 }
+
+module.exports = nextConfig
