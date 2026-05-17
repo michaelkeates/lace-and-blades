@@ -2,7 +2,7 @@
 import Head from 'next/head'
 import NavBar from '../navbar'
 import Footer from '../footer'
-import { Box, Container, useColorModeValue } from '@chakra-ui/react'
+import { Box, Container, useColorModeValue, Flex } from '@chakra-ui/react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useEffect, useState } from 'react'
 
@@ -22,6 +22,7 @@ const Main = ({ children, router, isConnected }) => {
   }
 
   const isHome = router?.pathname === '/'
+  const isAnalytics = router?.pathname === '/analytics' || router?.pathname === '/statistics'
 
   // Pre-hydration fallback to prevent layout shift
   if (!mounted) {
@@ -44,12 +45,12 @@ const Main = ({ children, router, isConnected }) => {
       </Head>
 
       <AnimatePresence mode="wait">
-        {isHome && (
-          <Box key="home-bg-wrapper">
+        {(isHome || isAnalytics) && (
+          <Box key="global-bg-wrapper">
             <motion.div
               key="bgImage"
               initial={{ opacity: 0 }}
-              animate={{ opacity: 0.25 }}
+              animate={{ opacity: isAnalytics ? 0.25 : 0.25 }} // 🚀 Synced perfectly to match home page depth
               exit={{ opacity: 0 }}
               transition={{ duration: 1 }}
               style={{
@@ -73,9 +74,9 @@ const Main = ({ children, router, isConnected }) => {
               style={{
                 position: 'fixed',
                 inset: 0,
+                background: overlayBg,
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                background: overlayBg,
                 zIndex: -1,
                 pointerEvents: 'none',
               }}
@@ -84,26 +85,44 @@ const Main = ({ children, router, isConnected }) => {
         )}
       </AnimatePresence>
 
-      {/* Navbar is kept outside the motion div to prevent it from jumping during transitions */}
-      <NavBar path={router.asPath} />
-
-      <Box
-        as={motion.div}
-        key={router.route}
-        initial="hidden"
-        animate="enter"
-        exit="exit"
-        variants={bgVariants}
-        transition={{ duration: 0.5, type: 'easeInOut' }}
-        pt="100px" 
+      {/* 
+        🚀 GLOBAL VERTICAL DISPLAY FLEX STACK
+        Ensures structural sizing matches between short static and long scrolling views
+      */}
+      <Flex 
+        direction="column" 
         minH="100vh"
-        display="block" 
+        style={{ 
+          backgroundAttachment: (isHome || isAnalytics) ? 'fixed' : 'scroll' 
+        }}
       >
-        <Container maxW="1200px">
-          {children}
-          <Footer isConnected={isConnected} />
-        </Container>
-      </Box>
+        <NavBar path={router.asPath} />
+
+        {/* Dynamic Page Renderer */}
+        <Box
+          as={motion.div}
+          key={router.route}
+          initial="hidden"
+          animate="enter"
+          exit="exit"
+          variants={bgVariants}
+          transition={{ duration: 0.5, type: 'easeInOut' }}
+          pt="100px" 
+          flex="1" 
+          display="block"
+        >
+          <Container maxW="1200px">
+            {children}
+          </Container>
+        </Box>
+
+        {/* Global Footer Layout */}
+        <Box w="full" mt="auto" pb={5} zIndex={1}>
+          <Container maxW="1200px">
+            <Footer isConnected={isConnected} />
+          </Container>
+        </Box>
+      </Flex>
     </Box>
   )
 }

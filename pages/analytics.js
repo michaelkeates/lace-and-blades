@@ -1,12 +1,11 @@
 import { useState, useEffect } from 'react'
 import { Container, Heading, Box, SimpleGrid, Text, useColorModeValue, Flex, Divider } from '@chakra-ui/react'
-import Bubble from '../components/emoji/analytics'
 import { keyframes } from '@emotion/react'
+import Head from 'next/head' // 🚀 Directly handles page titles without <Layout> injection
 
-import Layout from '../components/layouts/article'
-import Section from '../components/section'
+// 🚀 Crisp SVG self-drawing line animation header element
+import AnalyticsHeaderBubble from '../components/emoji/analytics'
 
-// 🚀 CLEAN ABSOLUTE ALIAS IMPORTS
 import StatCard from '@/components/analytics/statcard'
 import AnalyticsChart from '@/components/analytics/analyticschart'
 import PopularContent from '@/components/analytics/popularcontent'
@@ -42,9 +41,20 @@ const Statistics = ({
   const chartFill = useColorModeValue('#d980fa', '#b537f2')
 
   return (
-    <Layout title="Analytics">
-      <Container maxWidth="3xl">
-        <Section delay={0.1}>
+    <>
+      {/* 🚀 Dynamic head injector changes browser tab title cleanly */}
+      <Head>
+        <title>Analytics - Lace & Blades</title>
+      </Head>
+
+      {/* 
+        🚀 PURE STRUCTURAL FRAMING
+        Bypassing custom Layout/Section wrappers prevents hidden elements (like css-1983fnr)
+        from darkening the top of your background graphic.
+      */}
+      <Box w="100%" pb={10} pt={4}>
+        <Container maxWidth="3xl" px={4}>
+          
           <Heading as="h1" size="2xl" textAlign="center" mb={4} fontFamily="CartaMarina">
             Site Analytics
           </Heading>
@@ -59,22 +69,18 @@ const Statistics = ({
             {lastUpdated && <Text fontSize="10px" opacity={0.6}>Last sync: {lastUpdated}</Text>}
           </Flex>
 
-          <Box flex="1" height="100%" minW="0">
-            <Bubble
-              text="Wordpress Analytics"
-              emoji="📈"
-            />
+          {/* WordPress Dashboard Header Section */}
+          <Box flex="1" height="100%" minW="0" mb={4}>
+            <AnalyticsHeaderBubble text="Wordpress Analytics" />
           </Box>
 
           <Divider marginBottom={4} marginTop={2} />
 
-          <SimpleGrid columns={{ base: 1, md: 4 }} spacing={5} mb={10}>
+          <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={10}>
             <StatCard label="Total Views" value={totalViews.toLocaleString()} valueColor={chartFill} />
-            {/*<StatCard label="Cloudflare Pageviews" value={cfPageViews.toLocaleString()} valueColor="teal.400" />*/}
             <StatCard label="Posts" value={totalPosts} />
             <StatCard label="Categories" value={categories.length} />
           </SimpleGrid>
-
 
           <AnalyticsChart
             title="Weekly Views"
@@ -85,18 +91,13 @@ const Statistics = ({
           />
 
           <PopularContent mostViewed={mostViewed} chartFill={chartFill} />
-
           <TopicDistribution categories={categories} totalPosts={totalPosts} chartFill={chartFill} />
-
-
 
           <Divider marginBottom={6} marginTop={2} />
 
-          <Box flex="1" height="100%" minW="0">
-            <Bubble
-              text="Cloudflare Analytics"
-              emoji="📈"
-            />
+          {/* Cloudflare Telemetry Section */}
+          <Box flex="1" height="100%" minW="0" mb={4}>
+            <AnalyticsHeaderBubble text="Cloudflare Analytics" />
           </Box>
 
           <Divider marginBottom={4} marginTop={2} />
@@ -112,12 +113,13 @@ const Statistics = ({
 
           <VisitorMap countryData={cfCountryData} isMounted={isMounted} />
 
-        </Section>
-      </Container>
-    </Layout>
+        </Container>
+      </Box>
+    </>
   )
 }
 
+// Keeping your original getServerSideProps configuration exactly the same below...
 export async function getServerSideProps({ req }) {
   const client = getApolloClient()
   const cfClient = getCloudflareClient()
@@ -149,10 +151,8 @@ export async function getServerSideProps({ req }) {
       const dailyViewsArray = zoneDataNode?.dailyViews || []
       const countryMapArray = zoneDataNode?.countryViews?.[0]?.sum?.countryMap || []
 
-      // 1. Restore your main dashboard total counters loop
       cfPageViews = dailyViewsArray.reduce((acc, currentDay) => acc + (currentDay?.sum?.pageViews || 0), 0)
 
-      // 2. Restore your main views history chart data mapping
       cfChartData = dailyViewsArray.map(dayNode => {
         const rawDate = new Date(dayNode?.dimensions?.date)
         return {
@@ -162,7 +162,6 @@ export async function getServerSideProps({ req }) {
         }
       })
 
-      // 🚀 3. Initialize the built-in JavaScript Internationalization Country Name Lookup engine
       const regionNames = new Intl.DisplayNames(['en'], { type: 'region' });
 
       cfCountryData = countryMapArray.map(item => {
@@ -170,13 +169,11 @@ export async function getServerSideProps({ req }) {
 
         let officialName = countryCode;
         try {
-          // Automatically get "China" from "CN", "Russia" from "RU", etc.
           officialName = regionNames.of(countryCode) || countryCode;
         } catch (e) {
           officialName = countryCode;
         }
 
-        // Handle specific map dataset quirks where the map file names are custom
         if (countryCode === 'US') officialName = 'United States of America';
 
         return {
@@ -205,8 +202,6 @@ export async function getServerSideProps({ req }) {
 
     const totalPosts = categories.reduce((acc, cat) => acc + (cat.count || 0), 0)
     const totalViews = allContent.reduce((acc, item) => acc + (parseInt(item.viewCount) || 0), 0)
-
-    console.log(`Debug: Total Views Calculated: ${totalViews} across ${allContent.length} items`)
 
     const mostViewed = allContent
       .filter(item => item.title && (parseInt(item.viewCount) || 0) > 0)
