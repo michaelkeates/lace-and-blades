@@ -11,6 +11,7 @@ import AnalyticsChart from '@/components/analytics/analyticschart'
 import PopularContent from '@/components/analytics/popularcontent'
 import TopicDistribution from '@/components/analytics/topicdistribution'
 import VisitorMap from '@/components/analytics/visitormap'
+import TopCountries from '@/components/analytics/topcountries'
 
 import { getApolloClient, getCloudflareClient } from '@/lib/apollo'
 import { GET_GLOBAL_STATS, GET_CLOUDFLARE_STATS } from '@/lib/queries'
@@ -42,16 +43,10 @@ const Statistics = ({
 
   return (
     <>
-      {/* 🚀 Dynamic head injector changes browser tab title cleanly */}
       <Head>
         <title>Analytics - Lace & Blades</title>
       </Head>
 
-      {/* 
-        🚀 PURE STRUCTURAL FRAMING
-        Bypassing custom Layout/Section wrappers prevents hidden elements (like css-1983fnr)
-        from darkening the top of your background graphic.
-      */}
       <Box w="100%" pb={10} pt={4}>
         <Container maxWidth="3xl" px={4}>
           
@@ -113,13 +108,14 @@ const Statistics = ({
 
           <VisitorMap countryData={cfCountryData} isMounted={isMounted} />
 
+          <TopCountries countryData={cfCountryData} chartFill={chartFill} />
+
         </Container>
       </Box>
     </>
   )
 }
 
-// Keeping your original getServerSideProps configuration exactly the same below...
 export async function getServerSideProps({ req }) {
   const client = getApolloClient()
   const cfClient = getCloudflareClient()

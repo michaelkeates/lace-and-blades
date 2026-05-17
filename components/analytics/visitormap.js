@@ -106,7 +106,7 @@ const VisitorMap = ({ countryData = [], isMounted }) => {
       position="relative"
     >
       <Heading as="h3" variant="section-title" mb={2} px={{ base: 3, md: 0 }}>
-        Geographic Distribution
+        Web Traffic Requests by Country
       </Heading>
       
       <Box ref={containerRef} position="relative" w="100%" h={{ base: '240px', md: '400px' }} overflow="hidden">
