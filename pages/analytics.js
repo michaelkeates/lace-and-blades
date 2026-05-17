@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
-import { Container, Heading, Box, SimpleGrid, Text, useColorModeValue, Flex } from '@chakra-ui/react'
+import { Container, Heading, Box, SimpleGrid, Text, useColorModeValue, Flex, Divider } from '@chakra-ui/react'
+import Bubble from '../components/emoji/analytics'
 import { keyframes } from '@emotion/react'
 
 import Layout from '../components/layouts/article'
@@ -58,12 +59,22 @@ const Statistics = ({
             {lastUpdated && <Text fontSize="10px" opacity={0.6}>Last sync: {lastUpdated}</Text>}
           </Flex>
 
+          <Box flex="1" height="100%" minW="0">
+            <Bubble
+              text="Wordpress Analytics"
+              emoji="📈"
+            />
+          </Box>
+
+          <Divider marginBottom={4} marginTop={2} />
+
           <SimpleGrid columns={{ base: 1, md: 4 }} spacing={5} mb={10}>
             <StatCard label="Total Views" value={totalViews.toLocaleString()} valueColor={chartFill} />
-             {/*<StatCard label="Cloudflare Pageviews" value={cfPageViews.toLocaleString()} valueColor="teal.400" />*/}
+            {/*<StatCard label="Cloudflare Pageviews" value={cfPageViews.toLocaleString()} valueColor="teal.400" />*/}
             <StatCard label="Posts" value={totalPosts} />
             <StatCard label="Categories" value={categories.length} />
           </SimpleGrid>
+
 
           <AnalyticsChart
             title="Weekly Views"
@@ -72,6 +83,23 @@ const Statistics = ({
             chartFill={chartFill}
             isMounted={isMounted}
           />
+
+          <PopularContent mostViewed={mostViewed} chartFill={chartFill} />
+
+          <TopicDistribution categories={categories} totalPosts={totalPosts} chartFill={chartFill} />
+
+
+
+          <Divider marginBottom={6} marginTop={2} />
+
+          <Box flex="1" height="100%" minW="0">
+            <Bubble
+              text="Cloudflare Analytics"
+              emoji="📈"
+            />
+          </Box>
+
+          <Divider marginBottom={4} marginTop={2} />
 
           <AnalyticsChart
             title="30-Day Network Traffic"
@@ -84,9 +112,6 @@ const Statistics = ({
 
           <VisitorMap countryData={cfCountryData} isMounted={isMounted} />
 
-          <PopularContent mostViewed={mostViewed} chartFill={chartFill} />
-
-          <TopicDistribution categories={categories} totalPosts={totalPosts} chartFill={chartFill} />
         </Section>
       </Container>
     </Layout>

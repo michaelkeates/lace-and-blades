@@ -9,8 +9,7 @@ const StatCard = ({ label, value, valueColor }) => {
       p={5}
       bg={cardBg}
       backdropFilter="blur(10px)"
-      border="1px solid"
-      borderColor={borderColor}
+      css={{ backdropFilter: 'blur(10px)' }}
       borderRadius="20px"
     >
       <StatLabel fontSize="xs" opacity={0.7} textTransform="uppercase">

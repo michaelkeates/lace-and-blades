@@ -10,8 +10,7 @@ const PopularContent = ({ mostViewed, chartFill }) => {
       p={6}
       bg={cardBg}
       backdropFilter="blur(10px)"
-      border="1px solid"
-      borderColor={borderColor}
+      css={{ backdropFilter: 'blur(10px)' }}
       borderRadius="25px"
       mb={10}
     >
