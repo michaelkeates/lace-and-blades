@@ -113,7 +113,7 @@ export async function getServerSideProps({ req }) {
       const cfRes = await cfClient.query({
         query: GET_CLOUDFLARE_STATS,
         variables: {
-          zoneTag: process.env.CLOUDFLARE_ZONE_ID || '',
+          zoneTag: process.env.NEXT_PUBLIC_CLOUDFLARE_ZONE_ID || '',
           start: startDateString,
           end: endDateString
         },
