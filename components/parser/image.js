@@ -11,7 +11,7 @@ export const WPImage = ({ attribs, parentAttribs, inColumn }) => {
   // If it's the featured prayer one, let's make it wider (e.g., 500px or full)
   // Otherwise, keep your standard 256px
   const widthValue = isFeatured ? "auto" : "100%";
-  const heightValue = isFeatured ? "auto" : "512px";
+  const heightValue = isFeatured ? "auto" : "256px";
 
   return (
     <Box 
