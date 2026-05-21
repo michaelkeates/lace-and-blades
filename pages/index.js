@@ -28,13 +28,11 @@ const Home = () => {
     <Container maxWidth="2xl">
       <Section delay={0.2}>
 
-
         <Email
           text="If in Immediate Danger contact 999"
           email="lace.blades2026@gmail.com"
         />
-
-
+        
         {/* Branding / Logo */}
         <Box display="flex" justifyContent="center" width="full" marginTop='4rem'>
           <Logo fontSize={{ base: '6xl', md: '7xl' }} />

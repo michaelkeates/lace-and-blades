@@ -9,48 +9,32 @@ import {
   Button
 } from '@chakra-ui/react'
 import Bubble from '../components/emoji/default'
+import Email from '../components/emoji/email'
 
 const NotFound = () => {
   return (
-      <Section delay={0.1}>
-        <Bubble
+    <Section delay={0.1}>
+      <Email
+        text="If in Immediate Danger contact 999"
+        email="lace.blades2026@gmail.com"
+      />
+      <Bubble
         text="Sorry!"
         emoji="🤦‍♂️"
       />
-        <Text align="center" paddingTop="7px">
-          Website is down due to maintenance. The administrator has been notifed.
-        </Text>
-        <Divider my={6} />
-        <Box my={6} align="center">
-          <NextLink href="/" passHref>
-            <Button bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}>
-              Return to home
-            </Button>
-          </NextLink>
-        </Box>
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        paddingTop={4}
-        paddingBottom={12}
-      >
-        <NextLink href="/support-helplines" passHref>
-          <Button
-            as="a"
-            bg={useColorModeValue('yellow.300', 'yellow.300')}
-            color="black"
-            opacity={0.7}
-          >
-            If you feel unsafe. Please click here.
+      <Text align="center" paddingTop="7px">
+        Website is down due to maintenance. The administrator has been notifed.
+      </Text>
+      <Divider my={6} />
+      <Box my={6} align="center">
+        <NextLink href="/" passHref>
+          <Button bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}>
+            Go Back
           </Button>
         </NextLink>
       </Box>
-      </Section>
+    </Section>
   )
 }
 
 export default NotFound
-
-
-
