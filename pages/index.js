@@ -9,6 +9,7 @@ import {
 } from '@chakra-ui/react'
 import Image from 'next/image'
 import Bubble from '../components/emoji/default'
+import Email from '../components/emoji/email'
 import TikTokButton from '../components/buttons/tiktok-button'
 import LinkedinButton from '../components/buttons/instagram-button'
 import LinktrButton from '../components/buttons/linktr-button'
@@ -26,6 +27,13 @@ const Home = () => {
   return (
     <Container maxWidth="2xl">
       <Section delay={0.2}>
+
+
+        <Email
+          text="If in Immediate Danger contact 999"
+          email="lace.blades2026@gmail.com"
+        />
+
 
         {/* Branding / Logo */}
         <Box display="flex" justifyContent="center" width="full" marginTop='4rem'>

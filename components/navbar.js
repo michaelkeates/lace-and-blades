@@ -70,7 +70,8 @@ const allMenuItems = [
   { label: 'My Story of Survival', icon: <LuShoppingBag size={18} />, path: '/shop' },
   { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer' },
   { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' },
-  { label: 'With Thanks to', icon: <LuHeart size={18} />, path: '/with-thanks-to' }
+  { label: 'With Thanks to', icon: <LuHeart size={18} />, path: '/with-thanks-to' },
+  { label: '❤️ Your Words, My Why ❤️', icon: <LuHeart size={18} />, path: '/your-words-my-why' }
 ]
 
 const socialItems = [
