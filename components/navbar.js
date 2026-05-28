@@ -33,7 +33,8 @@ import {
   LuLink,
   LuYoutube,
   LuPin,
-  LuHeart
+  LuHeart,
+  LuBuilding
 } from 'react-icons/lu'
 import { FaTiktok } from 'react-icons/fa'
 import { gql } from '@apollo/client'
@@ -62,12 +63,13 @@ const GET_NAVBAR_POSTS = gql`
 
 const allMenuItems = [
   { label: "Georgia's Law", icon: <LuCastle size={18} />, path: '/georgias-law' },
-  { label: 'Support & Helplines', icon: <LuPhone size={18} />, path: '/support-helplines' },
+  { label: 'Legal Representation', icon: <LuBuilding size={18} />, path: '/legal-signposting-hub' },
+  { label: 'My Story of Survival', icon: <LuShoppingBag size={18} />, path: '/shop' },
   { label: 'Blog', icon: <LuBook size={18} />, path: '/posts' },
+  { label: 'Support & Helplines', icon: <LuPhone size={18} />, path: '/support-helplines' },
   { label: 'Support Agencies Information', icon: <LuBook size={18} />, path: '/get-information-agencies' },
   { label: 'Giving Back - Donations & Fundraisers', icon: <LuFileHeart size={18} />, path: '/giving-back-donations-fundraisers' },
   { label: 'Speaking & Testimony', icon: <LuPersonStanding size={18} />, path: '/speaking-testimony' },
-  { label: 'My Story of Survival', icon: <LuShoppingBag size={18} />, path: '/shop' },
   { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer' },
   { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' },
   { label: 'With Thanks to', icon: <LuHeart size={18} />, path: '/with-thanks-to' },
@@ -235,11 +237,8 @@ const Navbar = () => {
         </Stack>
 
         <Flex flex={1} ml={1} justify="flex-end" align="center">
-          <Box ml={2} flex="1"><SearchBox /></Box>
-          <Box ml={2}><QuickExitButton /></Box>
-          <Box ml={2}><ThemeToggleButton /></Box>
 
-          <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
+                    <Box ml={2} display={{ base: 'inline-block', md: 'none' }}>
             <Menu isOpen={mobileDisc.isOpen} onClose={mobileDisc.onClose}>
               <MenuButton as={IconButton} icon={<HamburgerIcon />} variant="outline" onClick={mobileDisc.onOpen} />
               <Portal>
@@ -253,7 +252,7 @@ const Navbar = () => {
                   <Text px={3} mb={1} fontSize="xs" fontWeight="bold" textTransform="uppercase" opacity={0.6} textAlign="center">
                     Pages
                   </Text>
-                  <Box display="grid" gridTemplateColumns="repeat(2, 1fr)" gap={2} p={2}>
+                  <Box display="grid" gridTemplateColumns="repeat(3, 1fr)" gap={2} p={2}>
                     {allMenuItems.map(item => renderItemContent(item.label, item.icon, item.path, mobileDisc.onClose))}
                   </Box>
 
@@ -288,6 +287,10 @@ const Navbar = () => {
               </Portal>
             </Menu>
           </Box>
+
+          <Box ml={2} flex="1"><SearchBox /></Box>
+          <Box ml={2}><QuickExitButton /></Box>
+          <Box ml={2}><ThemeToggleButton /></Box>
         </Flex>
       </Container>
     </Box>
