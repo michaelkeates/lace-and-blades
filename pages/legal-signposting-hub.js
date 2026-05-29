@@ -71,7 +71,7 @@ export default function TermsTransparencyPrivacy({ page }) {
                   alt={page.title}
                   style={{
                     width: '100%',
-                    maxWidth: '600px',
+                    maxWidth: '500px',
                     height: 'auto',
                     borderRadius: '15px'
                   }}
