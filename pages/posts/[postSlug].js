@@ -195,7 +195,7 @@ export default function Post({ post }) {
 
             <Heading
               as="h1"
-              fontSize="5xl"
+              fontSize={{ base: '3xl', md: '5xl' }}
               fontFamily="CartaMarina"
               textAlign="center"
             >
