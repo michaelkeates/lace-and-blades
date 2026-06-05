@@ -77,8 +77,8 @@ export default function GeorgiasLaw({ page }) {
                 alt={page.title}
                 style={
                   isSpecificImage
-                    ? { maxWidth: '300px', height: 'auto' }
-                    : { maxWidth: '100%', height: 'auto' }
+                    ? { maxWidth: '100px', height: 'auto' }
+                    : { maxWidth: '50%', height: 'auto' }
                 }
               />
             </Box>
