@@ -32,7 +32,7 @@ const Home = () => {
           text="If in Immediate Danger contact 999"
           email="lace.blades2026@gmail.com"
         />
-        
+
         {/* Branding / Logo */}
         <Box display="flex" justifyContent="center" width="full" marginTop='4rem'>
           <Logo fontSize={{ base: '6xl', md: '7xl' }} />
@@ -40,7 +40,7 @@ const Home = () => {
 
         <Divider marginBottom={2} />
 
-        {/* Profile Image Section */}
+        {/* Profile Image Section */parseInt}
         {/* Featured Image / Book Cover */}
         <Box
           width="100%"

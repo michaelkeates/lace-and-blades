@@ -5,22 +5,22 @@ export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
   const thumbnailUrl = fileUrl.replace(/\.pdf$/i, '-pdf.jpg')
 
   return (
-    <Box 
+    <Box
       // CRITICAL: Remove top margin on mobile if in a column to prevent "the push"
-      mt={isMobile && inColumn ? 0 : 4} 
+      mt={isMobile && inColumn ? 0 : 4}
       mb={inColumn ? 6 : 10}
-      width="100%" 
+      width="100%"
       display="flex"
       flexDirection="column"
       alignItems="center"
       textAlign="center"
     >
-      <Box 
-        borderRadius="lg" 
-        overflow="hidden" 
+      <Box
+        borderRadius="lg"
+        overflow="hidden"
         // Subtle shadow instead of 'xl' to prevent alignment optics issues
-        boxShadow="md" 
-        bg="blackAlpha.50" 
+        boxShadow="md"
+        bg="blackAlpha.50"
         mb={3}
         width="100%"
         maxW={inColumn ? "280px" : "100%"}
@@ -29,20 +29,26 @@ export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
           <img
             src={thumbnailUrl}
             alt={fileTitle}
-            style={{ 
-              width: '100%', 
-              height: 'auto', 
+            style={{
+              width: '100%',
+              height: '400px',
               display: 'block',
               margin: '0 auto'
             }}
           />
         ) : (
-          <object data={fileUrl} type="application/pdf" width="100%" height="500px">
+          <object
+            data={fileUrl}
+            type="application/pdf"
+            width="100%"
+            // CHANGE THIS VALUE for desktop (e.g., '800px' or '90vh')
+            height="460px"
+          >
             <Box p={4}>Preview not supported.</Box>
           </object>
         )}
       </Box>
-      
+
       <Button
         as="a"
         href={fileUrl}
