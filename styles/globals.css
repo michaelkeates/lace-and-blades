@@ -59,3 +59,59 @@ a {
   .lb-timeline-item { width: 100%; left: 0; text-align: left; padding: 0 0 35px 45px; }
   .lb-timeline-dot { left: 0; }
 }
+
+@media (max-width: 800px) {
+  /* Ensure the main wrapper doesn't force overflow */
+  .lb-journey-wrap {
+    width: 100%;
+    overflow-x: hidden;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* Reset the timeline line to the left */
+  .lb-vertical-timeline::before {
+    left: 14px !important; /* Align with your dots */
+    transform: none !important;
+  }
+
+  /* Ensure cards don't bleed out */
+  .lb-timeline-item {
+    width: 100% !important;
+    left: 0 !important;
+    padding-left: 35px !important; /* Space for the line */
+    padding-right: 0 !important;
+  }
+}
+
+@media (max-width: 800px) {
+  /* 1. Ensure the wrapper stays contained */
+  .lb-journey-wrap {
+    width: 100%;
+    overflow-x: hidden;
+    padding-left: 14px;
+    padding-right: 14px;
+  }
+
+  /* 2. The Line Fix: Re-declare content to ensure it renders */
+  .lb-vertical-timeline::before {
+    content: "" !important;
+    position: absolute !important;
+    left: 14px !important; 
+    transform: none !important;
+  }
+
+  /* 3. Ensure items stack properly */
+  .lb-timeline-item {
+    width: 100% !important;
+    left: 0 !important;
+    padding-left: 45px !important; /* Increased slightly to clear the line */
+    padding-right: 0 !important;
+    text-align: left !important;
+  }
+
+  /* 4. Dots */
+  .lb-timeline-dot {
+    left: 0px !important; /* Move to align with the line at 14px */
+  }
+}
