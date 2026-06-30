@@ -9,8 +9,7 @@ const CustomBox = ({ text, emoji, email = "lace.blades2026@gmail.com" }) => {
       mx="auto" 
       pt={5}    
       px={6}    
-      pb={4}    
-      width="fit-content" 
+      pb={4}
       textAlign="center"
       display="flex"
       flexDirection="column"

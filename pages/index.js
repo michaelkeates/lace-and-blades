@@ -33,6 +33,27 @@ const Home = () => {
           email="lace.blades2026@gmail.com"
         />
 
+        <Box
+          bg={useColorModeValue('rgba(254, 242, 242, 0.4)', 'rgba(246, 93, 200, 0.46)')}
+          p={4}
+          borderRadius="md"
+          textAlign="center"
+        >
+          <span>
+            Sign the petition for Georgia's Law for urgent safe housing for high-risk abuse survivors{' '}
+          </span>
+          <a
+            href="https://petitions.senedd.wales/petitions/246980"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'underline', fontWeight: 'bold' }}
+          >
+            here!
+          </a>
+          {/* Adding a space before the emoji */}
+          <span> {' '} ❤️</span>
+        </Box>
+
         {/* Branding / Logo */}
         <Box display="flex" justifyContent="center" width="full" marginTop='4rem'>
           <Logo fontSize={{ base: '6xl', md: '7xl' }} />
