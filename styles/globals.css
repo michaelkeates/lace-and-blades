@@ -28,18 +28,198 @@ a {
   box-sizing: border-box;
 }
 
-/* Add to globals.css */
+/* ─── lb-poster: song analysis block ─────────────────────────────────────── */
+/* WPGraphQL strips <style> tags so these rules must live in globals.css.      */
+/* Fonts use Next.js CSS variables registered in _app.js.                     */
+
+.lb-poster-wrap {
+  max-width: 980px;
+  margin: 0 auto 50px auto;
+  background: #fffaf9;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(80, 40, 45, 0.16);
+  color: #251f1f;
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+}
+
+.lb-poster-content {
+  padding: 42px 54px 32px 54px;
+  background: linear-gradient(180deg, #fffaf9 0%, #fff4f3 100%);
+}
+
+.lb-intro-piece {
+  max-width: 820px;
+  margin: 0 auto 34px auto;
+  padding: 24px 32px;
+  text-align: center;
+  background: rgba(255, 244, 243, 0.92);
+  border: 1.5px solid rgba(198, 100, 112, 0.35);
+  border-radius: 16px;
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(22px, 3vw, 30px);
+  line-height: 1.18;
+  color: #2c2525;
+}
+
+.lb-intro-piece strong {
+  color: #c86470;
+  font-weight: 700;
+}
+
+.lb-intro-piece em {
+  font-family: var(--font-dancing), 'Dancing Script', cursive;
+  font-size: 1.35em;
+  color: #c86470;
+  font-style: normal;
+}
+
+.lb-title {
+  text-align: center;
+  font-family: var(--font-playfair), 'Playfair Display', Georgia, serif;
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 0.95;
+  letter-spacing: 1.5px;
+  color: #c86470;
+  text-transform: uppercase;
+  margin: 0 0 8px 0;
+}
+
+.lb-band-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin: 0 0 38px 0;
+}
+
+.lb-brush {
+  width: 170px;
+  max-width: 24%;
+  height: 4px;
+  background: #d98c95;
+  border-radius: 100px;
+  opacity: 0.65;
+}
+
+.lb-band {
+  font-family: var(--font-dancing), 'Dancing Script', cursive;
+  font-size: clamp(38px, 5vw, 58px);
+  color: #c86470;
+  line-height: 1;
+}
+
+.lb-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  position: relative;
+}
+
+.lb-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  background: rgba(198, 100, 112, 0.35);
+}
+
+.lb-item {
+  margin: 0 0 20px 0;
+}
+
+.lb-heading {
+  font-family: var(--font-cormorant), 'Cormorant Garamond', Georgia, serif;
+  font-size: 24px;
+  line-height: 1.1;
+  font-weight: 700;
+  margin: 0 0 4px 0;
+  color: #201a1a;
+}
+
+.lb-number {
+  color: #c86470;
+  font-weight: 700;
+  margin-right: 6px;
+}
+
+.lb-item p {
+  font-size: 20px;
+  line-height: 1.16;
+  margin: 0;
+  color: #2c2525;
+}
+
+.lb-summary {
+  margin: 28px auto 22px auto;
+  padding: 20px 44px 22px 44px;
+  border: 1.5px solid rgba(198, 100, 112, 0.55);
+  border-radius: 14px;
+  background: rgba(255, 244, 243, 0.9);
+  text-align: center;
+  position: relative;
+}
+
+.lb-summary h3 {
+  font-size: 27px;
+  line-height: 1.1;
+  margin: 0 0 6px 0;
+  font-weight: 700;
+}
+
+.lb-summary p {
+  font-size: 21px;
+  line-height: 1.18;
+  margin: 0;
+}
+
+.lb-heart {
+  position: absolute;
+  right: 24px;
+  bottom: 18px;
+  font-family: var(--font-dancing), 'Dancing Script', cursive;
+  font-size: 56px;
+  color: #c86470;
+  opacity: 0.85;
+}
+
+.lb-bottom-banner {
+  text-align: center;
+  background: #d58c95;
+  color: #fff;
+  font-family: var(--font-dancing), 'Dancing Script', cursive;
+  font-size: clamp(26px, 4vw, 40px);
+  line-height: 1.1;
+  padding: 12px 18px 14px 18px;
+  border-radius: 3px;
+  transform: rotate(-0.4deg);
+  margin: 0 30px;
+}
+
+@media (max-width: 760px) {
+  .lb-poster-content { padding: 30px 24px; }
+  .lb-grid { grid-template-columns: 1fr; gap: 0; }
+  .lb-grid::before { display: none; }
+  .lb-item p { font-size: 19px; }
+  .lb-heading { font-size: 23px; }
+  .lb-summary { padding: 18px 22px; }
+  .lb-heart { display: none; }
+}
+
+/* ─── lb-journey: vertical timeline block ────────────────────────────────── */
 .lb-journey-wrap {
   width: 100%;
   margin: 0 auto;
   padding: 40px 18px 70px;
-  background: transparent; /* Changed from #ffffff */
+  background: transparent !important;
   color: inherit;
 }
 
 /* Ensure the cards themselves are also transparent if you want them to match the page background */
 .lb-timeline-card {
-  background: transparent; /* Change this if you want the cards to be transparent too */
+  background: transparent !important;
   border: 2px solid #4b0082;
   border-radius: 16px;
   padding: 26px 30px;

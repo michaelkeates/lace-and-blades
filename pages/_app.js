@@ -3,7 +3,7 @@ import Chakra from '../components/chakra'
 import Layout from '../components/layouts/main'
 import { ApolloProvider } from '@apollo/client'
 import { getApolloClient } from '../lib/apollo'
-import { spectral, roboto } from '../lib/fonts'
+import { spectral, roboto, playfair, cormorant, dancing } from '../lib/fonts'
 import '../styles/fonts.css';
 import '../styles/globals.css'
 import { AnimatePresence } from 'framer-motion'
@@ -18,7 +18,7 @@ function Website({ Component, pageProps, router }) {
   return (
     <Chakra cookies={pageProps.cookies}>
       <ApolloProvider client={client}>
-        <div className={`${spectral.variable} ${roboto.variable}`}>
+        <div className={`${spectral.variable} ${roboto.variable} ${playfair.variable} ${cormorant.variable} ${dancing.variable}`}>
           {/* ALWAYS wrap in Layout. This keeps the Navbar static across all navigation. */}
           <Layout router={router} isConnected={isConnected}>
             <AnimatePresence mode="wait" initial={true}>
