@@ -65,6 +65,7 @@ const allMenuItems = [
   { label: "Georgia's Law", icon: <LuCastle size={18} />, path: '/georgias-law' },
   { label: 'Legal Representation', icon: <LuBuilding size={18} />, path: '/legal-signposting-hub' },
   { label: 'My Story of Survival', icon: <LuShoppingBag size={18} />, path: '/shop-buy-the-book' },
+  { label: 'Mental Health Support', icon: <LuHeart size={18} />, path: '/mental-health-support' },
   { label: 'Blog', icon: <LuBook size={18} />, path: '/posts' },
   { label: 'Support & Helplines', icon: <LuPhone size={18} />, path: '/support-helplines' },
   { label: 'Support Agencies Information', icon: <LuBook size={18} />, path: '/get-information-agencies' },
