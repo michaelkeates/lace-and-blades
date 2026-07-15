@@ -10,7 +10,7 @@ import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article'
 import { GET_OUR_JOURNEY_PAGE } from '../lib/queries'
-import { parseHtmlContent } from '../lib/parser'
+import { ParsedContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
@@ -30,9 +30,6 @@ export default function TermsTransparencyPrivacy({ page }) {
     }, [page?.databaseId, incrementViews])
   
     if (!page) return <p>Page not found</p>
-
-  // The parser handles the Georgia font, line height, and any columns/links
-  const renderedContent = parseHtmlContent(page.content, isMobile)
 
   return (
     <Layout title={page.title}>
@@ -81,7 +78,7 @@ export default function TermsTransparencyPrivacy({ page }) {
 
             {/* Legal content rendered with the custom parser logic */}
             <Box className="post-content" pb={20}>
-              {renderedContent}
+              <ParsedContent content={page.content} isMobile={isMobile} />
             </Box>
           </main>
         </Section>

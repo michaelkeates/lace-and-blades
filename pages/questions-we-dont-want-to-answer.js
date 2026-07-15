@@ -10,7 +10,7 @@ import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article'
 import { GET_QUESTIONS_WE_DONT_WANT_TO_ANSWER } from '../lib/queries'
-import { parseHtmlContent } from '../lib/parser'
+import { ParsedContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
@@ -30,9 +30,6 @@ export default function QuestionsWeDontWantToAnswer({ page }) {
   }, [page?.databaseId, incrementViews])
 
   if (!page) return <p>Page not found</p>
-
-  // Clean, consistent rendering via your custom parser
-  const renderedContent = parseHtmlContent(page.content, isMobile)
 
   return (
     <Layout title={page.title}>
@@ -81,7 +78,7 @@ export default function QuestionsWeDontWantToAnswer({ page }) {
 
             {/* Content box using the parser logic */}
             <Box className="post-content" pb={16}>
-              {renderedContent}
+              <ParsedContent content={page.content} isMobile={isMobile} />
             </Box>
           </main>
         </Section>

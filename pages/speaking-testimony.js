@@ -10,7 +10,7 @@ import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article'
 import { GET_SPEAKING_TESTIMONY_PAGE } from '../lib/queries'
-import { parseHtmlContent } from '../lib/parser'
+import { ParsedContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
@@ -30,9 +30,6 @@ export default function SpeakingTestimony({ page }) {
   }, [page?.databaseId, incrementViews])
 
   if (!page) return <p>Page not found</p>
-
-  // Use the parser to handle headings, paragraphs, twitter, and columns
-  const renderedContent = parseHtmlContent(page.content, isMobile)
 
   return (
     <Layout title={page.title}>
@@ -80,7 +77,7 @@ export default function SpeakingTestimony({ page }) {
             )}
 
             {/* Rendered WordPress content via your custom parser logic */}
-            <Box className="post-content">{renderedContent}</Box>
+            <Box className="post-content"><ParsedContent content={page.content} isMobile={isMobile} /></Box>
           </main>
         </Section>
       </Container>

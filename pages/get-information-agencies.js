@@ -11,7 +11,7 @@ import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article'
 import { GET_SUPPORT_AGENCIES_INFORMATION } from '../lib/queries'
-import { parseHtmlContent } from '../lib/parser'
+import { ParsedContent } from '../lib/parser'
 import parse from 'html-react-parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
@@ -51,8 +51,6 @@ export default function GeorgiasLaw({ page }) {
       }
     }
   })
-
-  const renderedText = parseHtmlContent(page.content, isMobile, true)
 
   return (
     <Layout title={page.title}>

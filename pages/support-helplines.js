@@ -10,7 +10,7 @@ import styles from '../styles/Home.module.css'
 import Section from '../components/section'
 import Layout from '../components/layouts/article' // Ensure consistent Layout component
 import { GET_SUPPORT_AND_HELPLINES } from '../lib/queries'
-import { parseHtmlContent } from '../lib/parser'
+import { ParsedContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
@@ -32,9 +32,6 @@ export default function SupportAndHelplines({ page }) {
   if (!page) return <p>Page not found</p>
 
   if (!page) return <p>Page not found</p>
-
-  // Use your custom parser for the content
-  const renderedContent = parseHtmlContent(page.content, isMobile)
 
   return (
     <Layout title={page.title}>
@@ -82,7 +79,7 @@ export default function SupportAndHelplines({ page }) {
             )}
 
             {/* Rendered via your custom parser logic */}
-            <Box className="post-content">{renderedContent}</Box>
+            <Box className="post-content"><ParsedContent content={page.content} isMobile={isMobile} /></Box>
           </main>
         </Section>
       </Container>

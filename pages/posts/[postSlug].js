@@ -27,7 +27,7 @@ import { getApolloClient } from '../../lib/apollo'
 import { Blog } from '../../components/work'
 import AuthorBio from '../../components/post/author-bio'
 import styles from '../../styles/Home.module.css'
-import { parseHtmlContent } from '../../lib/parser'
+import { ParsedContent } from '../../lib/parser'
 import { GET_POST_BY_SLUG, useCreateCommentMutation } from '../../lib/queries'
 import { useEffect, useRef, useState } from 'react'
 import { useRouter } from 'next/router'
@@ -83,8 +83,11 @@ export default function Post({ post }) {
   const [authorName, setAuthorName] = useState('')
   const [email, setEmail] = useState('')
   const [createCommentMutation] = useCreateCommentMutation()
-
   const [incrementViews] = useMutation(INCREMENT_VIEWS_MUTATION)
+
+  const progressBarBg = useColorModeValue('whiteAlpha.600', 'whiteAlpha.500')
+  const cardBg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
+  const copyHoverBg = useColorModeValue('green.100', 'green.800')
 
   useEffect(() => {
     if (post?.databaseId) {
@@ -104,8 +107,6 @@ export default function Post({ post }) {
      Uses wordpress-parser to render
      images, videos, PDFs, buttons, pullquotes
   ---------------------------- */
-  const contentWithMedia = parseHtmlContent(post.content, isMobile)
-
   useEffect(() => {
     const onScroll = () => {
       const winScroll = document.documentElement.scrollTop
@@ -170,7 +171,7 @@ export default function Post({ post }) {
         left="0"
         right="0"
         height="3px"
-        bg={useColorModeValue('whiteAlpha.600', 'whiteAlpha.500')}
+        bg={progressBarBg}
         zIndex="1000"
         style={{ width: `${scroll}%` }} // This connects the state to the width
         transition="width 0.1s ease-out"
@@ -185,7 +186,7 @@ export default function Post({ post }) {
               p={2}
               pt={4}
               textAlign="center"
-              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              bg={cardBg}
               css={{ backdropFilter: 'blur(10px)' }}
             >
               <Blog>
@@ -220,7 +221,7 @@ export default function Post({ post }) {
                     marginBottom="5px"
                     borderRadius="10px"
                     padding="3px 6px"
-                    bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    bg={cardBg}
                     cursor="pointer"
                   >
                     {edge.node.name}
@@ -269,8 +270,8 @@ export default function Post({ post }) {
                       key={index}
                       borderRadius="lg"
                       px={3}
-                      py={2} // Consistent vertical padding
-                      bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                      py={2}
+                      bg={cardBg}
                       css={{ backdropFilter: 'blur(10px)' }}
                       boxShadow="0px 0px 8px 0px rgba(0,0,0,0.02)"
                     >
@@ -292,10 +293,10 @@ export default function Post({ post }) {
                     aria-label="Copy Link"
                     icon={<CopyIcon />}
                     onClick={onCopy}
-                    bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                    bg={cardBg}
                     css={{ backdropFilter: 'blur(10px)' }}
                     _hover={{
-                      bg: useColorModeValue('green.100', 'green.800')
+                      bg: copyHoverBg
                     }}
                     borderRadius="lg"
                     height="38px" // Matches the height of the text boxes
@@ -314,9 +315,9 @@ export default function Post({ post }) {
                   alt={post.title}
                   borderRadius="20px"
                   width="60%"
-                  maxHeight="300px" // Slightly taller to give it room
-                  objectFit="contain" // Shows the full image, no cropping
-                  bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+                  maxHeight="300px"
+                  objectFit="contain"
+                  bg={cardBg}
                   boxShadow="0px 10px 30px rgba(0,0,0,0.1)"
                   //center the image
                   marginLeft="auto"
@@ -333,7 +334,7 @@ export default function Post({ post }) {
                 className="post-content"
                 ref={el => (blockquoteRefs.current = el)}
               >
-                {contentWithMedia}
+                <ParsedContent content={post.content} isMobile={isMobile} />
               </Box>
             </Box>
 

@@ -61,7 +61,7 @@ const Home = () => {
 
         <Divider marginBottom={2} />
 
-        {/* Profile Image Section */parseInt}
+        {/* Profile Image Section */}
         {/* Featured Image / Book Cover */}
         <Box
           width="100%"

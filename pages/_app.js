@@ -6,7 +6,6 @@ import { getApolloClient } from '../lib/apollo'
 import { spectral, roboto, playfair, cormorant, dancing } from '../lib/fonts'
 import '../styles/fonts.css';
 import '../styles/globals.css'
-import { AnimatePresence } from 'framer-motion'
 
 if (typeof window !== 'undefined') window.history.scrollRestoration = 'manual'
 
@@ -19,11 +18,9 @@ function Website({ Component, pageProps, router }) {
     <Chakra cookies={pageProps.cookies}>
       <ApolloProvider client={client}>
         <div className={`${spectral.variable} ${roboto.variable} ${playfair.variable} ${cormorant.variable} ${dancing.variable}`}>
-          {/* ALWAYS wrap in Layout. This keeps the Navbar static across all navigation. */}
+          {/* Layout owns the page-transition animation via motion.div key={router.route} */}
           <Layout router={router} isConnected={isConnected}>
-            <AnimatePresence mode="wait" initial={true}>
-              <Component {...pageProps} key={router.route} />
-            </AnimatePresence>
+            <Component {...pageProps} key={router.route} />
           </Layout>
         </div>
       </ApolloProvider>

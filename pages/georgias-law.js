@@ -12,7 +12,7 @@ import Layout from '../components/layouts/article'
 import Section from '../components/section'
 import styles from '../styles/Home.module.css'
 import { GET_GEORGIAS_LAW } from '../lib/queries'
-import { parseHtmlContent } from '../lib/parser'
+import { ParsedContent } from '../lib/parser'
 import { Page } from '../components/work'
 import { useEffect } from 'react'
 import { useMutation } from '@apollo/client'
@@ -39,8 +39,6 @@ export default function GeorgiasLaw({ page }) {
   /* Use your custom parser here! 
      This ensures h1-h6, p, and buttons look exactly like your posts.
   */
-  const renderedContent = parseHtmlContent(page.content, isMobile)
-
   return (
     <Layout title="Georgia's Law">
       <Container maxW="4xl" mt="4rem">
@@ -86,7 +84,7 @@ export default function GeorgiasLaw({ page }) {
 
           {/* This now uses all your custom styling for Headings, P, and Twitter */}
           <Box mb={10} className="post-content">
-            {renderedContent}
+            <ParsedContent content={page.content} isMobile={isMobile} />
           </Box>
         </Section>
       </Container>
