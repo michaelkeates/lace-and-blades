@@ -1,7 +1,21 @@
-import { Box } from '@chakra-ui/react'
+import { Box, Center } from '@chakra-ui/react'
 
 export const WPVideo = ({ src }) => (
-  <Box as="video" controls src={src} width="100%" borderRadius="lg" boxShadow="md" my={4} />
+  <Box 
+    display="flex" 
+    justifyContent="center" 
+    alignItems="center" 
+    width="100%" 
+  >
+    <Box 
+      as="video" 
+      controls 
+      src={src} 
+      width="60%" 
+      borderRadius="lg" 
+      boxShadow="md" 
+    />
+  </Box>
 )
 
 export const WPYoutube = ({ url }) => {
