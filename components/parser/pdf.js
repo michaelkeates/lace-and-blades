@@ -1,13 +1,15 @@
 import { Box, Button, useColorModeValue } from '@chakra-ui/react'
 
-export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
+export const WPPdf = ({ fileUrl, fileTitle, inColumn }) => {
   const btnBg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
+  const btnHoverBg = useColorModeValue('gray.100', 'whiteAlpha.300')
   const thumbnailUrl = fileUrl.replace(/\.pdf$/i, '-pdf.jpg')
 
   return (
     <Box
-      // CRITICAL: Remove top margin on mobile if in a column to prevent "the push"
-      mt={isMobile && inColumn ? 0 : 4}
+      // CRITICAL: Remove top margin on mobile if in a column to prevent "the push".
+      // Responsive prop (not useBreakpointValue) so SSR + client first render match.
+      mt={inColumn ? { base: 0, md: 4 } : 4}
       mb={inColumn ? 6 : 10}
       width="100%"
       display="flex"
@@ -25,7 +27,8 @@ export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
         width="100%"
         maxW={inColumn ? "280px" : "100%"}
       >
-        {isMobile ? (
+        {/* Render both; toggle with CSS so server and client markup are identical (no hydration mismatch) */}
+        <Box display={{ base: 'block', md: 'none' }}>
           <img
             src={thumbnailUrl}
             alt={fileTitle}
@@ -36,7 +39,8 @@ export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
               margin: '0 auto'
             }}
           />
-        ) : (
+        </Box>
+        <Box display={{ base: 'none', md: 'block' }}>
           <object
             data={fileUrl}
             type="application/pdf"
@@ -46,7 +50,7 @@ export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
           >
             <Box p={4}>Preview not supported.</Box>
           </object>
-        )}
+        </Box>
       </Box>
 
       <Button
@@ -57,7 +61,7 @@ export const WPPdf = ({ fileUrl, fileTitle, isMobile, inColumn }) => {
         w="100%"
         maxW={inColumn ? "280px" : "400px"}
         bg={btnBg}
-        _hover={{ bg: useColorModeValue('gray.100', 'whiteAlpha.300') }}
+        _hover={{ bg: btnHoverBg }}
       >
         Open PDF
       </Button>
