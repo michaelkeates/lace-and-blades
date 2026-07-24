@@ -4,8 +4,7 @@ import {
   Heading,
   SimpleGrid,
   Button,
-  useColorModeValue,
-  useBreakpointValue
+  useColorModeValue
 } from '@chakra-ui/react'
 import styles from '../styles/Home.module.css'
 import Section from '../components/section'
@@ -19,7 +18,11 @@ import { useMutation } from '@apollo/client'
 import { INCREMENT_VIEWS_MUTATION } from '../lib/queries'
 
 export default function GeorgiasLaw({ page }) {
-  const isMobile = useBreakpointValue({ base: true, md: false })
+  // Color-mode values must be resolved at the top level, never inside .map() (rules of hooks)
+  const headerBg = useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')
+  const cardBorderColor = useColorModeValue('gray.100', 'whiteAlpha.100')
+  const btnBg = useColorModeValue('whiteAlpha.900', 'whiteAlpha.200')
+  const btnHoverBg = useColorModeValue('gray.50', 'whiteAlpha.300')
     const [incrementViews] = useMutation(INCREMENT_VIEWS_MUTATION)
   
     // Trigger the view count increment
@@ -65,7 +68,7 @@ export default function GeorgiasLaw({ page }) {
               p={2}
               pt={4}
               textAlign="center"
-              bg={useColorModeValue('whiteAlpha.500', 'whiteAlpha.200')}
+              bg={headerBg}
               css={{ backdropFilter: 'blur(10px)' }}
             >
               <Page>
@@ -113,15 +116,13 @@ export default function GeorgiasLaw({ page }) {
                       borderRadius="lg"
                       overflow="hidden"
                       boxShadow="lg"
-                      height={isMobile ? 'auto' : '450px'}
+                      height={{ base: 'auto', md: '450px' }}
                       bg="blackAlpha.50"
                       border="1px solid"
-                      borderColor={useColorModeValue(
-                        'gray.100',
-                        'whiteAlpha.100'
-                      )}
+                      borderColor={cardBorderColor}
                     >
-                      {isMobile ? (
+                      {/* Render both; toggle with CSS so SSR + client markup match (no hydration mismatch) */}
+                      <Box display={{ base: 'block', md: 'none' }} h="100%">
                         <img
                           src={thumbnailUrl}
                           alt={pdf.title}
@@ -130,7 +131,8 @@ export default function GeorgiasLaw({ page }) {
                             e.target.src = pdf.href.replace(/\.pdf$/i, '.jpg')
                           }}
                         />
-                      ) : (
+                      </Box>
+                      <Box display={{ base: 'none', md: 'block' }} h="100%">
                         <object
                           data={pdf.href}
                           type="application/pdf"
@@ -139,7 +141,7 @@ export default function GeorgiasLaw({ page }) {
                         >
                           <Box p={4}>No Preview</Box>
                         </object>
-                      )}
+                      </Box>
                     </Box>
 
                     <Button
@@ -153,11 +155,9 @@ export default function GeorgiasLaw({ page }) {
                       height="auto"
                       py={4}
                       lineHeight="1.4"
-                      bg={useColorModeValue('whiteAlpha.900', 'whiteAlpha.200')}
+                      bg={btnBg}
                       boxShadow="0px 4px 12px rgba(0,0,0,0.05)"
-                      _hover={{
-                        bg: useColorModeValue('gray.50', 'whiteAlpha.300')
-                      }}
+                      _hover={{ bg: btnHoverBg }}
                     >
                       📄 {pdf.title}
                     </Button>
