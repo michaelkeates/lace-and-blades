@@ -54,6 +54,29 @@ const Home = () => {
           <span> {' '} ❤️</span>
         </Box>
 
+        <br></br>
+
+                <Box
+          bg={useColorModeValue('rgba(234, 199, 135, 0.4)', 'rgba(234, 199, 135, 0.46)')}
+          p={4}
+          borderRadius="md"
+          textAlign="center"
+        >
+          <span>
+            Safe Exit Day 17th October 2026{' '}
+          </span>
+          <a
+            href="https://www.laceandblades.co.uk/posts/safe-exit-day-2026"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: 'underline', fontWeight: 'bold' }}
+          >
+            Read more!
+          </a>
+          {/* Adding a space before the emoji */}
+          <span> {' '} 🎗️</span>
+        </Box>
+
         {/* Branding / Logo */}
         <Box display="flex" justifyContent="center" width="full" marginTop='4rem'>
           <Logo fontSize={{ base: '6xl', md: '7xl' }} />
