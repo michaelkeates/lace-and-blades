@@ -11,9 +11,9 @@ const Footer = () => {
       fontFamily="footer"
     >
       &copy; {new Date().getFullYear()} Michael Keates.
-      <NextLink href="/terms-transparency-privacy-affiliations" passHref>
-        <Link ml={1}>Terms & Conditions.</Link>
-      </NextLink>
+      <Link as={NextLink} href="/terms-transparency-privacy-affiliations" ml={1}>
+        Terms & Conditions.
+      </Link>
       {" "}All Rights Reserved.
     </Box>
   )

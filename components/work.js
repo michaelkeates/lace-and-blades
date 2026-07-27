@@ -13,9 +13,7 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 
 export const Title = ({ children }) => (
   <Box>
-    <NextLink href="/about" passHref>
-      <Link>About</Link>
-    </NextLink>
+    <Link as={NextLink} href="/about">About</Link>
     <span>
       {' '}
       <ChevronRightIcon />{' '}
@@ -58,9 +56,7 @@ export const Page = ({ children }) => {
       lineHeight="shorter"
     >
       {/* 1. Home */}
-      <NextLink href="/" passHref>
-        <Link {...linkStyles}>Home</Link>
-      </NextLink>
+      <Link as={NextLink} href="/" {...linkStyles}>Home</Link>
 
       <Box as="span" mx={2} display="flex" alignItems="center">
         <ChevronRightIcon />
