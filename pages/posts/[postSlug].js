@@ -100,7 +100,9 @@ export default function Post({ post }) {
   /* ---------------------------
      SCROLL TO TOP ON LOAD
   ---------------------------- */
-  useEffect(() => window.scrollTo(0, 0), [])
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [])
 
   /* ---------------------------
      PARSE CONTENT
