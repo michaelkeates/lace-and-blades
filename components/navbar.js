@@ -70,7 +70,6 @@ const allMenuItems = [
   { label: 'Support & Helplines', icon: <LuPhone size={18} />, path: '/support-helplines' },
   { label: 'Support Agencies Information', icon: <LuBook size={18} />, path: '/get-information-agencies' },
   { label: 'Our Journey ❤️', icon: <LuHeart size={18} />, path: '/our-journey' },
-  { label: 'Giving Back - Donations & Fundraisers', icon: <LuFileHeart size={18} />, path: '/giving-back-donations-fundraisers' },
   { label: 'Speaking & Testimony', icon: <LuPersonStanding size={18} />, path: '/speaking-testimony' },
   { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer' },
   { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' },
