@@ -29,18 +29,24 @@ function serialize(node) {
 }
 
 // Override that cancels the block's built-in full-bleed breakout
-// (width:100vw; left:50%; margin-left/right:-50vw). #lace-blades-battleground is
-// an ID selector, so !important here wins and keeps the block inside the page
-// container instead of spanning the whole viewport.
+// (position:relative; left:50%; width:100vw !important; margin-left/right:-50vw !important).
+//
+// The block ships its OWN scoped <style> that sits AFTER this one in the DOM, so
+// a single #lace-blades-battleground !important rule here would only tie on
+// specificity and LOSE the source-order tiebreak (leaving width:100vw and the
+// -50vw margins in place → the block breaks out and gets pulled left). Doubling
+// the ID (#lace-blades-battleground#lace-blades-battleground) raises specificity
+// above a single-ID !important, so this wins regardless of source order and the
+// block collapses to the width of its centered container.
 const CONSTRAIN_CSS = `
-#lace-blades-battleground {
-  width: 100% !important;
-  max-width: 100% !important;
+#lace-blades-battleground#lace-blades-battleground {
+  position: relative !important;
   left: auto !important;
   right: auto !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  position: relative !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 `
 
