@@ -28,13 +28,37 @@ function serialize(node) {
   return ''
 }
 
-// Full-bleed WordPress "Battleground" block.
+// Override that cancels the block's built-in full-bleed breakout
+// (width:100vw; left:50%; margin-left/right:-50vw). #lace-blades-battleground is
+// an ID selector, so !important here wins and keeps the block inside the page
+// container instead of spanning the whole viewport.
+const CONSTRAIN_CSS = `
+#lace-blades-battleground {
+  width: 100% !important;
+  max-width: 100% !important;
+  left: auto !important;
+  right: auto !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  position: relative !important;
+}
+`
+
+// WordPress "Battleground" block.
 // The markup is self-contained: it carries its own #lace-blades-battleground
 // scoped <style> and a fixed palette, so it is rendered verbatim to reproduce
 // the design exactly ("as is"). Because the HTML is a static string, the SSR
-// and client markup are identical — no hydration mismatch.
+// and client markup are identical — no hydration mismatch. The block ships a
+// full-bleed breakout, which CONSTRAIN_CSS cancels so it stays within the page.
 export function WPBattleground({ node }) {
   return (
-    <Box width="100%" dangerouslySetInnerHTML={{ __html: serialize(node) }} />
+    <Box width="100%" px={{ base: 0, md: 4 }}>
+      <style dangerouslySetInnerHTML={{ __html: CONSTRAIN_CSS }} />
+      <Box
+        maxW="4xl"
+        mx="auto"
+        dangerouslySetInnerHTML={{ __html: serialize(node) }}
+      />
+    </Box>
   )
 }
