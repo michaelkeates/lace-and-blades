@@ -30,6 +30,7 @@ export function WPTimeline({ node, renderNodes }) {
   const titleColor = useColorModeValue('gray.800',   'gray.100')
   const textColor  = useColorModeValue('gray.700',   'gray.300')
   const dotBg      = useColorModeValue('white',      'gray.800')
+  const battleItemBg = useColorModeValue('rgba(255,255,255,0.78)', 'rgba(255,255,255,0.08)')
 
   const children = node.children || []
 
@@ -57,19 +58,19 @@ export function WPTimeline({ node, renderNodes }) {
 
   const items = (timelineNode?.children || []).filter(n => hasClass(n, 'lb-timeline-item'))
 
-  // Base arrow style — left side (mobile default and right-side desktop cards).
-  const arrowBase = {
+  // Arrow style factory — accent color varies per card (latest / crisis variants).
+  const makeArrow = (color) => ({
     content: '""',
     position: 'absolute',
     top: '26px',
     width: '22px',
     height: '22px',
     background: cardBg,
-    borderRight: `2px solid ${cardBorder}`,
-    borderBottom: `2px solid ${cardBorder}`,
+    borderRight: `2px solid ${color}`,
+    borderBottom: `2px solid ${color}`,
     left: '-13px',
     transform: 'rotate(135deg)',
-  }
+  })
 
   return (
     <Box width="100%" py={8}>
@@ -99,23 +100,169 @@ export function WPTimeline({ node, renderNodes }) {
           const cardNode = item.children?.find(n => hasClass(n, 'lb-timeline-card'))
           if (!cardNode) return null
 
-          const h3Node  = cardNode.children?.find(n => isTag(n, 'h3'))
-          const h4Node  = cardNode.children?.find(n => isTag(n, 'h4'))
-          const pNodes  = cardNode.children?.filter(n => isTag(n, 'p')) || []
-          const btnNode = findDeep(cardNode.children, n => isTag(n, 'a') && hasClass(n, 'lb-timeline-button'))
+          // Variant accents (WordPress: .lb-latest = rose, .lb-court-crisis = crimson)
+          const isLatestItem = hasClass(item, 'lb-latest-item')
+          const isCrisis     = hasClass(cardNode, 'lb-court-crisis')
+          const isLatest     = hasClass(cardNode, 'lb-latest')
+          const accent       = isCrisis ? '#8b1e3f' : isLatest ? '#731d3f' : cardBorder
+          const dotColor     = isLatestItem || isCrisis || isLatest ? accent : '#4b0082'
+          const headingColor = isLatestItem || isCrisis || isLatest ? accent : dateColor
+          const arrow        = makeArrow(accent)
 
           // CSS :nth-child(odd) = 1,3,5… → 0-indexed 0,2,4… → isLeft when idx % 2 === 0
           const isLeft = idx % 2 === 0
 
           // Left-side cards flip their arrow to the right at desktop breakpoint.
           const cardSx = isLeft ? {
-            '&::after': arrowBase,
+            '&::after': arrow,
             '@media (min-width: 769px)': {
-              '&::after': { ...arrowBase, left: 'auto', right: '-13px', transform: 'rotate(-45deg)' }
+              '&::after': { ...arrow, left: 'auto', right: '-13px', transform: 'rotate(-45deg)' }
             }
           } : {
-            '&::after': arrowBase
+            '&::after': arrow
           }
+
+          // Render the card body in document order so <ol class="lb-battles-list">
+          // keeps its place between paragraphs (the old code only picked h3/h4/p
+          // and dropped the list entirely).
+          const renderCardBody = () =>
+            (cardNode.children || []).map((child, cIdx) => {
+              if (child.type !== 'tag') return null
+
+              if (isTag(child, 'h3')) {
+                return (
+                  <Heading
+                    key={cIdx}
+                    as="h3"
+                    fontSize={{ base: '23px', md: '28px' }}
+                    fontWeight={800}
+                    color={headingColor}
+                    fontFamily="Georgia, serif"
+                    lineHeight={1.1}
+                    mb={1}
+                  >
+                    {getTextContent(child)}
+                  </Heading>
+                )
+              }
+
+              if (isTag(child, 'h4')) {
+                return (
+                  <Heading
+                    key={cIdx}
+                    as="h4"
+                    fontSize={{ base: '18px', md: '20px' }}
+                    fontWeight={700}
+                    color={titleColor}
+                    fontFamily="Georgia, serif"
+                    lineHeight={1.25}
+                    mb={4}
+                  >
+                    {renderNodes(child.children)}
+                  </Heading>
+                )
+              }
+
+              // The five battlegrounds — numbered list with counter badges
+              if (isTag(child, 'ol') && hasClass(child, 'lb-battles-list')) {
+                const lis = (child.children || []).filter(n => isTag(n, 'li'))
+                return (
+                  <Box
+                    key={cIdx}
+                    as="ol"
+                    listStyleType="none"
+                    m={0}
+                    mt={5}
+                    mb={2}
+                    p={0}
+                    textAlign="left"
+                  >
+                    {lis.map((li, liIdx) => (
+                      <Box
+                        key={liIdx}
+                        as="li"
+                        position="relative"
+                        mb={3}
+                        pl="54px"
+                        pr="15px"
+                        py="13px"
+                        bg={battleItemBg}
+                        borderLeft="4px solid"
+                        borderLeftColor={accent}
+                        borderRadius="8px"
+                        color={textColor}
+                        fontSize={{ base: '14px', md: '15px' }}
+                        lineHeight={1.55}
+                        fontFamily="Georgia, serif"
+                        _before={{
+                          content: `"${liIdx + 1}"`,
+                          position: 'absolute',
+                          top: '12px',
+                          left: '13px',
+                          display: 'flex',
+                          width: '28px',
+                          height: '28px',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          background: accent,
+                          color: '#fff',
+                          borderRadius: '50%',
+                          fontSize: '13px',
+                          fontWeight: 800,
+                          lineHeight: 1,
+                        }}
+                      >
+                        {renderNodes(li.children)}
+                      </Box>
+                    ))}
+                  </Box>
+                )
+              }
+
+              if (isTag(child, 'p')) {
+                // A paragraph that only wraps the pill CTA
+                const btn = findDeep([child], n => isTag(n, 'a') && hasClass(n, 'lb-timeline-button'))
+                if (btn) {
+                  return (
+                    <Box key={cIdx} mt={3}>
+                      <Link
+                        href={btn.attribs?.href}
+                        isExternal
+                        display="inline-block"
+                        px={4}
+                        py={2}
+                        bg="#4b0082"
+                        color="white"
+                        borderRadius="full"
+                        fontWeight={800}
+                        fontSize="15px"
+                        textDecoration="none"
+                        _hover={{ bg: '#6a0dad', textDecoration: 'none' }}
+                      >
+                        {getTextContent(btn)}
+                      </Link>
+                    </Box>
+                  )
+                }
+
+                const isIntro = hasClass(child, 'lb-battles-intro')
+                return (
+                  <Text
+                    key={cIdx}
+                    fontSize={{ base: '15px', md: '16px' }}
+                    lineHeight={1.7}
+                    color={textColor}
+                    fontFamily="Georgia, serif"
+                    fontWeight={isIntro ? 700 : 'normal'}
+                    mb={3}
+                  >
+                    {renderNodes(child.children)}
+                  </Text>
+                )
+              }
+
+              return null
+            })
 
           return (
             <Box
@@ -137,7 +284,8 @@ export function WPTimeline({ node, renderNodes }) {
                 width="28px"
                 height="28px"
                 bg={dotBg}
-                border="8px solid #4b0082"
+                border="8px solid"
+                borderColor={dotColor}
                 borderRadius="full"
                 zIndex={2}
               />
@@ -147,73 +295,13 @@ export function WPTimeline({ node, renderNodes }) {
                 position="relative"
                 bg={cardBg}
                 border="2px solid"
-                borderColor={cardBorder}
+                borderColor={accent}
                 borderRadius="16px"
                 p={{ base: '22px', md: '26px 30px' }}
                 boxShadow="0 10px 28px rgba(75,0,130,0.08)"
                 sx={cardSx}
               >
-                {h3Node && (
-                  <Heading
-                    as="h3"
-                    fontSize={{ base: '23px', md: '28px' }}
-                    fontWeight={800}
-                    color={dateColor}
-                    fontFamily="Georgia, serif"
-                    lineHeight={1.1}
-                    mb={1}
-                  >
-                    {getTextContent(h3Node)}
-                  </Heading>
-                )}
-
-                {h4Node && (
-                  <Heading
-                    as="h4"
-                    fontSize={{ base: '18px', md: '20px' }}
-                    fontWeight={700}
-                    color={titleColor}
-                    fontFamily="Georgia, serif"
-                    lineHeight={1.25}
-                    mb={4}
-                  >
-                    {getTextContent(h4Node)}
-                  </Heading>
-                )}
-
-                {pNodes.map((p, pIdx) => (
-                  <Text
-                    key={pIdx}
-                    fontSize={{ base: '15px', md: '16px' }}
-                    lineHeight={1.7}
-                    color={textColor}
-                    fontFamily="Georgia, serif"
-                    mb={pIdx < pNodes.length - 1 ? 3 : 0}
-                  >
-                    {renderNodes(p.children)}
-                  </Text>
-                ))}
-
-                {btnNode && (
-                  <Box mt={3}>
-                    <Link
-                      href={btnNode.attribs?.href}
-                      isExternal
-                      display="inline-block"
-                      px={4}
-                      py={2}
-                      bg="#4b0082"
-                      color="white"
-                      borderRadius="full"
-                      fontWeight={800}
-                      fontSize="15px"
-                      textDecoration="none"
-                      _hover={{ bg: '#6a0dad', textDecoration: 'none' }}
-                    >
-                      {getTextContent(btnNode)}
-                    </Link>
-                  </Box>
-                )}
+                {renderCardBody()}
               </Box>
             </Box>
           )
