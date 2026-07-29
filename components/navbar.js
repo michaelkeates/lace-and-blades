@@ -74,7 +74,7 @@ const allMenuItems = [
   { label: "Questions we don't want to answer", icon: <LuBook size={18} />, path: '/questions-we-dont-want-to-answer' },
   { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' },
   { label: '❤️ Your Words, My Why ❤️', icon: <LuHeart size={18} />, path: '/your-words-my-why' },
-  { label: 'The Political Stand for Change', icon: <LuHeart size={18} />, path: '/the-political-stand-for-change' }
+  { label: 'The Political Stand for Change', icon: <LuCastle size={18} />, path: '/the-political-stand-for-change' }
 ]
 
 const socialItems = [
