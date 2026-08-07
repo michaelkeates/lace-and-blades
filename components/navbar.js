@@ -72,7 +72,8 @@ const allMenuItems = [
   { label: 'Our Journey ❤️', icon: <LuHeart size={18} />, path: '/our-journey' },
   { label: 'Speaking & Testimony', icon: <LuPersonStanding size={18} />, path: '/speaking-testimony' },
   { label: 'Terms, Transparency, Privacy & Affiliations', icon: <LuBook size={18} />, path: '/terms-transparency-privacy-affiliations' },
-  { label: '❤️ Your Words, My Why ❤️', icon: <LuHeart size={18} />, path: '/your-words-my-why' }
+  { label: '❤️ Your Words, My Why ❤️', icon: <LuHeart size={18} />, path: '/your-words-my-why' },
+  { label: "Names that became Law", icon: <LuCastle size={18} />, path: '/names-that-became-law' },
 ]
 
 const socialItems = [

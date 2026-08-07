@@ -50,7 +50,7 @@ const Statistics = ({
 
       <Box w="100%" pb={10} pt={4}>
         <Container maxWidth="3xl" px={4}>
-          
+
           <Heading as="h1" size="2xl" textAlign="center" mb={4} fontFamily="CartaMarina">
             Site Analytics
           </Heading>
@@ -99,18 +99,18 @@ const Statistics = ({
           <Divider marginBottom={4} marginTop={2} />
 
           <SimpleGrid columns={{ base: 1, sm: 2, md: 3 }} spacing={5} mb={10}>
-            <StatCard 
-              label="Total Unique Visitors" 
-              value={cfTotalUniques.toLocaleString()} 
-              valueColor={chartFill} 
+            <StatCard
+              label="Total Unique Visitors"
+              value={cfTotalUniques.toLocaleString()}
+              valueColor={chartFill}
             />
-            <StatCard 
-              label="Max Daily Visitors" 
-              value={cfMaxUniques.toLocaleString()} 
+            <StatCard
+              label="Max Daily Visitors"
+              value={cfMaxUniques.toLocaleString()}
             />
-            <StatCard 
-              label="Min Daily Visitors" 
-              value={cfMinUniques.toLocaleString()} 
+            <StatCard
+              label="Min Daily Visitors"
+              value={cfMinUniques.toLocaleString()}
             />
           </SimpleGrid>
 
@@ -223,9 +223,16 @@ export async function getServerSideProps({ req }) {
 
     const postNodes = data?.popularPosts?.nodes || []
     const pageNodes = data?.popularPages?.nodes || []
-    const categories = data?.categories?.nodes || []
+
+    // 1. Filter out 'Uncategorised' (or 'Uncategorized') from the raw categories array
+    const rawCategories = data?.categories?.nodes || []
+    const categories = rawCategories.filter(
+      cat => cat.name !== 'Uncategorised' && cat.name !== 'Uncategorized'
+    )
+
     const allContent = [...postNodes, ...pageNodes]
 
+    // 2. Compute totalPosts using the filtered categories array
     const totalPosts = categories.reduce((acc, cat) => acc + (cat.count || 0), 0)
     const totalViews = allContent.reduce((acc, item) => acc + (parseInt(item.viewCount) || 0), 0)
 
